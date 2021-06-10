@@ -70,16 +70,17 @@ use App\Models\AbsenRekapModel;
                                 ->where('tb_lembur.NIKPemberiLembur',$nikatasan)
                                 ->get();
 
-
-                  $daftarabsen = AbsenRekapModel::select('tb_datapribadi.nik','tb_datapribadi.nama','tb_datapribadi.photo',DB::raw('MONTH(absen_rekap.tgl) AS bulan'),DB::raw('YEAR(absen_rekap.tgl) AS tahun'),DB::raw('SUM(absen_rekap.selisih) AS selisih'),'absen_rekap.id as id_absen')
-                                                ->leftjoin('tb_datapribadi','tb_datapribadi.nik','=','absen_rekap.nik')
-                                                //->where('absen_rekap.approved1','M')
-                                                ->whereRaw(
-                                                  DB::raw('CASE WHEN absen_rekap.approved1 = "M" and absen_rekap.approved2 IS NULL THEN tb_datapribadi.atasan1 = "'.$nikatasan.'" 
-                                    WHEN absen_rekap.approved2 = "M" and absen_rekap.approved1 = "Y" THEN tb_datapribadi.atasan2 = "'.$nikatasan.'" END'))
-                                                //->where('tb_datapribadi.atasan1',$nikatasan)
-                                                ->groupby('absen_rekap.nik')
-                                                ->get();
+                  $daftarabsen = DB::select("SELECT 
+                                  A.NIK, B.NAMA, B.PHOTO, ANY_VALUE(MONTH(A.TGL)) AS BULAN, 
+                                  ANY_VALUE(YEAR(A.TGL)) AS TAHUN, SUM(A.SELISIH) AS SELISIH, ANY_VALUE(A.ID) AS ID_ABSEN 
+                                  FROM absen_rekap A 
+                                  LEFT JOIN tb_datapribadi AS B ON A.NIK = B.NIK
+                                  WHERE 
+                                  CASE
+                                    WHEN A.approved1 = 'M' and A.approved2 IS NULL THEN B.atasan1 = 182656
+                                    WHEN A.approved2 = 'M' and A.approved1 = 'Y' THEN B.atasan2 = 182656
+                                  END
+                                  GROUP BY A.NIK");
 
                                                    
                                                 
