@@ -1,11 +1,11 @@
 
 <?php
 
-use App\EmployeeModel; 
-use App\KesehatanModel;
-use App\AbsenIjinModel;
-use App\LemburModel;
-use App\AbsenRekapModel;
+use App\Models\EmployeeModel; 
+use App\Models\KesehatanModel;
+use App\Models\AbsenIjinModel;
+use App\Models\LemburModel;
+use App\Models\AbsenRekapModel;
 
                 $nikatasan = Session::get('nik');
                 $hakakses = EmployeeModel::select('userpriv as akses')->where('NIK',$nikatasan)->first();
