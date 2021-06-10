@@ -1,0 +1,1 @@
+Anda Tidak Memiliki Hak Kesehatan
