@@ -126,7 +126,7 @@ Route::group(['middleware' => ['admin']], function(){
 		Route::get('/deletejabatan/{id}', [MasterController::class, 'FUNC_DELETEJABATAN']);
 
 		//DATA PANGKAT//
-		Route::get('/pangkatlist',[MasterControllerr::class, 'FUNC_MASTERPANGKAT']);
+		Route::get('/pangkatlist',[MasterController::class, 'FUNC_MASTERPANGKAT']);
 		Route::get('/addpangkat', [MasterController::class, 'FUNC_ADDPANGKAT']);
 		Route::post('/savepangkat', [MasterController::class, 'FUNC_SAVEPANGKAT']);
 		Route::get('/editpangkat/{id}', [MasterController::class, 'FUNC_EDITPANGKAT']);
