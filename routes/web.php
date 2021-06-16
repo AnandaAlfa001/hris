@@ -183,7 +183,7 @@ Route::group(['middleware' => ['admin']], function(){
 		//REPORT
 		Route::get('reportemployee',[ReportController::class, 'FUNC_REPORTEMPLOYEE']);
 		Route::get('/filteremployee',[ReportController::class, 'FUNC_FILTEREMPLOYEE']);
-		Route::get('getexport',[ReportController::class, 'FUNC_GETEXPORT']);
+		Route::get('getexport',[ReportController::class, 'exportEmployee']);
 
 		Route::get('reportcuti',[ReportController::class, 'FUNC_REPORTCUTI']);
 		Route::get('/filtercuti',[ReportController::class, 'FUNC_FILTERCUTI']);

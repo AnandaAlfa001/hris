@@ -182,7 +182,7 @@ class ReportController extends Controller
 
   }
 
-  public function FUNC_GETEXPORT(Request $request)
+  public function exportEmployee(Request $request)
   {
 
     $status       = $request['statuskaryawans'];
@@ -240,120 +240,6 @@ class ReportController extends Controller
     );
 
     return Excel::download(new EmployeeExport($param), 'Report-Employee.xlsx');
-
-    $Result = KaryawanModel::select(
-      'sqc_nik',
-      'NIK',
-      'Nama',
-      'Alamat',
-      'NoHp',
-      'email',
-      DB::raw('CONCAT(SUBSTR(NIK,1,LENGTH(NIK) - 3),"-", RIGHT(NIK,3)) as nikFormat'),
-      DB::raw('CONCAT(tbldivmaster.nama_div_ext, IF(ISNULL(tb_subdivisi.subdivisi),"",CONCAT(" - ",tb_subdivisi.subdivisi))) as Divisi'),
-      DB::raw('CONCAT(tb_pangkat.pangkat, " - " , tb_jabatan.jabatan) as Jabatan'),
-      DB::raw('CASE WHEN statuskar = "5" THEN (SELECT gol FROM tb_golongan_outsource WHERE id = tb_datapribadi.golongan) ELSE (SELECT gol FROM tb_golongan WHERE id = tb_datapribadi.golongan) END as Gol'),
-      'tb_statuskar.status_kar as Status',
-      DB::raw('(CASE WHEN tb_datapribadi.jk = "L" THEN "Laki-Laki" WHEN tb_datapribadi.jk = "P" THEN "Perempuan" ELSE "" END) as jk'),
-      DB::raw('DATE_FORMAT(tb_datapribadi.TglKontrak, "%d-%m-%Y") as TglKontrak'),
-      DB::raw('DATE_FORMAT(tb_datapribadi.TglKontrakEnd, "%d-%m-%Y") as TglKontrakEnd'),
-      DB::raw('(SELECT Nama FROM tb_datapribadi dp WHERE dp.NIK = tb_datapribadi.atasan1) as Atasan1'),
-      DB::raw('(SELECT Nama FROM tb_datapribadi dp WHERE dp.NIK = tb_datapribadi.atasan2) as Atasan2'),
-      'tb_lokasikerja.lokasi as LokasiKerja',
-      'Alamat_KTP',
-      'NoTelepon',
-      'TempatLahir',
-      DB::raw('DATE_FORMAT(tb_datapribadi.TanggalLahir, "%d-%m-%Y") as TanggalLahir'),
-      'tb_agama.nama_agama',
-      'NamaPasangan',
-      DB::raw('DATE_FORMAT(tb_datapribadi.TanggalLahirPasangan, "%d-%m-%Y") as TanggalLahirPasangan'),
-      'TmplLahirPasangan',
-      'jobpasangan',
-      'pndkpasangan',
-      DB::raw('(SELECT nama_agama FROM tb_agama ag WHERE ag.idagama = tb_datapribadi.agamapasangan) as agamapasangan'),
-      'emailreg',
-      'ktp_sim',
-      'gol_darah',
-      'nama_bapak',
-      DB::raw('(SELECT nama_agama FROM tb_agama ag WHERE ag.idagama = tb_datapribadi.agama_bapak) as agama_bapak'),
-      'tmplhr_bapak',
-      DB::raw('DATE_FORMAT(tb_datapribadi.tgllhr_bapak, "%d-%m-%Y") as tgllhr_bapak'),
-      'nama_ibu',
-      DB::raw('(SELECT nama_agama FROM tb_agama ag WHERE ag.idagama = tb_datapribadi.agama_ibu) as agama_ibu'),
-      'tmplhr_ibu',
-      DB::raw('DATE_FORMAT(tb_datapribadi.tgllhr_ibu, "%d-%m-%Y") as tgllhr_ibu'),
-      'npwp',
-      'jamsostek',
-      'bpjs',
-      'norek',
-      DB::raw('DATE_FORMAT(tb_datapribadi.tgl_sk_gol, "%d-%m-%Y") as TanggalGolongan'),
-      DB::raw('(SELECT j.jenjang
-                                            FROM tb_pendidikan pdkk
-                                            LEFT JOIN tb_jenjang j ON j.id_j = pdkk.Jenjang
-                                            WHERE pdkk.NIK = tb_datapribadi.NIK OR pdkk.NIK = tb_datapribadi.old_nik
-                                            ORDER BY pdkk.Jenjang DESC LIMIT 1
-                                            ) AS pendidikan_terakhir')
-    )
-      ->leftjoin('tbldivmaster', 'tb_datapribadi.Divisi', '=', 'tbldivmaster.id')
-      ->leftjoin('tb_subdivisi', 'tb_datapribadi.SubDivisi', '=', 'tb_subdivisi.id')
-      ->leftjoin('tb_jabatan', 'tb_datapribadi.idjabatan', '=', 'tb_jabatan.id')
-      ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
-      ->leftjoin('tb_statuskar', 'tb_datapribadi.statuskar', '=', 'tb_statuskar.id')
-      ->leftjoin('tb_lokasikerja', 'tb_datapribadi.LokasiKer', '=', 'tb_lokasikerja.id')
-      ->leftjoin('tb_agama', 'tb_datapribadi.Agama', '=', 'tb_agama.idagama')
-      ->whereRaw(DB::raw('(statuskar LIKE "%' . $status . '%" ' . $snull . ') and (LokasiKer LIKE "%' . $lokasi . '%" ' . $lnull . ') and (atasan1 LIKE "%' . $atasan1input . '%" ' . $a1null . ') and (atasan2 LIKE "%' . $atasan2input . '%" ' . $a2null . ') and (TglKontrak LIKE "%' . $tgl_kontrak . '%" ' . $tknull . ') and (TglKontrakEnd LIKE "%' . $tgl_akhir . '%" ' . $tanull . ')'))
-      ->where('tb_datapribadi.resign', '<>', 'Y')
-      ->whereRaw(DB::raw('NIK NOT IN ("admin")'))
-      ->orderby('tbldivmaster.nama_div_ext')
-      ->orderby('tb_subdivisi.subdivisi')
-
-      // ->toSql();
-      ->get();
-
-    $atasan1 = EmployeeModel::select(
-      'nik',
-      'nama',
-      DB::raw('CONCAT(tb_datapribadi.nik,"-", tb_datapribadi.nama ,"(", tb_pangkat.pangkat, ")") as atasan')
-    )
-      ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
-      ->whereRaw(DB::raw('tb_datapribadi.statuskar IN (1,2,4) AND tb_datapribadi.resign ="N" AND tb_datapribadi.idpangkat IN (2,3,4,5,6,7)'))
-      ->orderby('tb_datapribadi.idpangkat', 'ASC')
-      ->get();
-
-    $atasan2 = EmployeeModel::select(
-      'nik',
-      'nama',
-      DB::raw('CONCAT(tb_datapribadi.nik,"-",tb_datapribadi.nama,"(", tb_pangkat.pangkat, ")") as atasan')
-    )
-      ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
-      ->whereRaw(DB::raw('tb_datapribadi.statuskar IN (1,2,4) AND tb_datapribadi.resign ="N" AND tb_datapribadi.idpangkat IN (2,3,4,5)'))
-      ->orderby('tb_datapribadi.idpangkat', 'ASC')
-      ->get();
-    $statuskar = StatusKarModel::all();
-    $lokasikerja = LokkerModel::all();
-
-    $divisi = DivisiModel::where('type', NULL)->get();
-    $subdivisi = SubDivisiModel::where('type', NULL)->get();
-    Excel::create('Export Data', function ($excel) use ($Result, $atasan1, $atasan2, $statuskar, $lokasikerja) {
-      $excel->sheet('Sheet 1', function ($sheet) use ($Result, $atasan1, $atasan2, $statuskar, $lokasikerja) {
-        $sheet->loadView('report/resultemployeeexcel')
-          ->with("Result", $Result)
-          ->with("atasan1", $atasan1)
-          ->with("atasan2", $atasan2)
-          ->with("statuskar", $statuskar)
-          ->with("lokasikerja", $lokasikerja)
-          ->with("Status", $statuskar);
-      });
-    })->export('xls');
-
-    // return view('report/resultemployeeexcel')
-    //     ->with("Result",$Result)
-    //     ->with("atasan1",$atasan1)
-    //     ->with("atasan2",$atasan2)
-    //     ->with("statuskar",$statuskar)
-    //     ->with("lokasikerja",$lokasikerja)
-    //     ->with("divisi",$divisi)
-    //     ->with("Status",$statuskar);
-
   }
 
 
