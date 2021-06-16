@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EmployeeExport;
 use Illuminate\Http\Request;
 use DB;
 use Session;
@@ -15,8 +16,8 @@ use App\Models\DivisiModel;
 use App\Models\SubDivisiModel;
 use App\Models\KesehatanModel;
 use App\Models\LemburModel;
-use Excel;
 use Crypt;
+use Excel;
 
 class ReportController extends Controller
 {
@@ -184,46 +185,61 @@ class ReportController extends Controller
   public function FUNC_GETEXPORT(Request $request)
   {
 
-    $status = $request['statuskaryawans'];
-    $lokasi = $request['lokasikers'];
-    $tgl_kontrak = $request['tgl_kontraks'];
-    $tgl_akhir = $request['tgl_akhirs'];
+    $status       = $request['statuskaryawans'];
+    $lokasi       = $request['lokasikers'];
+    $tgl_kontrak  = $request['tgl_kontraks'];
+    $tgl_akhir    = $request['tgl_akhirs'];
     $atasan1input = $request['atasan1s'];
     $atasan2input = $request['atasan2s'];
 
-    // dd($request->all());
+    $snull        = "";
+    $lnull        = "";
+    $tanull       = "";
+    $tknull       = "";
+    $a1null       = "";
+    $a2null       = "";
 
-    $snull = "";
-    $lnull = "";
-    $tanull = "";
-    $tknull = "";
-    $a1null = "";
-    $a2null = "";
     if ($status == null or $status == "") {
       $status = "";
-      $snull = "or statuskar IS NULL";
-      // dd($snull);
+      $snull  = "or statuskar IS NULL";
     }
     if ($lokasi == NULL or $lokasi == "") {
       $lokasi = "";
-      $lnull = "or LokasiKer IS NULL";
+      $lnull  = "or LokasiKer IS NULL";
     }
     if ($tgl_kontrak == NULL or $tgl_kontrak == "") {
-      $tgl_kontrak = "";
-      $tknull = "or TglKontrak IS NULL";
+      $tgl_kontrak  = "";
+      $tknull       = "or TglKontrak IS NULL";
     }
     if ($tgl_akhir == NULL or $tgl_akhir == "") {
-      $tgl_akhir = "";
-      $tanull = "or TglKontrakEnd IS NULL";
+      $tgl_akhir  = "";
+      $tanull     = "or TglKontrakEnd IS NULL";
     }
     if ($atasan2input == NULL or $atasan2input == "") {
       $atasan2input = "";
-      $a2null = "or atasan2 IS NULL";
+      $a2null       = "or atasan2 IS NULL";
     }
     if ($atasan1input == NULL or $atasan1input == "") {
       $atasan1input = "";
-      $a1null = "or atasan1 IS NULL";
+      $a1null       = "or atasan1 IS NULL";
     }
+
+    $param = compact(
+      "status", 
+      "lokasi", 
+      "tgl_kontrak", 
+      "tgl_akhir", 
+      "atasan1input", 
+      "atasan2input", 
+      "snull",
+      "lnull",
+      "tanull",
+      "tknull",
+      "a1null",
+      "a2null",
+    );
+
+    return Excel::download(new EmployeeExport($param), 'Report-Employee.xlsx');
 
     $Result = KaryawanModel::select(
       'sqc_nik',
