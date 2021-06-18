@@ -180,6 +180,10 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/daftarreq', [HealthController::class, 'FUNC_LISTREQ']);
 	Route::get('/detailreq/{id}', [HealthController::class, 'FUNC_DETAILREQ']);
 
+	Route::prefix('report')->group(function () {
+		Route::get('employee', [ReportController::class, 'listEmployee']);
+	});
+
 	//REPORT
 	Route::get('reportemployee', [ReportController::class, 'FUNC_REPORTEMPLOYEE']);
 	Route::get('/filteremployee', [ReportController::class, 'FUNC_FILTEREMPLOYEE']);

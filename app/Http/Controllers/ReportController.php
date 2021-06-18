@@ -22,7 +22,7 @@ use Excel;
 class ReportController extends Controller
 {
 
-  public function FUNC_REPORTEMPLOYEE()
+  public function listEmployee()
   {
 
     $atasan1 = EmployeeModel::select(
