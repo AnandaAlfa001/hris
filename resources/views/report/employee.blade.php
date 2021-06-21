@@ -89,15 +89,34 @@
         html
     } from "https://unpkg.com/gridjs?module";
 
-    new Grid({
-        columns: ["NIK", "Nama"],
-        data: [
-            ["John", "john@example.com"],
-            ["Mark", "mark@gmail.com"],
-            ["Eoin", "eoin@gmail.com"],
-            ["Sarah", "sarahcdd@gmail.com"],
-            ["Afshin", "afshin@mail.com"]
-        ]
+    let url = '<?= url('report/employee/data') ?>';
+
+    let grid = new Grid({
+        search: true,
+        columns: [
+            "NIK",
+            "Nama",
+            "Alamat",
+            "Unit Kerja",
+            "Jabatan"
+        ],
+        server: {
+            url: url,
+            then: data => data.map(employee => [
+                employee.NIK,
+                employee.NAMA,
+                employee.ALAMAT,
+                employee.UNIT_KERJA,
+                employee.JABATAN
+            ])
+        },
+        pagination: {
+            enabled: true,
+            limit: 10,
+            summary: true
+        }
     }).render(document.getElementById("employeeTable"));
+
+    // grid.updateConfig().forceRender()
 </script>
 @endsection

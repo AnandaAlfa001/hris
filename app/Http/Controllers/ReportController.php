@@ -39,140 +39,37 @@ class ReportController extends Controller
     return view('report/employee', $data);
   }
 
-  public function FUNC_FILTEREMPLOYEE(Request $request)
+  public function dataEmployee(Request $request)
   {
-
-    // dd($request->all());
-
-    // $status = $request->get('statuskaryawan');
-    // $lokasi = $request->get('lokasiker');
-    // $tgl_kontrak = $request->get('tgl_kontrak');
-    // $tgl_akhir = $request->get('tgl_akhir');
-    // $atasan1 = $request->get('atasan1');
-    // $atasan2 = $request->get('atasan2');
-
-    $status = $request['statuskaryawan'];
-    $lokasi = $request['lokasiker'];
-    $tgl_kontrak = $request['tgl_kontrak'];
-    $tgl_akhir = $request['tgl_akhir'];
-    $atasan1input = $request['atasan1'];
-    $atasan2input = $request['atasan2'];
-
-
-    // $snull = "";
-    // $lnull = "";
-    // $tanull = "";
-    // $tknull = "";
-    // $a1null = "";
-    // $a2null = "";
-    $snull = "";
-    $lnull = "";
-    $tanull = "";
-    $tknull = "";
-    $a1null = "";
-    $a2null = "";
-    if ($status == null or $status == "") {
-      $status = "";
-      $snull = "or statuskar IS NULL";
-      // dd($snull);
-    }
-    if ($lokasi == NULL or $lokasi == "") {
-      $lokasi = "";
-      $lnull = "or LokasiKer IS NULL";
-    }
-    if ($tgl_kontrak == NULL or $tgl_kontrak == "") {
-      $tgl_kontrak = "";
-      $tknull = "or TglKontrak IS NULL";
-    }
-    if ($tgl_akhir == NULL or $tgl_akhir == "") {
-      $tgl_akhir = "";
-      $tanull = "or TglKontrakEnd IS NULL";
-    }
-    if ($atasan2input == NULL or $atasan2input == "") {
-      $atasan2input = "";
-      $a2null = "or atasan2 IS NULL";
-    }
-    if ($atasan1input == NULL or $atasan1input == "") {
-      $atasan1input = "";
-      $a1null = "or atasan1 IS NULL";
-    }
-    // DB::enableQueryLog();
-    $Result = KaryawanModel::select(
-      'sqc_nik',
-      'NIK',
-      'Nama',
-      'Alamat',
-      'NoHp',
-      'email',
-      DB::raw('CONCAT(SUBSTR(NIK,1,LENGTH(NIK) - 3),"-", RIGHT(NIK,3)) as nikFormat'),
-      DB::raw('CONCAT(tbldivmaster.nama_div_ext, IF(ISNULL(tb_subdivisi.subdivisi),"",CONCAT(" - ",tb_subdivisi.subdivisi))) as Divisi'),
-      DB::raw('CONCAT(tb_pangkat.pangkat, " - " , tb_jabatan.jabatan) as Jabatan'),
-      DB::raw('CASE WHEN statuskar = "5" THEN (SELECT gol FROM tb_golongan_outsource WHERE id = tb_datapribadi.golongan) ELSE (SELECT gol FROM tb_golongan WHERE id = tb_datapribadi.golongan) END as Gol'),
-      'tb_statuskar.status_kar as Status'
-    )
-      ->leftjoin('tbldivmaster', 'tb_datapribadi.Divisi', '=', 'tbldivmaster.id')
-      ->leftjoin('tb_subdivisi', 'tb_datapribadi.SubDivisi', '=', 'tb_subdivisi.id')
-      ->leftjoin('tb_jabatan', 'tb_datapribadi.idjabatan', '=', 'tb_jabatan.id')
-      ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
-      ->leftjoin('tb_statuskar', 'tb_datapribadi.statuskar', '=', 'tb_statuskar.id')
-      ->whereRaw(DB::raw('(statuskar LIKE "%' . $status . '%" ' . $snull . ') and (LokasiKer LIKE "%' . $lokasi . '%" ' . $lnull . ') and (atasan1 LIKE "%' . $atasan1input . '%" ' . $a1null . ') and (atasan2 LIKE "%' . $atasan2input . '%" ' . $a2null . ') and (TglKontrak LIKE "%' . $tgl_kontrak . '%" ' . $tknull . ') and (TglKontrakEnd LIKE "%' . $tgl_akhir . '%" ' . $tanull . ')'))
-      ->where('tb_datapribadi.resign', '<>', 'Y')
-      // ->where('statuskar','LIKE','%' . $status . '%')
-      // ->where('LokasiKer','LIKE','%' . $lokasi  . '%')
-      // ->where('atasan1','LIKE','%' . $atasan1 . '%')
-      // ->where('atasan2','LIKE','%' . $atasan2 . '%')
-      // ->where('TglKontrak','LIKE','%' . $tgl_kontrak . '%')
-      // ->where('TglKontrakEnd','LIKE','%' . $tgl_akhir . '%')
-      ->orderby('tbldivmaster.nama_div_ext')
-      ->orderby('tb_subdivisi.subdivisi')
-      ->whereRaw(DB::raw('NIK NOT IN ("admin")'))
-      // ->toSql();
+    $employee = DB::table('tb_datapribadi AS A')
+      ->select(
+        'A.NIK',
+        'A.sqc_nik AS SEQUENCE_NIK',
+        'A.Nama as NAMA',
+        'A.jk AS JENIS_KELAMIN',
+        'A.Alamat AS ALAMAT',
+        'A.NoHP as NOMOR_HP',
+        'A.email AS EMAIL',
+        DB::raw("CONCAT(B.nama_div_ext, ' - ', C.subdivisi) AS UNIT_KERJA"),
+        DB::raw("CONCAT(D.pangkat, ' - ', E.jabatan) AS JABATAN"),
+        DB::raw('(SELECT Nama FROM tb_datapribadi dp WHERE dp.NIK = dp.atasan1) as ATASAN_1'),
+        DB::raw('(SELECT Nama FROM tb_datapribadi dp WHERE dp.NIK = dp.atasan2) as ATASAN_2'),
+        DB::raw("DATE_FORMAT(A.TglKontrak, '%d-%m-%Y') as AWAL_KONTRAK"),
+        DB::raw("DATE_FORMAT(A.TglKontrakEnd, '%d-%m-%Y') as AKHIR_KONTRAK"),
+      )
+      ->leftJoin('tbldivmaster AS B', 'A.Divisi', '=', 'B.id')
+      ->leftJoin('tb_subdivisi AS C', 'A.SubDivisi', '=', 'C.id')
+      ->leftJoin('tb_pangkat AS D', 'A.idpangkat', '=', 'D.id')
+      ->leftJoin('tb_jabatan AS E', 'A.idjabatan', '=', 'E.id')
+      ->where('A.resign', '<>', 'Y')
       ->get();
-    // dd(DB::getQueryLog());
-    //dd($Result);
-
-
-    $atasan1 = EmployeeModel::select(
-      'nik',
-      'nama',
-      DB::raw('CONCAT(tb_datapribadi.nik,"-", tb_datapribadi.nama ,"(", tb_pangkat.pangkat, ")") as atasan')
-    )
-      ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
-      ->whereRaw(DB::raw('tb_datapribadi.statuskar IN (1,2,4) AND tb_datapribadi.resign ="N" AND tb_datapribadi.idpangkat IN (2,3,4,5,6,7)'))
-      ->orderby('tb_datapribadi.idpangkat', 'ASC')
-      ->get();
-
-    $atasan2 = EmployeeModel::select(
-      'nik',
-      'nama',
-      DB::raw('CONCAT(tb_datapribadi.nik,"-",tb_datapribadi.nama,"(", tb_pangkat.pangkat, ")") as atasan')
-    )
-      ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
-      ->whereRaw(DB::raw('tb_datapribadi.statuskar IN (1,2,4) AND tb_datapribadi.resign ="N" AND tb_datapribadi.idpangkat IN (2,3,4,5)'))
-      ->orderby('tb_datapribadi.idpangkat', 'ASC')
-      ->get();
-    $statuskar = StatusKarModel::all();
-    $lokasikerja = LokkerModel::all();
-
-    return view('report/resultemployee')
-      ->with('Result', $Result)
-      ->with('atasan1', $atasan1)
-      ->with('atasan2', $atasan2)
-      ->with('statuskar', $statuskar)
-      ->with('lokasikerja', $lokasikerja)
-      ->with('status', $status)
-      ->with('lokasi', $lokasi)
-      ->with('atasan1input', $atasan1input)
-      ->with('atasan2input', $atasan2input)
-      ->with('tgl_kontrak', $tgl_kontrak)
-      ->with('tgl_akhir', $tgl_akhir);
-    // ,compact('Result','atasan1','atasan2','statuskar','lokasikerja','status','lokasi','atasan1input','atasan2input','tgl_kontrak','tgl_akhir'));
-
+      
+    return response()->json($employee);
   }
 
   public function exportEmployee(Request $request)
   {
-
+    // $filterEmployeeStatus = $request
     $status       = $request['statuskaryawans'];
     $lokasi       = $request['lokasikers'];
     $tgl_kontrak  = $request['tgl_kontraks'];

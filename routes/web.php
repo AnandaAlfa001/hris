@@ -182,6 +182,7 @@ Route::group(['middleware' => ['admin']], function () {
 
 	Route::prefix('report')->group(function () {
 		Route::get('employee', [ReportController::class, 'listEmployee']);
+		Route::get('employee/data', [ReportController::class, 'dataEmployee']);
 	});
 
 	//REPORT
