@@ -26,7 +26,7 @@ class ReportController extends Controller
     $managerGradeID = "5,7,1948,1951,1952,1954,1955,1956,1957,1958,1959,1962,1963";
 
     $manager        = DB::table('tb_datapribadi AS A')
-      ->select('A.NIK AS NIK, A.Nama AS NAMA, B.pangkat AS PANGKAT')
+      ->select('A.NIK AS NIK', 'A.Nama AS NAMA', 'B.pangkat AS PANGKAT')
       ->leftJoin('tb_pangkat AS B', 'B.id', '=', 'A.idpangkat')
       ->whereRaw('A.statuskar IN (1, 2, 4)')
       ->whereRaw('A.idpangkat IN (' . $managerGradeID . ')')
@@ -36,7 +36,6 @@ class ReportController extends Controller
     $workLocation   = DB::table('tb_lokasikerja')->select('id', 'lokasi')->get();
 
     $data           = compact('manager', 'employeeStatus', 'workLocation');
-
     return view('report/employee', $data);
   }
 
