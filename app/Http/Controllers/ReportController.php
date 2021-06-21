@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\EmployeeExport;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Session;
 use App\Models\EmployeeModel;
 use App\Models\KaryawanModel;
@@ -21,34 +21,23 @@ use Excel;
 
 class ReportController extends Controller
 {
-
   public function listEmployee()
   {
+    $managerGradeID = "5,7,1948,1951,1952,1954,1955,1956,1957,1958,1959,1962,1963";
 
-    $atasan1 = EmployeeModel::select(
-      'nik',
-      'nama',
-      DB::raw('CONCAT(tb_datapribadi.nik,"-", tb_datapribadi.nama ,"(", tb_pangkat.pangkat, ")") as atasan')
-    )
-      ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
-      ->whereRaw(DB::raw('tb_datapribadi.statuskar IN (1,2,4) AND tb_datapribadi.resign ="N" AND tb_datapribadi.idpangkat IN (2,3,4,5,6,7)'))
-      ->orderby('tb_datapribadi.idpangkat', 'ASC')
+    $manager        = DB::table('tb_datapribadi AS A')
+      ->select('A.NIK AS NIK, A.Nama AS NAMA, B.pangkat AS PANGKAT')
+      ->leftJoin('tb_pangkat AS B', 'B.id', '=', 'A.idpangkat')
+      ->whereRaw('A.statuskar IN (1, 2, 4)')
+      ->whereRaw('A.idpangkat IN (' . $managerGradeID . ')')
+      ->orderBy('A.Nama')
       ->get();
+    $employeeStatus = DB::table('tb_statuskar')->select('id', 'status_kar')->get();
+    $workLocation   = DB::table('tb_lokasikerja')->select('id', 'lokasi')->get();
 
-    $atasan2 = EmployeeModel::select(
-      'nik',
-      'nama',
-      DB::raw('CONCAT(tb_datapribadi.nik,"-",tb_datapribadi.nama,"(", tb_pangkat.pangkat, ")") as atasan')
-    )
-      ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
-      ->whereRaw(DB::raw('tb_datapribadi.statuskar IN (1,2,4) AND tb_datapribadi.resign ="N" AND tb_datapribadi.idpangkat IN (2,3,4,5)'))
-      ->orderby('tb_datapribadi.idpangkat', 'ASC')
-      ->get();
-    $statuskar = StatusKarModel::all();
-    $lokasikerja = LokkerModel::all();
+    $data           = compact('manager', 'employeeStatus', 'workLocation');
 
-
-    return view('report/reportemployee')->with('atasan1', $atasan1)->with('atasan2', $atasan2)->with('statuskar', $statuskar)->with('lokasikerja', $lokasikerja);
+    return view('report/employee', $data);
   }
 
   public function FUNC_FILTEREMPLOYEE(Request $request)
@@ -225,12 +214,12 @@ class ReportController extends Controller
     }
 
     $param = compact(
-      "status", 
-      "lokasi", 
-      "tgl_kontrak", 
-      "tgl_akhir", 
-      "atasan1input", 
-      "atasan2input", 
+      "status",
+      "lokasi",
+      "tgl_kontrak",
+      "tgl_akhir",
+      "atasan1input",
+      "atasan2input",
       "snull",
       "lnull",
       "tanull",
