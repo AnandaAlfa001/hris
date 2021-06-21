@@ -1,5 +1,7 @@
 @extends('layouts.index')
 @section('content')
+<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1> Laporan </h1>
@@ -76,6 +78,26 @@
                 </div>
             </div>
         </div>
+
+        <div id="employeeTable"></div>
     </section>
 </div>
+
+<script type="module">
+    import {
+        Grid,
+        html
+    } from "https://unpkg.com/gridjs?module";
+
+    new Grid({
+        columns: ["NIK", "Nama"],
+        data: [
+            ["John", "john@example.com"],
+            ["Mark", "mark@gmail.com"],
+            ["Eoin", "eoin@gmail.com"],
+            ["Sarah", "sarahcdd@gmail.com"],
+            ["Afshin", "afshin@mail.com"]
+        ]
+    }).render(document.getElementById("employeeTable"));
+</script>
 @endsection
