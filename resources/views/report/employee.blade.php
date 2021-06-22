@@ -71,7 +71,17 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button onclick="applyFilter()" class="btn btn-primary">Terapkan Filter</button>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <button onclick="applyFilter()" class="btn btn-primary">Terapkan Filter</button>
+                                <a href="javascript:void(0)" onclick="resetFilter()" style="margin-left: 10px; margin-right: 10px;">Hapus Filter</a>
+                            </div>
+                            <div class="col-xs-5">
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                <button onclick="exportExcel()" class="btn btn-success"><i class="fa fa-fw  fa-file-excel-o"></i> Ekspor ke Excel</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
