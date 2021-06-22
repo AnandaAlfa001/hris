@@ -41,6 +41,36 @@ class ReportController extends Controller
 
   public function dataEmployee(Request $request)
   {
+    $filterEmployeeStatus = $request->query('filterEmployeeStatus');
+    $filterManager1       = $request->query('filterManager1');
+    $filterManager2       = $request->query('filterManager2');
+    $filterWorkLocation   = $request->query('filterWorkLocation');
+    $filterStartContract  = $request->query('filterStartContract');
+    $filterEndContract    = $request->query('filterEndContract');
+
+    $arrCondition         = array(
+      array('A.resign', '<>', 'Y')
+    );
+
+    if (!empty($filterEmployeeStatus)) {
+      array_push($arrCondition, array('A.statuskar', '=', $filterEmployeeStatus));
+    }
+    if (!empty($filterManager1)) {
+      array_push($arrCondition, array('A.atasan1', '=', $filterManager1));
+    }
+    if (!empty($filterManager2)) {
+      array_push($arrCondition, array('A.atasan2', '=', $filterManager2));
+    }
+    if (!empty($filterWorkLocation)) {
+      array_push($arrCondition, array('A.LokasiKer', '=', $filterWorkLocation));
+    }
+    if (!empty($filterStartContract)) {
+      array_push($arrCondition, array('A.TglKontrak', '=', $filterStartContract));
+    }
+    if (!empty($filterEndContract)) {
+      array_push($arrCondition, array('A.TglKontrakEnd', '=', $filterEndContract));
+    }
+
     $employee = DB::table('tb_datapribadi AS A')
       ->select(
         'A.NIK',
@@ -61,9 +91,9 @@ class ReportController extends Controller
       ->leftJoin('tb_subdivisi AS C', 'A.SubDivisi', '=', 'C.id')
       ->leftJoin('tb_pangkat AS D', 'A.idpangkat', '=', 'D.id')
       ->leftJoin('tb_jabatan AS E', 'A.idjabatan', '=', 'E.id')
-      ->where('A.resign', '<>', 'Y')
+      ->where($arrCondition)
       ->get();
-      
+
     return response()->json($employee);
   }
 
