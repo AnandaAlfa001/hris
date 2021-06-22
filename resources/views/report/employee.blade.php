@@ -95,7 +95,23 @@
     let url = '<?= url('report/employee/data') ?>';
 
     let grid = new Grid({
+        language: {
+            'search': {
+                'placeholder': 'Ketik disini untuk mencari ...'
+            },
+            'pagination': {
+                'previous': 'Sebelumnya',
+                'next': 'Selanjutnya',
+                'showing': 'Menampilkan',
+                of: 'dari',
+                to: 'sampai',
+                'results': () => 'Pegawai'
+            }
+        },
+        fixedHeader: true,
+        height: '500px',
         search: true,
+        sort: true,
         columns: [
             "NIK",
             "Nama",
