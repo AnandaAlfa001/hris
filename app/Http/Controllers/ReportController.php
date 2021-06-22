@@ -17,7 +17,8 @@ use App\Models\SubDivisiModel;
 use App\Models\KesehatanModel;
 use App\Models\LemburModel;
 use Crypt;
-use Excel;
+// use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
