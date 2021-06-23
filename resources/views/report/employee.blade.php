@@ -101,6 +101,12 @@
     })();
 
     let url = '<?= url('report/employee/data') ?>';
+    let filterEmployeeStatus = document.getElementById('filterEmployeeStatus');
+    let filterManager1 = document.getElementById('filterManager1');
+    let filterManager2 = document.getElementById('filterManager2');
+    let filterWorkLocation = document.getElementById('filterWorkLocation');
+    let filterStartContract = document.getElementById('filterStartContract');
+    let filterEndContract = document.getElementById('filterEndContract');
 
     let grid = new Grid({
         language: {
@@ -145,19 +151,12 @@
     }).render(document.getElementById("employeeTable"));
 
     window.applyFilter = () => {
-        let filterEmployeeStatus = document.getElementById('filterEmployeeStatus').value;
-        let filterManager1 = document.getElementById('filterManager1').value;
-        let filterManager2 = document.getElementById('filterManager2').value;
-        let filterWorkLocation = document.getElementById('filterWorkLocation').value;
-        let filterStartContract = document.getElementById('filterStartContract').value;
-        let filterEndContract = document.getElementById('filterEndContract').value;
-
-        let urlQ1 = `filterEmployeeStatus=${filterEmployeeStatus}`;
-        let urlQ2 = `&filterManager1=${filterManager1}`;
-        let urlQ3 = `&filterManager2=${filterManager2}`;
-        let urlQ4 = `&filterWorkLocation=${filterWorkLocation}`;
-        let urlQ5 = `&filterStartContract=${filterStartContract}`;
-        let urlQ6 = `&filterEndContract=${filterEndContract}`;
+        let urlQ1 = `filterEmployeeStatus=${filterEmployeeStatus.value}`;
+        let urlQ2 = `&filterManager1=${filterManager1.value}`;
+        let urlQ3 = `&filterManager2=${filterManager2.value}`;
+        let urlQ4 = `&filterWorkLocation=${filterWorkLocation.value}`;
+        let urlQ5 = `&filterStartContract=${filterStartContract.value}`;
+        let urlQ6 = `&filterEndContract=${filterEndContract.value}`;
 
         let urlFilter = `?${urlQ1}${urlQ2}${urlQ3}${urlQ4}${urlQ5}${urlQ6}`;
         url = `<?= url('report/employee/data') ?>${urlFilter}`
@@ -174,6 +173,10 @@
                 ])
             },
         }).forceRender()
+    }
+
+    window.resetFilter = () => {
+
     }
 </script>
 @endsection
