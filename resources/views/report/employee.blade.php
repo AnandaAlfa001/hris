@@ -77,7 +77,7 @@
                             <div class="col-xs-5">
                             </div>
                             <div class="col-xs-4 text-right">
-                                <button onclick="exportExcel()" class="btn btn-success"><i class="fa fa-fw  fa-file-excel-o"></i> Ekspor ke Excel</button>
+                                <button onclick="exportExcel()" class="btn btn-success"><i class="fa fa-fw fa-file-excel-o"></i> Ekspor ke Excel</button>
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,10 @@
         // document ready
     })();
 
-    let url = '<?= url('report/employee/data') ?>';
+    let urlData = '<?= url('report/employee/data') ?>';
+    let urlExport = '<?= url('report/employee/export') ?>';
+    let urlFilter = '?';
+
     let filterEmployeeStatus = document.getElementById('filterEmployeeStatus');
     let filterManager1 = document.getElementById('filterManager1');
     let filterManager2 = document.getElementById('filterManager2');
@@ -134,7 +137,7 @@
             "Jabatan"
         ],
         server: {
-            url: url,
+            url: urlData,
             then: data => data.map(employee => [
                 employee.NIK,
                 employee.NAMA,
@@ -158,12 +161,12 @@
         let urlQ5 = `&filterStartContract=${filterStartContract.value}`;
         let urlQ6 = `&filterEndContract=${filterEndContract.value}`;
 
-        let urlFilter = `?${urlQ1}${urlQ2}${urlQ3}${urlQ4}${urlQ5}${urlQ6}`;
-        url = `<?= url('report/employee/data') ?>${urlFilter}`
+        urlFilter = `?${urlQ1}${urlQ2}${urlQ3}${urlQ4}${urlQ5}${urlQ6}`;
+        urlData = `<?= url('report/employee/data') ?>${urlFilter}`
 
         grid.updateConfig({
             server: {
-                url: url,
+                url: urlData,
                 then: data => data.map(employee => [
                     employee.NIK,
                     employee.NAMA,
@@ -183,11 +186,11 @@
         filterStartContract.value = '';
         filterEndContract.value = '';
 
-        url = '<?= url('report/employee/data') ?>';
-        
+        urlData = '<?= url('report/employee/data') ?>';
+
         grid.updateConfig({
             server: {
-                url: url,
+                url: urlData,
                 then: data => data.map(employee => [
                     employee.NIK,
                     employee.NAMA,
@@ -197,6 +200,10 @@
                 ])
             },
         }).forceRender();
+    }
+
+    window.exportExcel = () => {
+        window.open(urlExport, '_blank');
     }
 </script>
 @endsection
