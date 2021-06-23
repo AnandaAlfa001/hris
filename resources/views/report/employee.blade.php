@@ -172,11 +172,31 @@
                     employee.JABATAN
                 ])
             },
-        }).forceRender()
+        }).forceRender();
     }
 
     window.resetFilter = () => {
+        filterEmployeeStatus.value = '';
+        filterManager1.value = '';
+        filterManager2.value = '';
+        filterWorkLocation.value = '';
+        filterStartContract.value = '';
+        filterEndContract.value = '';
 
+        url = '<?= url('report/employee/data') ?>';
+        
+        grid.updateConfig({
+            server: {
+                url: url,
+                then: data => data.map(employee => [
+                    employee.NIK,
+                    employee.NAMA,
+                    employee.ALAMAT,
+                    employee.UNIT_KERJA,
+                    employee.JABATAN
+                ])
+            },
+        }).forceRender();
     }
 </script>
 @endsection
