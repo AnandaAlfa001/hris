@@ -163,6 +163,7 @@
 
         urlFilter = `?${urlQ1}${urlQ2}${urlQ3}${urlQ4}${urlQ5}${urlQ6}`;
         urlData = `<?= url('report/employee/data') ?>${urlFilter}`
+        urlExport = `<?= url('report/employee/export') ?>${urlFilter}`
 
         grid.updateConfig({
             server: {
@@ -187,6 +188,7 @@
         filterEndContract.value = '';
 
         urlData = '<?= url('report/employee/data') ?>';
+        urlExport = '<?= url('report/employee/export') ?>';
 
         grid.updateConfig({
             server: {
