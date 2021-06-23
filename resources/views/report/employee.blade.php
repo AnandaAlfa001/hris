@@ -1,7 +1,5 @@
 @extends('layouts.index')
 @section('content')
-<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
-
 <div class="content-wrapper">
     <section class="content-header">
         <h1> Laporan </h1>

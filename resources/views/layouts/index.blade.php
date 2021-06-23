@@ -46,6 +46,7 @@
   <link rel="stylesheet" href="{{asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
   <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('plugins/select2/select2.min.css')}}">
+  <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
 
   @section('css')
 
