@@ -181,8 +181,11 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/detailreq/{id}', [HealthController::class, 'FUNC_DETAILREQ']);
 
 	Route::prefix('report')->group(function () {
-		Route::get('employee', [ReportController::class, 'listEmployee']);
-		Route::get('employee/data', [ReportController::class, 'dataEmployee']);
+		Route::prefix('employee')->group(function () {
+			Route::get('/', [ReportController::class, 'listEmployee']);
+			Route::get('data', [ReportController::class, 'dataEmployee']);
+			Route::get('export', [ReportController::class, 'exportEmployee']);
+		});
 	});
 
 	//REPORT
