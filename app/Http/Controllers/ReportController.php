@@ -113,11 +113,23 @@ class ReportController extends Controller
 
   public function listOffWork()
   {
+    $months = array(
+      '01' => 'Januari', 
+      '02' => 'Februari', 
+      '03' => 'Maret', 
+      '04' => 'April', 
+      '05' => 'Mei', 
+      '06' => 'Juni', 
+      '07' => 'Juli', 
+      '08' => 'Agustus', 
+      '09' => 'September', 
+      '10' => 'Oktober', 
+      '11' => 'November', 
+      '12' => 'Desember', 
+    );
+    $data   = compact('months');
 
-    $tahundropdown = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0 order by TglKontrak";
-    $tahundropdowns = DB::select($tahundropdown);
-
-    return view('report/reportcuti')->with('tahundropdowns', $tahundropdowns);
+    return view('report/offwork', $data);
   }
 
   public function dataOffWork(Request $request)

@@ -5,7 +5,7 @@
         <h1> Laporan </h1>
         <ol class="breadcrumb">
             <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">Laporan Data Pegawai</li>
+            <li class="active">Laporan Pegawai</li>
         </ol>
     </section>
     <section class="content">
