@@ -183,7 +183,7 @@
         <ul class="treeview-menu">
           @if(Session::get('admin') == 1 or Session::get('admin') == 2)
           <li><a href="{{ url('report/employee') }}"><i class="fa fa-circle-o"></i> Pegawai</a></li>
-          <li><a href="{{ url('report/leave') }}"><i class="fa fa-circle-o"></i> Cuti</a></li>
+          <li><a href="{{ url('report/offwork') }}"><i class="fa fa-circle-o"></i> Cuti</a></li>
           <li><a href="{{ url('reportkesehatan') }}"><i class="fa fa-circle-o"></i> Kesahatan</a></li>
           <li><a href="{{ url('reporttraining') }}"><i class="fa fa-circle-o"></i> Training</a></li>
           <li><a href="{{ url('reportlembur') }}"><i class="fa fa-circle-o"></i> Lembur Pegawai</a></li>

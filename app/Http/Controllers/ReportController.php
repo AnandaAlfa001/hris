@@ -17,11 +17,12 @@ use App\Models\SubDivisiModel;
 use App\Models\KesehatanModel;
 use App\Models\LemburModel;
 use Crypt;
-// use Excel;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
+  // ---------- Start Pegawai ----------
+
   public function listEmployee()
   {
     $managerGradeID = "5,7,1948,1951,1952,1954,1955,1956,1957,1958,1959,1962,1963";
@@ -105,11 +106,12 @@ class ReportController extends Controller
     return Excel::download(new EmployeeExport($data), 'Report-Employee.xlsx');
   }
 
+  // ---------- End Pegawai ----------
 
 
-  // CUTIIIII
+  // ---------- Start Cuti ----------
 
-  public function FUNC_REPORTCUTI()
+  public function listOffWork()
   {
 
     $tahundropdown = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0 order by TglKontrak";
@@ -118,7 +120,7 @@ class ReportController extends Controller
     return view('report/reportcuti')->with('tahundropdowns', $tahundropdowns);
   }
 
-  public function FUNC_FILTERCUTI(Request $request)
+  public function dataOffWork(Request $request)
   {
 
     $tahun = $request['tahun'];
@@ -217,7 +219,7 @@ class ReportController extends Controller
       ->with('bulan', $bulan);
   }
 
-  public function FUNC_GETEXPORTCUTI(Request $request)
+  public function exportOffWork(Request $request)
   {
 
     $tahuninput = $request['tahuninput'];
@@ -333,6 +335,8 @@ class ReportController extends Controller
     // ->with("bulaninput",$bulaninput);
 
   }
+
+  // ---------- End Cuti ----------
 
   // TRAINING
 

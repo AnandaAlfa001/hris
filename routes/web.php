@@ -181,17 +181,21 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/detailreq/{id}', [HealthController::class, 'FUNC_DETAILREQ']);
 
 	Route::prefix('report')->group(function () {
+		
+		// Pegawai
 		Route::prefix('employee')->group(function () {
 			Route::get('/', [ReportController::class, 'listEmployee']);
 			Route::get('data', [ReportController::class, 'dataEmployee']);
 			Route::get('export', [ReportController::class, 'exportEmployee']);
 		});
-	});
 
-	//REPORT
-	Route::get('reportemployee', [ReportController::class, 'FUNC_REPORTEMPLOYEE']);
-	Route::get('/filteremployee', [ReportController::class, 'FUNC_FILTEREMPLOYEE']);
-	Route::get('getexport', [ReportController::class, 'exportEmployee']);
+		// Cuti
+		Route::prefix('offwork')->group(function () {
+			Route::get('/', [ReportController::class, 'listOffWork']);
+			Route::get('data', [ReportController::class, 'dataOffWork']);
+			Route::get('export', [ReportController::class, 'exportOffWork']);
+		});
+	});
 
 	Route::get('reportcuti', [ReportController::class, 'FUNC_REPORTCUTI']);
 	Route::get('/filtercuti', [ReportController::class, 'FUNC_FILTERCUTI']);
