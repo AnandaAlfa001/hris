@@ -86,7 +86,7 @@
                 'showing': 'Menampilkan',
                 of: 'dari',
                 to: 'sampai',
-                'results': () => 'Pegawai'
+                'results': () => 'Data'
             }
         },
         fixedHeader: true,
