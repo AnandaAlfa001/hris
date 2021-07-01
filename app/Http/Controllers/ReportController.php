@@ -139,6 +139,7 @@ class ReportController extends Controller
 
     $arrCondition = array();
 
+    // !!! Unkown column 'YEAR', solusi penggunaan raw where ketika dari array ??
     if (!empty($filterYear)) {
       array_push($arrCondition, array('YEAR(A.TanggalMulaiCuti)', '=', $filterYear));
     }
