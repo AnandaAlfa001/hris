@@ -12,7 +12,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>HRIS | Login</title>
+  <title>Hadirkoe HRIS</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -36,7 +36,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>HRIS</b>EDII</a>
+    <a href="#"><b>Hadirkoe</b> HRIS</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -54,7 +54,7 @@
     <form action="{{ url('postlogin') }}" method="post">
     {{ csrf_field() }}
       <div class="form-group has-feedback">
-        <input type="text" name="email" class="form-control" placeholder="Email tanpa @ edi-indonesia.co.id" @if(session('mail'))value="{{ session('mail') }}" @endif required>
+        <input type="text" name="email" class="form-control" placeholder="Username tanpa alamat email" @if(session('mail'))value="{{ session('mail') }}" @endif required>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">

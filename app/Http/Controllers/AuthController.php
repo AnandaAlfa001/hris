@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\EmployeeModel;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
-	public function FUNC_LOGIN()
+	public function showLogin()
 	{
 		return view('login');
 	}
 
-	public function FUNC_POSTLOGIN(Request $request)
+	public function doLogin(Request $request)
 	{
 		$id = $request['email'];
 		$passwd = $request['password'];
