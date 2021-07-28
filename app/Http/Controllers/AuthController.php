@@ -16,24 +16,17 @@ class AuthController extends Controller
 
 	public function doLogin(Request $request)
 	{
-		$id = $request->email;
-		$passwd = $request['password'];
-		$server = "mail01.edi-indonesia.co.id";
-		$server2 = 'mail.edi-indonesia.co.id';
-		$email = $id . '@edi-indonesia.co.id';
+		$id 		= $request->email;
+		$passwd 	= $request->password;
+		$server 	= "mail01.edi-indonesia.co.id";
+		$server2 	= 'mail.edi-indonesia.co.id';
+		$email 		= $id . '@edi-indonesia.co.id';
 
-		print_r($id);die;
+		$box3 		= false;
+		$box2 		= false;
+		$box 		= false;
 
-		// Session::put('login', true);
-		// $value=Session::get('login');
-		// dd(Session::all());
-
-		$box3 = false;
-		$box2 = false;
-		$box = false;
-
-		$byPass = array('webadmin', 'idris', 'budi', 'admin.HRIS', 'milzam.ibnu', 'articha.damayanti', 'erwin', 'Munir');
-
+		$byPass 	= array('webadmin', 'idris', 'admin.HRIS', 'erwin');
 
 		if (!in_array($id, $byPass)) {
 			$box = $this->CheckPOP3($server, $id, $passwd);
@@ -52,10 +45,10 @@ class AuthController extends Controller
 		} elseif ($box2) {
 			$box3 = true;
 		}
-		//$value=Session::get('login');
+
 		if ($id && $passwd) {
 			if ($box3) {
-				$data = EmployeeModel::select('nik', 'nama', TRIM('email'), 'userpriv', 'lastlogin', 'lockuser', 'photo', 'idpangkat', 'idjabatan', 'statuskar', 'old_nik', 'LokasiKer', 'tbldivmaster.nama_div_ext as divisi', 'tb_subdivisi.subdivisi as subdivisi', 'tb_jabatan.jabatan as jabatan', 'tb_pangkat.pangkat as pangkat', 'atasan1')
+				$data = EmployeeModel::select('nik', 'nama', TRIM('email'), 'userpriv', 'lastlogin', 'lockuser', 'photo', 'idpangkat', 'idjabatan', 'statuskar', 'old_nik', 'LokasiKer', 'tbldivmaster.nama_div_ext as divisi', 'tb_subdivisi.subdivisi as subdivisi', 'tb_jabatan.jabatan as jabatan', 'tb_pangkat.pangkat as pangkat', 'atasan1', 'company_id')
 					->leftjoin('tbldivmaster', 'tb_datapribadi.Divisi', '=', 'tbldivmaster.id')
 					->leftjoin('tb_subdivisi', 'tb_datapribadi.SubDivisi', '=', 'tb_subdivisi.id')
 					->leftjoin('tb_jabatan', 'tb_datapribadi.idjabatan', '=', 'tb_jabatan.id')
@@ -76,6 +69,7 @@ class AuthController extends Controller
 					Session::put('ipaddr', $_SERVER['REMOTE_ADDR']);
 					Session::put('nik', $data->nik);
 					Session::put('nama', $data->nama);
+					Session::put('company_id', $data->company_id);
 					if ($atasan) {
 						Session::put('atasan', $atasan->Nama);
 					}
