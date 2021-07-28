@@ -51,7 +51,7 @@
         @endif
       </div>
 
-    <form action="{{ url('postlogin') }}" method="post">
+    <form action="{{ url('auth/login') }}" method="post">
     {{ csrf_field() }}
       <div class="form-group has-feedback">
         <input type="text" name="email" class="form-control" placeholder="Username tanpa alamat email" @if(session('mail'))value="{{ session('mail') }}" @endif required>

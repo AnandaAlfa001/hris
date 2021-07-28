@@ -16,11 +16,13 @@ class AuthController extends Controller
 
 	public function doLogin(Request $request)
 	{
-		$id = $request['email'];
+		$id = $request->email;
 		$passwd = $request['password'];
 		$server = "mail01.edi-indonesia.co.id";
 		$server2 = 'mail.edi-indonesia.co.id';
 		$email = $id . '@edi-indonesia.co.id';
+
+		print_r($id);die;
 
 		// Session::put('login', true);
 		// $value=Session::get('login');
