@@ -181,7 +181,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/detailreq/{id}', [HealthController::class, 'FUNC_DETAILREQ']);
 
 	Route::prefix('report')->group(function () {
-		
+
 		// Pegawai
 		Route::prefix('employee')->group(function () {
 			Route::get('/', [ReportController::class, 'listEmployee']);
@@ -253,7 +253,7 @@ Route::get('/', [EmployeeController::class, 'HOME']);
 
 // Authentication
 Route::prefix('auth')->group(function () {
-	
+
 	// Login
 	Route::prefix('login')->group(function () {
 		Route::get('/', [AuthController::class, 'showLogin']);
@@ -261,6 +261,8 @@ Route::prefix('auth')->group(function () {
 		Route::get('sso/{ssocode}', [AuthController::class, 'FUNC_LOGIN_SSO']);
 		Route::get('sso', [AuthController::class, 'loginsso'])->middleware('cors');
 	});
+
+	Route::get('/logout', [AuthController::class, 'FUNC_LOGOUT']);
 });
 
 
