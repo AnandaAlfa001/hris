@@ -25,9 +25,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-	return view('welcome');
-});
+Route::get('/', [EmployeeController::class, 'HOME']);
+Route::redirect('/login', '/auth/login');
 
 /** Add By Dandy Firmansyah 05 04 2019 - Numpang CRM **/
 
@@ -247,9 +246,6 @@ Route::post('/saveperingatan', [EmployeeController::class, 'FUNC_SAVETAMBAHSP'])
 Route::get('/editsp/{id}', [EmployeeController::class, 'FUNC_EDITSP']);
 Route::post('updateperingatan/', [EmployeeController::class, 'FUNC_UPDATESP']);
 Route::get('/deletesp/{id}', [EmployeeController::class, 'FUNC_DELETESP']);
-
-// Route::get('sendemail',[MailController::class, 'FUNC_SENDMAIL']);
-Route::get('/', [EmployeeController::class, 'HOME']);
 
 // Authentication
 Route::prefix('auth')->group(function () {
