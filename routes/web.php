@@ -8,7 +8,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\LemburController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ReportController;
@@ -251,17 +251,18 @@ Route::get('/deletesp/{id}', [EmployeeController::class, 'FUNC_DELETESP']);
 // Route::get('sendemail',[MailController::class, 'FUNC_SENDMAIL']);
 Route::get('/', [EmployeeController::class, 'HOME']);
 
-////////////Login////////////
-Route::get('/login', [LoginController::class, 'FUNC_LOGIN']);
-Route::post('/postlogin', [LoginController::class, 'FUNC_POSTLOGIN']);
-Route::get('/logout', [LoginController::class, 'FUNC_LOGOUT']);
-Route::get('/loginsso/{ssocode}', [LoginController::class, 'FUNC_LOGIN_SSO']);
-// Route::group(['middleware' => 'cors'], function(){
-Route::post('/loginsso', [LoginController::class, 'loginsso'])->middleware('cors');
-// });
-///////////#####/////////////
-/* EMPLOYEE */
-// Route::get('/dashboard',[EmployeeController::class, 'DASHBOARD']);
+// Authentication
+Route::prefix('auth')->group(function () {
+	
+	// Login
+	Route::prefix('login')->group(function () {
+		Route::get('/', [AuthController::class, 'showLogin']);
+		Route::post('/', [AuthController::class, 'doLogin']);
+		Route::get('sso/{ssocode}', [AuthController::class, 'FUNC_LOGIN_SSO']);
+		Route::get('sso', [AuthController::class, 'loginsso'])->middleware('cors');
+	});
+});
+
 
 Route::get('/addemployee', [EmployeeController::class, 'FUNC_ADDEMPLOYEE']);
 Route::post('/saveemployee', [EmployeeController::class, 'FUNC_SAVEDATAPRIBADI']);
