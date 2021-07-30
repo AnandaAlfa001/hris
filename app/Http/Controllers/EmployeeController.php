@@ -70,7 +70,7 @@ class EmployeeController extends Controller
     $workLocation   = DB::table('tb_lokasikerja')->select('id', 'lokasi')->get();
 
     $data           = compact('manager', 'employeeStatus', 'workLocation');
-    return view('report/employee', $data);
+    return view('employee/list', $data);
   }
 
   public function HOME()
