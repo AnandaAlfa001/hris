@@ -61,7 +61,7 @@
     import {
         Grid,
         html
-    } from "https://unpkg.com/gridjs?module";
+    } from "{{ asset('assets/js/gridjs.js') }}";
 
 
     (function() {
