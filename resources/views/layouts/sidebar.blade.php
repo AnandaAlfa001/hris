@@ -50,13 +50,13 @@
       <li class="treeview">
         <a href="#">
           <i class="fa fa-users"></i>
-          <span>Employee Data</span><i class="fa fa-angle-left pull-right"></i>
+          <span>Data Pegawai</span><i class="fa fa-angle-left pull-right"></i>
 
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ url('employeelist') }}"><i class="fa fa-circle-o"></i> All Employee</a></li>
-          <li><a href="{{ url('addemployee') }}"><i class="fa fa-circle-o"></i> Add Employee</a></li>
-          <li><a href="{{ url('outemployeelist') }}"><i class="fa fa-circle-o"></i> Out Karyawan</a></li>
+          <li><a href="{{ url('employee') }}"><i class="fa fa-circle-o"></i> Semua Pegawai</a></li>
+          <li><a href="{{ url('addemployee') }}"><i class="fa fa-circle-o"></i> Tambah Baru</a></li>
+          <li><a href="{{ url('outemployeelist') }}"><i class="fa fa-circle-o"></i> Keluarkan Pegawai</a></li>
 
         </ul>
       </li>

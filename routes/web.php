@@ -65,6 +65,14 @@ Route::get('/executionToHRIS', [EmployeeController::class, 'executionToHRIS']);
 
 
 Route::group(['middleware' => ['admin']], function () {
+
+	// Data Pegawai
+	Route::prefix('employee')->group(function () {
+		Route::get('/', [EmployeeController::class, 'listEmployee']);
+		Route::get('data', [EmployeeController::class, 'dataEmployee']);
+		Route::get('export', [EmployeeController::class, 'exportEmployee']);
+	});
+
 	Route::get('/outemployeelist', [EmployeeController::class, 'OUTEMPLOYEE']);
 	Route::get('/employeelist', [EmployeeController::class, 'INDEX']);
 	Route::get('/karttplist', [EmployeeController::class, 'KARTTPLIST']);
