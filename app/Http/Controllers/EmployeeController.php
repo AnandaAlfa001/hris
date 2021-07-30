@@ -73,6 +73,64 @@ class EmployeeController extends Controller
     return view('employee/list', $data);
   }
 
+  public function dataEmployee(Request $request)
+  {
+    $filterEmployeeStatus = $request->query('filterEmployeeStatus');
+    $filterManager1       = $request->query('filterManager1');
+    $filterManager2       = $request->query('filterManager2');
+    $filterWorkLocation   = $request->query('filterWorkLocation');
+    $filterStartContract  = $request->query('filterStartContract');
+    $filterEndContract    = $request->query('filterEndContract');
+
+    $arrCondition         = array(
+      array('A.resign', '<>', 'Y')
+    );
+
+    if (!empty($filterEmployeeStatus)) {
+      array_push($arrCondition, array('A.statuskar', '=', $filterEmployeeStatus));
+    }
+    if (!empty($filterManager1)) {
+      array_push($arrCondition, array('A.atasan1', '=', $filterManager1));
+    }
+    if (!empty($filterManager2)) {
+      array_push($arrCondition, array('A.atasan2', '=', $filterManager2));
+    }
+    if (!empty($filterWorkLocation)) {
+      array_push($arrCondition, array('A.LokasiKer', '=', $filterWorkLocation));
+    }
+    if (!empty($filterStartContract)) {
+      array_push($arrCondition, array('A.TglKontrak', '=', $filterStartContract));
+    }
+    if (!empty($filterEndContract)) {
+      array_push($arrCondition, array('A.TglKontrakEnd', '=', $filterEndContract));
+    }
+
+    $employee = DB::table('tb_datapribadi AS A')
+      ->select(
+        'A.NIK',
+        'A.sqc_nik AS SEQUENCE_NIK',
+        'A.Nama as NAMA',
+        'A.jk AS JENIS_KELAMIN',
+        'A.Alamat AS ALAMAT',
+        'A.NoHP as NOMOR_HP',
+        'A.email AS EMAIL',
+        DB::raw("CONCAT(B.nama_div_ext, ' - ', C.subdivisi) AS UNIT_KERJA"),
+        DB::raw("CONCAT(D.pangkat, ' - ', E.jabatan) AS JABATAN"),
+        DB::raw('(SELECT Nama FROM tb_datapribadi dp WHERE dp.NIK = dp.atasan1) as ATASAN_1'),
+        DB::raw('(SELECT Nama FROM tb_datapribadi dp WHERE dp.NIK = dp.atasan2) as ATASAN_2'),
+        DB::raw("DATE_FORMAT(A.TglKontrak, '%d-%m-%Y') as AWAL_KONTRAK"),
+        DB::raw("DATE_FORMAT(A.TglKontrakEnd, '%d-%m-%Y') as AKHIR_KONTRAK"),
+      )
+      ->leftJoin('tbldivmaster AS B', 'A.Divisi', '=', 'B.id')
+      ->leftJoin('tb_subdivisi AS C', 'A.SubDivisi', '=', 'C.id')
+      ->leftJoin('tb_pangkat AS D', 'A.idpangkat', '=', 'D.id')
+      ->leftJoin('tb_jabatan AS E', 'A.idjabatan', '=', 'E.id')
+      ->where($arrCondition)
+      ->get();
+
+    return response()->json($employee);
+  }
+
   public function HOME()
   {
 

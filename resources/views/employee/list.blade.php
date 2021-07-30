@@ -101,8 +101,7 @@
         // document ready
     })();
 
-    let urlData = '<?= url('report/employee/data') ?>';
-    let urlExport = '<?= url('report/employee/export') ?>';
+    let urlData = '<?= url('employee/data') ?>';
     let urlFilter = '?';
 
     let filterEmployeeStatus = document.getElementById('filterEmployeeStatus');
@@ -163,8 +162,7 @@
         let urlQ6 = `&filterEndContract=${filterEndContract.value}`;
 
         urlFilter = `?${urlQ1}${urlQ2}${urlQ3}${urlQ4}${urlQ5}${urlQ6}`;
-        urlData = `<?= url('report/employee/data') ?>${urlFilter}`
-        urlExport = `<?= url('report/employee/export') ?>${urlFilter}`
+        urlData = `<?= url('employee/data') ?>${urlFilter}`
 
         grid.updateConfig({
             server: {
@@ -189,7 +187,6 @@
         filterEndContract.value = '';
 
         urlData = '<?= url('report/employee/data') ?>';
-        urlExport = '<?= url('report/employee/export') ?>';
 
         grid.updateConfig({
             server: {

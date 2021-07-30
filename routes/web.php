@@ -70,7 +70,6 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::prefix('employee')->group(function () {
 		Route::get('/', [EmployeeController::class, 'listEmployee']);
 		Route::get('data', [EmployeeController::class, 'dataEmployee']);
-		Route::get('export', [EmployeeController::class, 'exportEmployee']);
 	});
 
 	Route::get('/outemployeelist', [EmployeeController::class, 'OUTEMPLOYEE']);
