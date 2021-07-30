@@ -37,15 +37,16 @@ use App\Models\SPModel;
 use App\Models\PerjalananDinasModel;
 use App\Models\RiwayatPenyakitModel;
 use App\Models\DokumenModel;
-use Crypt;
+use Illuminate\Support\Facades\Crypt;
 use Excel;
 use Barryvdh\DomPDF\Facade as PDF;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use DatePeriod;
 use DateTime;
 use DateInterval;
 use App\Models\PTHModel;
 use App\Http\Controllers\EmailController;
+use Illuminate\Support\Facades\Response;
 
 class EmployeeController extends Controller
 {
@@ -53,6 +54,23 @@ class EmployeeController extends Controller
   {
     $this->email = $_email;
     $this->list_pangkat_atasan = '5,7,1948,1951,1952,1954,1955,1958,1959,1961,1962,1963';
+    $this->managerGradeID = "5,7,1948,1951,1952,1954,1955,1956,1957,1958,1959,1962,1963";
+  }
+
+  public function listEmployee()
+  {
+    $manager        = DB::table('tb_datapribadi AS A')
+      ->select('A.NIK AS NIK', 'A.Nama AS NAMA', 'B.pangkat AS PANGKAT')
+      ->leftJoin('tb_pangkat AS B', 'B.id', '=', 'A.idpangkat')
+      ->whereRaw('A.statuskar IN (1, 2, 4)')
+      ->whereRaw('A.idpangkat IN (' . $this->managerGradeID . ')')
+      ->orderBy('A.Nama')
+      ->get();
+    $employeeStatus = DB::table('tb_statuskar')->select('id', 'status_kar')->get();
+    $workLocation   = DB::table('tb_lokasikerja')->select('id', 'lokasi')->get();
+
+    $data           = compact('manager', 'employeeStatus', 'workLocation');
+    return view('report/employee', $data);
   }
 
   public function HOME()
@@ -6324,22 +6342,22 @@ class EmployeeController extends Controller
       $tunj_jabfixprev = Crypt::decrypt($tunj_jabprev);
     }
 
-    Excel::create('SK Promosi - "' . $nik . '"', function ($excel) use ($datanow, $gajifixnow, $tunj_tmrfixnow, $tunj_jabfixnow, $dataprev, $gajifixprev, $tunj_tmrfixprev, $tunj_jabfixprev) {
-      $excel->sheet('Sheet 1', function ($sheet) use ($datanow, $gajifixnow, $tunj_tmrfixnow, $tunj_jabfixnow, $dataprev, $gajifixprev, $tunj_tmrfixprev, $tunj_jabfixprev) {
-        $sheet->loadView('employee/generateskexcel')
-          ->with("datanow", $datanow)
-          ->with("gajifixnow", $gajifixnow)
-          ->with("tunj_tmrfixnow", $tunj_tmrfixnow)
-          ->with("tunj_jabfixnow", $tunj_jabfixnow)
-          ->with("dataprev", $dataprev)
-          ->with("gajifixprev", $gajifixprev)
-          ->with("tunj_tmrfixprev", $tunj_tmrfixprev)
-          ->with("tunj_jabfixprev", $tunj_jabfixprev)
-          // ->with("no_sk",$no_sk)
-          // ->with("tgl_sk",$tgl_sk)
-        ;
-      });
-    })->export('xls');
+    // Excel::create('SK Promosi - "' . $nik . '"', function ($excel) use ($datanow, $gajifixnow, $tunj_tmrfixnow, $tunj_jabfixnow, $dataprev, $gajifixprev, $tunj_tmrfixprev, $tunj_jabfixprev) {
+    //   $excel->sheet('Sheet 1', function ($sheet) use ($datanow, $gajifixnow, $tunj_tmrfixnow, $tunj_jabfixnow, $dataprev, $gajifixprev, $tunj_tmrfixprev, $tunj_jabfixprev) {
+    //     $sheet->loadView('employee/generateskexcel')
+    //       ->with("datanow", $datanow)
+    //       ->with("gajifixnow", $gajifixnow)
+    //       ->with("tunj_tmrfixnow", $tunj_tmrfixnow)
+    //       ->with("tunj_jabfixnow", $tunj_jabfixnow)
+    //       ->with("dataprev", $dataprev)
+    //       ->with("gajifixprev", $gajifixprev)
+    //       ->with("tunj_tmrfixprev", $tunj_tmrfixprev)
+    //       ->with("tunj_jabfixprev", $tunj_jabfixprev)
+    //       // ->with("no_sk",$no_sk)
+    //       // ->with("tgl_sk",$tgl_sk)
+    //     ;
+    //   });
+    // })->export('xls');
   }
 
   // $tambah->tgl_sk_jab = $request['tgl_sk_jab']; // tglsk
@@ -6832,7 +6850,7 @@ class EmployeeController extends Controller
       $updatecuti->pth = 0;
       $updatecuti->update();
     } elseif ($data->id_pd != null) {
-      $updatepd = PerjalananDinasModelModel::where('id', $data->id_pd)->first();
+      $updatepd = PerjalananDinasModel::where('id', $data->id_pd)->first();
       $updatepd->pth = 0;
       $updatepd->update();
     }
