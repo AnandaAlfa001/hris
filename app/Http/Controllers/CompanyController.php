@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function showProfile(int $id = NULL)
+    public function showProfile(int $id)
     {
         # code...
     }
