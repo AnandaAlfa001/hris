@@ -6,6 +6,7 @@ use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\LemburController;
 use App\Http\Controllers\AuthController;
@@ -267,6 +268,9 @@ Route::prefix('auth')->group(function () {
 
 	Route::get('/logout', [AuthController::class, 'FUNC_LOGOUT']);
 });
+
+// Perusahaan
+Route::get('/company', [CompanyController::class, 'showProfile']);
 
 
 Route::get('/addemployee', [EmployeeController::class, 'FUNC_ADDEMPLOYEE']);
