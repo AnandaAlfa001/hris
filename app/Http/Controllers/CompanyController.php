@@ -40,7 +40,8 @@ class CompanyController extends Controller
                 'A.UPDATED_AT',
             )
             ->where('id', '=', $id)
-            ->get();
-        return view('company/profile');
+            ->first();
+
+        return view('company/profile', $data);
     }
 }
