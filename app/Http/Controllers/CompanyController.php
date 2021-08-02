@@ -8,6 +8,6 @@ class CompanyController extends Controller
 {
     public function showProfile(int $id)
     {
-        # code...
+        return view('company/profile');
     }
 }
