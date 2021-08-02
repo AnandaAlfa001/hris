@@ -270,7 +270,7 @@ Route::prefix('auth')->group(function () {
 });
 
 // Perusahaan
-Route::get('/company', [CompanyController::class, 'showProfile']);
+Route::get('company/{id}', [CompanyController::class, 'showProfile']);
 
 
 Route::get('/addemployee', [EmployeeController::class, 'FUNC_ADDEMPLOYEE']);
