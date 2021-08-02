@@ -43,7 +43,12 @@
         <a href="{{ url('/') }}">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
+      </li>
 
+      <li class="treeview">
+        <a href="{{ url('/company') }}">
+          <i class="fa fa-building"></i> <span>Perusahaan</span>
+        </a>
       </li>
 
       @if(Session::get('admin') == 1)
