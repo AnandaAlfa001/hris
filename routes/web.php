@@ -127,7 +127,8 @@ Route::group(['middleware' => ['admin']], function () {
 
 		// Pangkat
 		Route::prefix('grade')->group(function () {
-			Route::get('/', [MasterController::class, 'listPangkat']);
+			Route::get('/', [MasterController::class, 'listGrade']);
+			Route::get('/data', [MasterController::class, 'dataGrade']);
 		});
 
 	});

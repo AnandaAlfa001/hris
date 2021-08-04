@@ -75,17 +75,22 @@ class MasterController extends Controller
         return redirect('jabatanlist')->with('success', 'Data Berhasil Dihapus');
     }
 
-    
+
     // ---------- Start Pangkat ----------
 
-    public function listPangkat()
+    public function listGrade()
     {
-        $pangkatlist = PangkatModel::select('id', 'pangkat', 'disabled')
+        return view('master/grade/list');
+    }
+
+    public function dataGrade()
+    {
+        $data = PangkatModel::select('id', 'pangkat')
             ->where('type', null)
             ->orderBy('id', 'ASC')
             ->get();
 
-        return view('master/pangkat/pangkatlist')->with('pangkatlist', $pangkatlist);
+        return response()->json($data);
     }
 
     public function FUNC_ADDPANGKAT()
