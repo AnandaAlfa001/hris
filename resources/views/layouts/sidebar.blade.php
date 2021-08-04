@@ -73,12 +73,12 @@
 
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ url('jabatanlist') }}"><i class="fa fa-circle-o"></i> Master Jabatan</a></li>
-          <li><a href="{{ url('pangkatlist') }}"><i class="fa fa-circle-o"></i> Master Pangkat</a></li>
-          <li><a href="{{ url('divisilist') }}"><i class="fa fa-circle-o"></i> Master Divisi</a></li>
-          <li><a href="{{ url('subdivisilist') }}"><i class="fa fa-circle-o"></i> Master Department</a></li>
-          <li><a href="{{ url('golonganlist') }}"><i class="fa fa-circle-o"></i> Master Golongan</a></li>
-          <li><a href="{{ url('golonganoutlist') }}"><i class="fa fa-circle-o"></i> Master Golongan Outsource</a></li>
+          <li><a href="{{ url('master/grade') }}"><i class="fa fa-circle-o"></i>Pangkat</a></li>
+          <li><a href="{{ url('master/function') }}"><i class="fa fa-circle-o"></i>Jabatan</a></li>
+          <li><a href="{{ url('master/division') }}"><i class="fa fa-circle-o"></i>Divisi</a></li>
+          <li><a href="{{ url('master/subdivision') }}"><i class="fa fa-circle-o"></i>Department</a></li>
+          <li><a href="{{ url('master/group') }}"><i class="fa fa-circle-o"></i>Golongan</a></li>
+          <li><a href="{{ url('master/outsource-group') }}"><i class="fa fa-circle-o"></i>Golongan Outsource</a></li>
 
         </ul>
       </li>
