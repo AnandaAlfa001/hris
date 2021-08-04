@@ -122,7 +122,15 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/resignemployee/{nik}', [EmployeeController::class, 'FUNC_RESIGNEMPLOYEE']);
 	Route::post('/saveresign', [EmployeeController::class, 'FUNC_SAVERESIGN']);
 
-	// MASTER DATA //
+	// Master
+	Route::prefix('master')->group(function () {
+
+		// Pangkat
+		Route::prefix('grade')->group(function () {
+			Route::get('/', [MasterController::class, 'listPangkat']);
+		});
+
+	});
 
 	//DATA JABATAN//
 	Route::get('/jabatanlist', [MasterController::class, 'FUNC_MASTERJABATAN']);
@@ -187,6 +195,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/daftarreq', [HealthController::class, 'FUNC_LISTREQ']);
 	Route::get('/detailreq/{id}', [HealthController::class, 'FUNC_DETAILREQ']);
 
+	// Report
 	Route::prefix('report')->group(function () {
 
 		// Pegawai
