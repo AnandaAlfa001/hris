@@ -15,14 +15,7 @@
   <section class="content">
     <div class="row">
       <div class="col-xs-12">
-        <div class="box">
-          <div class="box-header">
-            <h3 class="box-title">Master Data Pangkat</h3>
-          </div>
-          <div class="box-body">
-            <div id="gradeList"></div>
-          </div>
-        </div>
+        <div id="gradeList"></div>
       </div>
     </div>
   </section>
@@ -31,7 +24,8 @@
 <script type="module">
   import {
     Grid,
-    html
+    html,
+    h
   } from "{{ asset('assets/js/gridjs.js') }}";
 
   let urlData = '<?= url('master/grade/data') ?>';
@@ -54,10 +48,20 @@
     height: '500px',
     search: true,
     sort: true,
-    columns: [
-      "NO",
+    columns: [{
+        name: 'No',
+        formatter: (cell) => html(`${cell}`)
+      },
       "Pangkat",
-      "Action"
+      {
+        name: 'Actions',
+        formatter: (cell, row) => {
+          return h('button', {
+            className: 'btn btn-sm',
+            onClick: () => console.log(row)
+          }, 'Edit');
+        }
+      },
     ],
     server: {
       url: urlData,
