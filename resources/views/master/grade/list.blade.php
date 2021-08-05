@@ -24,8 +24,7 @@
 <script type="module">
   import {
     Grid,
-    html,
-    h
+    html
   } from "{{ asset('assets/js/gridjs.js') }}";
 
   let urlData = '<?= url('master/grade/data') ?>';
@@ -48,27 +47,30 @@
     height: '500px',
     search: true,
     sort: true,
-    columns: [{
-        name: 'No',
-        formatter: (cell) => html(`${cell}`)
-      },
+    columns: [
       "Pangkat",
       {
-        name: 'Actions',
-        formatter: (cell, row) => {
-          return h('button', {
-            className: 'btn btn-sm',
-            onClick: () => console.log(row)
-          }, 'Edit');
-        }
+        id: 'actions',
+        name: html(`<div class="text-center">Aksi &nbsp;<i class="fa fa-cogs text-info"></i></div>`),
+        formatter: (cell, row) => html(`
+          <div class="text-center">
+            <a class="btn btn-default" href="{{ url('master/grade') }}/${cell}/edit" title="Ubah">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a class="btn btn-danger" href="{{ url('master/grade') }}/${cell}/delete" title="Hapus">
+              <i class="fa fa-remove"></i>
+            </a>
+          </div>
+        `),
+        sort: false,
+        width: '15%'
       },
     ],
     server: {
       url: urlData,
       then: data => data.map(v => [
-        v.id,
         v.pangkat,
-        v.id,
+        v.id
       ])
     },
     pagination: {
