@@ -9,6 +9,7 @@ use App\Models\DivisiModel;
 use App\Models\SubDivisiModel;
 use App\Models\GolonganModel;
 use App\Models\GolonganOutModel;
+use Illuminate\Support\Facades\DB;
 
 
 class MasterController extends Controller
@@ -85,11 +86,12 @@ class MasterController extends Controller
 
     public function dataGrade()
     {
-        $data = PangkatModel::select('id', 'pangkat')
+        $data = DB::table('tb_pangkat AS A')
+            ->select('A.id', 'A.pangkat')
             ->where('type', null)
-            ->orderBy('id', 'ASC')
+            ->orderBy('pangkat', 'ASC')
             ->get();
-
+            
         return response()->json($data);
     }
 
