@@ -13,6 +13,9 @@
   </section>
 
   <section class="content">
+    <div class="text-right">
+      <a href="{{ url('master/grade/new') }}" class="btn btn-success"><i class="fa fa-plus"></i>&emsp;Tambah</a>
+    </div>
     <div class="row">
       <div class="col-xs-12">
         <div id="gradeList"></div>
