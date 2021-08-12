@@ -15,6 +15,76 @@ use Illuminate\Support\Facades\DB;
 class MasterController extends Controller
 {
 
+    // ---------- Start Pangkat ----------
+
+    public function listGrade()
+    {
+        return view('master/grade/list');
+    }
+
+    public function dataGrade()
+    {
+        $data = DB::table('tb_pangkat AS A')
+            ->select('A.id', 'A.pangkat')
+            ->where('type', null)
+            ->orderBy('pangkat', 'ASC')
+            ->get();
+
+        return response()->json($data);
+    }
+
+    public function formGrade($id = NULL)
+    {
+        if ($id == NULL) {
+            $data['formAction'] = 'master/grade';
+            $data['grade']      = NULL;
+        } else {
+            $data['formAction'] = "master/grade/$id/update";
+            $data['grade']      = PangkatModel::where('id', $id)->first();
+        }
+
+        return view('master/grade/form', $data);
+    }
+
+    public function createGrade(Request $request)
+    {
+        $this->validate($request, [
+            'pangkat'   => 'required',
+            'disabled'  => 'required'
+        ]);
+
+        $grade             = new PangkatModel();
+        $grade->pangkat    = $request->pangkat;
+        $grade->disabled   = $request->disabled;
+        $grade->save();
+
+        return redirect('master/grade');
+    }
+
+    public function updateGrade(Request $request, $id)
+    {
+
+        $grade              = PangkatModel::where('id', $id)->first();
+        $grade->pangkat     = $request->pangkat;
+        $grade->disabled    = $request->disabled;
+        $grade->update();
+
+        return redirect('master/grade');
+    }
+
+    public function deleteGrade($id)
+    {
+        $grade = PangkatModel::find($id);
+        $grade->delete();
+
+        return redirect('master/grade');
+    }
+
+    // ---------- End Pangkat ----------
+
+
+    // ---------- Start Function ----------
+    
     public function FUNC_MASTERJABATAN()
     {
 
@@ -76,86 +146,10 @@ class MasterController extends Controller
         return redirect('jabatanlist')->with('success', 'Data Berhasil Dihapus');
     }
 
+    // ---------- End Function ----------
 
-    // ---------- Start Pangkat ----------
-
-    public function listGrade()
-    {
-        return view('master/grade/list');
-    }
-
-    public function dataGrade()
-    {
-        $data = DB::table('tb_pangkat AS A')
-            ->select('A.id', 'A.pangkat')
-            ->where('type', null)
-            ->orderBy('pangkat', 'ASC')
-            ->get();
-
-        return response()->json($data);
-    }
-
-    public function formGrade($id = NULL)
-    {
-        if ($id == NULL) {
-            $data['formAction'] = 'master/grade';
-            $data['grade']      = NULL;
-        } else {
-            $data['formAction'] = "master/grade/$id/update";
-            $data['grade']      = PangkatModel::where('id', $id)->first();
-        }
-
-        return view('master/grade/form', $data);
-    }
-
-    public function FUNC_SAVEPANGKAT(Request $request)
-    {
-
-        $this->validate($request, [
-            'pangkat' => 'required',
-            'disabled' => 'required'
-
-        ]);
-
-        $tambah = new PangkatModel();
-        $tambah->pangkat = $request['pangkat'];
-        $tambah->disabled = $request['disabled'];
-
-        $tambah->save();
-
-        return redirect('pangkatlist')->with('success', 'Data Berhasil Disimpan');
-    }
-
-    public function FUNC_EDITPANGKAT($id)
-    {
-        $tampiledit = PangkatModel::where('id', $id)->first();
-        return view('master/pangkat/editpangkat')->with('tampiledit', $tampiledit);
-    }
-
-    public function FUNC_UPDATEPANGKAT(Request $request, $id)
-    {
-
-        $update = PangkatModel::where('id', $id)->first();
-        $update->pangkat = $request['pangkat'];
-        $update->disabled = $request['disabled'];
-
-        $update->update();
-
-        return redirect('pangkatlist')->with('success', 'Data Berhasil Diupdate');
-    }
-
-    public function FUNC_DELETEPANGKAT(Request $request, $id)
-    {
-        $hapus = PangkatModel::find($id);
-        $hapus->delete();
-
-        return redirect('pangkatlist')->with('success', 'Data Berhasil Dihapus');
-    }
-
-    // ---------- End Pangkat ----------
-
-
-    // MASTER DIVISI //
+    
+    // ---------- Start Division ----------
 
     public function FUNC_MASTERDIVISI()
     {
@@ -218,6 +212,9 @@ class MasterController extends Controller
         return redirect('divisilist')->with('success', 'Data Berhasil Dihapus');
     }
 
+    // ---------- End Division ----------
+
+    
     // MASTER SUBDIVISI //
 
     public function FUNC_MASTERSUBDIVISI()
