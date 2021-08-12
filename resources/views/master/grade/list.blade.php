@@ -27,7 +27,8 @@
 <script type="module">
   import {
     Grid,
-    html
+    html,
+    h
   } from "{{ asset('assets/js/gridjs.js') }}";
 
   let urlData = '<?= url('master/grade/data') ?>';
@@ -55,16 +56,38 @@
       {
         id: 'actions',
         name: html(`<div class="text-center">Aksi &nbsp;<i class="fa fa-cogs text-info"></i></div>`),
-        formatter: (cell, row) => html(`
-          <div class="text-center">
-            <a class="btn btn-default" href="{{ url('master/grade') }}/${cell}/edit" title="Ubah">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a class="btn btn-danger" href="{{ url('master/grade') }}/${cell}/delete" title="Hapus">
-              <i class="fa fa-remove"></i>
-            </a>
-          </div>
-        `),
+        formatter: (cell, row) => {
+          return h('div', {
+              className: 'text-center'
+            },
+            h('a', {
+                className: 'btn btn-default',
+                style: 'margin-right: 5px',
+                role: 'button',
+                title: 'Ubah',
+                onClick: () => window.open(`{{ url('master/grade') }}/${cell}/edit`, '_self')
+              },
+              h('i', {
+                className: 'fa fa-edit'
+              })
+            ),
+            h('a', {
+                className: 'btn btn-danger',
+                role: 'button',
+                title: 'Hapus',
+                onClick: () => {
+                  if (confirm('Apakah Anda yakin ?')) {
+                    return window.open(`{{ url('master/grade') }}/${cell}/delete`, '_self')
+                  }
+                }
+              },
+              h('i', {
+                className: 'fa fa-remove'
+              })
+            ),
+          );
+        },
+
         sort: false,
         width: '15%'
       },
