@@ -91,14 +91,13 @@ class MasterController extends Controller
             ->where('type', null)
             ->orderBy('pangkat', 'ASC')
             ->get();
-            
+
         return response()->json($data);
     }
 
-    public function FUNC_ADDPANGKAT()
+    public function newGrade()
     {
-
-        return view('master/pangkat/addpangkat');
+        return view('master/grade/new');
     }
 
     public function FUNC_SAVEPANGKAT(Request $request)
