@@ -46,7 +46,7 @@
       </li>
 
       <li class="treeview">
-        <a href="{{ url('company/'.Session::get('company_id')) }}">
+        <a href="{{ url('company/'. (Session::get('company_id') ?? '0' )) }}">
           <i class="fa fa-building"></i> <span>Perusahaan</span>
         </a>
       </li>
