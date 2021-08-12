@@ -97,7 +97,9 @@ class MasterController extends Controller
 
     public function newGrade()
     {
-        return view('master/grade/form');
+        $data['formAction'] = 'master/grade';
+        $data['grade']      = NULL;
+        return view('master/grade/form', $data);
     }
 
     public function FUNC_SAVEPANGKAT(Request $request)
