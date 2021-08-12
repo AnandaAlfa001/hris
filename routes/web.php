@@ -127,11 +127,11 @@ Route::group(['middleware' => ['admin']], function () {
 
 		// Pangkat
 		Route::prefix('grade')->group(function () {
-			Route::get('/new', [MasterController::class, 'newGrade']);
+			Route::get('/new', [MasterController::class, 'formGrade']);
 			Route::post('/', [MasterController::class, 'FUNC_SAVEPANGKAT']);
 			Route::get('/', [MasterController::class, 'listGrade']);
 			Route::get('/data', [MasterController::class, 'dataGrade']);
-			Route::get('{id}/edit', [MasterController::class, 'FUNC_EDITPANGKAT']);
+			Route::get('{id}/edit', [MasterController::class, 'formGrade']);
 			Route::post('{id}/update', [MasterController::class, 'FUNC_UPDATEPANGKAT']);
 			Route::get('{id}/delete', [MasterController::class, 'FUNC_DELETEPANGKAT']);
 		});

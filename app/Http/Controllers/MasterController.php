@@ -95,10 +95,16 @@ class MasterController extends Controller
         return response()->json($data);
     }
 
-    public function newGrade()
+    public function formGrade($id = NULL)
     {
-        $data['formAction'] = 'master/grade';
-        $data['grade']      = NULL;
+        if ($id == NULL) {
+            $data['formAction'] = 'master/grade';
+            $data['grade']      = NULL;
+        } else {
+            $data['formAction'] = "master/grade/$id/update";
+            $data['grade']      = PangkatModel::where('id', $id)->first();
+        }
+
         return view('master/grade/form', $data);
     }
 
