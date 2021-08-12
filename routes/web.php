@@ -127,10 +127,14 @@ Route::group(['middleware' => ['admin']], function () {
 
 		// Pangkat
 		Route::prefix('grade')->group(function () {
+			Route::get('/new', [MasterController::class, 'FUNC_ADDPANGKAT']);
+			Route::post('/', [MasterController::class, 'FUNC_SAVEPANGKAT']);
 			Route::get('/', [MasterController::class, 'listGrade']);
 			Route::get('/data', [MasterController::class, 'dataGrade']);
+			Route::get('{id}/edit', [MasterController::class, 'FUNC_EDITPANGKAT']);
+			Route::post('{id}/update', [MasterController::class, 'FUNC_UPDATEPANGKAT']);
+			Route::get('{id}/delete', [MasterController::class, 'FUNC_DELETEPANGKAT']);
 		});
-
 	});
 
 	//DATA JABATAN//
@@ -140,14 +144,6 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/editjabatan/{id}', [MasterController::class, 'FUNC_EDITJABATAN']);
 	Route::post('/updatejabatan/{id}', [MasterController::class, 'FUNC_UPDATEJABATAN']);
 	Route::get('/deletejabatan/{id}', [MasterController::class, 'FUNC_DELETEJABATAN']);
-
-	//DATA PANGKAT//
-	Route::get('/pangkatlist', [MasterController::class, 'FUNC_MASTERPANGKAT']);
-	Route::get('/addpangkat', [MasterController::class, 'FUNC_ADDPANGKAT']);
-	Route::post('/savepangkat', [MasterController::class, 'FUNC_SAVEPANGKAT']);
-	Route::get('/editpangkat/{id}', [MasterController::class, 'FUNC_EDITPANGKAT']);
-	Route::post('/updatepangkat/{id}', [MasterController::class, 'FUNC_UPDATEPANGKAT']);
-	Route::get('/deletepangkat/{id}', [MasterController::class, 'FUNC_DELETEPANGKAT']);
 
 	//DATA DIVISI//
 	Route::get('/divisilist', [MasterController::class, 'FUNC_MASTERDIVISI']);
