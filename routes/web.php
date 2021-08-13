@@ -135,15 +135,19 @@ Route::group(['middleware' => ['admin']], function () {
 			Route::post('{id}/update', [MasterController::class, 'updateGrade']);
 			Route::get('{id}/delete', [MasterController::class, 'deleteGrade']);
 		});
-	});
 
-	//DATA JABATAN//
-	Route::get('/jabatanlist', [MasterController::class, 'FUNC_MASTERJABATAN']);
-	Route::get('/addjabatan', [MasterController::class, 'FUNC_ADDJABATAN']);
-	Route::post('/savejabatan', [MasterController::class, 'FUNC_SAVEJABATAN']);
-	Route::get('/editjabatan/{id}', [MasterController::class, 'FUNC_EDITJABATAN']);
-	Route::post('/updatejabatan/{id}', [MasterController::class, 'FUNC_UPDATEJABATAN']);
-	Route::get('/deletejabatan/{id}', [MasterController::class, 'FUNC_DELETEJABATAN']);
+		// Pangkat
+		Route::prefix('function')->group(function () {
+			Route::get('/new', [MasterController::class, 'formFunction']);
+			Route::post('/', [MasterController::class, 'createFunction']);
+			Route::get('/', [MasterController::class, 'listFunction']);
+			Route::get('/data', [MasterController::class, 'dataFunction']);
+			Route::get('{id}/edit', [MasterController::class, 'formFunction']);
+			Route::post('{id}/update', [MasterController::class, 'updateFunction']);
+			Route::get('{id}/delete', [MasterController::class, 'deleteFunction']);
+		});
+
+	});
 
 	//DATA DIVISI//
 	Route::get('/divisilist', [MasterController::class, 'FUNC_MASTERDIVISI']);
