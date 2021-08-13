@@ -44,7 +44,11 @@
               <span style="color: white; font-size:small">{{ Session::get('jabatan') }} | {{ Session::get('divisi') }} > {{ Session::get('subdivisi') }}</span>
             </li>
             <!-- Menu Footer-->
-            <?php $nik = Session::get('nik'); ?>
+            <?php
+              use Illuminate\Support\Facades\Session;
+              
+              $nik = Session::get('nik');
+            ?>
             <li class="user-footer">
               <div class="pull-left">
                 <a href="{{ url('profilemployee',$nik) }}" class="btn btn-default btn-flat">Profile</a>
