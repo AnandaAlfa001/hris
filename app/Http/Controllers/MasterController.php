@@ -63,7 +63,6 @@ class MasterController extends Controller
 
     public function updateGrade(Request $request, $id)
     {
-
         $grade              = PangkatModel::where('id', $id)->first();
         $grade->pangkat     = $request->pangkat;
         $grade->disabled    = $request->disabled;
@@ -131,7 +130,6 @@ class MasterController extends Controller
 
     public function updateFunction(Request $request, $id)
     {
-
         $function            = JabatanModel::where('id', $id)->first();
         $function->jabatan   = $request->jabatan;
         $function->disabled  = $request->disabled;
@@ -147,76 +145,77 @@ class MasterController extends Controller
 
         return redirect('master/function');
     }
-    
+
     // ---------- End Function ----------
 
-    
+
     // ---------- Start Division ----------
 
-    public function FUNC_MASTERDIVISI()
+    public function listDivision()
     {
+        return view('master/division/list');
+    }
 
-        $divisilist = DivisiModel::select('id', 'nama_div_ext', 'disabled')
+    public function dataDivision()
+    {
+        $data = DB::table('tbldivmaster AS A')
+            ->select('A.id', 'A.nama_div_ext AS divisi')
             ->where('type', null)
-            ->orderBy('id', 'ASC')
+            ->orderBy('divisi', 'ASC')
             ->get();
 
-        return view('master/divisi/divisilist')->with('divisilist', $divisilist);
+        return response()->json($data);
     }
 
-    public function FUNC_ADDDIVISI()
+    public function formDivision($id = NULL)
     {
+        if ($id == NULL) {
+            $data['formAction'] = 'master/division';
+            $data['division']   = NULL;
+        } else {
+            $data['formAction'] = "master/division/$id/update";
+            $data['division']   = DivisiModel::where('id', $id)->first();
+        }
 
-        return view('master/divisi/adddivisi');
+        return view('master/division/form', $data);
     }
 
-    public function FUNC_SAVEDIVISI(Request $request)
+    public function createDivision(Request $request)
     {
-
         $this->validate($request, [
-            'nama_div_ext' => 'required',
-            'disabled' => 'required'
-
+            'divisi'    => 'required',
+            'disabled'  => 'required'
         ]);
 
-        $tambah = new DivisiModel();
-        $tambah->nama_div_ext = $request['nama_div_ext'];
-        $tambah->disabled = $request['disabled'];
+        $division               = new DivisiModel();
+        $division->nama_div_ext = $request->divisi;
+        $division->disabled     = $request->disabled;
+        $division->save();
 
-        $tambah->save();
-
-        return redirect('divisilist')->with('success', 'Data Berhasil Disimpan');
+        return redirect('master/division');
     }
 
-    public function FUNC_EDITDIVISI($id)
+    public function updateDivision(Request $request, $id)
     {
-        $tampiledit = DivisiModel::where('id', $id)->first();
-        return view('master/divisi/editdivisi')->with('tampiledit', $tampiledit);
+        $division               = DivisiModel::where('id', $id)->first();
+        $division->nama_div_ext = $request->divisi;
+        $division->disabled     = $request->disabled;
+        $division->update();
+
+        return redirect('master/division');
     }
 
-    public function FUNC_UPDATEDIVISI(Request $request, $id)
+    public function deleteDivision($id)
     {
+        $division = DivisiModel::find($id);
+        $division->delete();
 
-        $update = DivisiModel::where('id', $id)->first();
-        $update->nama_div_ext = $request['nama_div_ext'];
-        $update->disabled = $request['disabled'];
-
-        $update->update();
-
-        return redirect('divisilist')->with('success', 'Data Berhasil Diupdate');
-    }
-
-    public function FUNC_DELETEDIVISI(Request $request, $id)
-    {
-        $hapus = DivisiModel::find($id);
-        $hapus->delete();
-
-        return redirect('divisilist')->with('success', 'Data Berhasil Dihapus');
+        return redirect('master/division');
     }
 
     // ---------- End Division ----------
 
-    
+
     // MASTER SUBDIVISI //
 
     public function FUNC_MASTERSUBDIVISI()
