@@ -44,7 +44,7 @@
         'showing': 'Menampilkan',
         of: 'dari',
         to: 'sampai',
-        'results': () => 'Pangkat'
+        'results': () => 'Hasil'
       }
     },
     fixedHeader: true,
@@ -87,7 +87,6 @@
             ),
           );
         },
-
         sort: false,
         width: '15%'
       },
