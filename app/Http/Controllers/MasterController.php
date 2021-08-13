@@ -216,6 +216,83 @@ class MasterController extends Controller
     // ---------- End Division ----------
 
 
+    // ---------- Start Subdivision ----------
+
+    public function listSubdivision()
+    {
+        return view('master/subdivision/list');
+    }
+
+    public function dataSubdivision()
+    {
+        $data = DB::table('tb_subdivisi AS A')
+            ->select('A.id', 'A.subdivisi', 'B.nama_div_ext AS divisi')
+            ->leftJoin('tbldivmaster AS B', 'B.id', '=', 'A.iddivisi')
+            ->where('A.type', null)
+            ->orderBy('subdivisi', 'ASC')
+            ->get();
+
+        return response()->json($data);
+    }
+
+    public function formSubdivision($id = NULL)
+    {
+        if ($id == NULL) {
+            $data['formAction']     = 'master/subdivision';
+            $data['subdivision']    = NULL;
+            $data['division']       = NULL;
+        } else {
+            $data['formAction']     = "master/subdivision/$id/update";
+            $data['subdivision']    = DB::table('tb_subdivisi AS A')
+                ->select('A.id', 'A.subdivisi', 'A.type', 'A.disabled', 'B.nama_div_ext AS divisi', 'B.id AS divisiID')
+                ->leftJoin('tbldivmaster AS B', 'B.id', '=', 'A.iddivisi')
+                ->where('A.id', $id)
+                ->orderBy('subdivisi', 'ASC')
+                ->get();
+            $data['division']       = DivisiModel::All();
+        }
+
+        return view('master/subdivision/form', $data);
+    }
+
+    public function createSubdivision(Request $request)
+    {
+        $this->validate($request, [
+            'subdivisi' => 'required',
+            'disabled'  => 'required'
+        ]);
+
+        $subdivision            = new SubDivisiModel();
+        $subdivision->subdivisi = $request->divisi;
+        $subdivision->disabled  = $request->disabled;
+        $subdivision->iddivisi  = $request->iddivisi;
+        $subdivision->save();
+
+        return redirect('master/subdivision');
+    }
+
+    public function updateSubdivision(Request $request, $id)
+    {
+        $subdivision            = SubDivisiModel::where('id', $id)->first();
+        $subdivision->subdivisi = $request->divisi;
+        $subdivision->disabled  = $request->disabled;
+        $subdivision->iddivisi  = $request->iddivisi;
+        $subdivision->save();
+
+        return redirect('master/subdivision');
+    }
+
+    public function deleteSubdivision($id)
+    {
+        $subdivision = SubDivisiModel::find($id);
+        $subdivision->delete();
+
+        return redirect('master/subdivision');
+    }
+
+    // ---------- End Division ----------
+
+
     // MASTER SUBDIVISI //
 
     public function FUNC_MASTERSUBDIVISI()
