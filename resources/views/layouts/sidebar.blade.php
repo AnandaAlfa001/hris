@@ -8,7 +8,7 @@
   <!-- sidebar: style can be found in sidebar.less -->
   <section class="sidebar">
     <!-- Sidebar user panel -->
-    <div class="user-panel">
+    <div class="user-panel" style="white-space: initial;">
       <div class="pull-left image">
         @if(Session::get('photo') == 'notfound.png')
         <img src="{{ asset('image/aw.svg') }}" class="img-circle" alt="User Image">
