@@ -122,7 +122,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('/resignemployee/{nik}', [EmployeeController::class, 'FUNC_RESIGNEMPLOYEE']);
 	Route::post('/saveresign', [EmployeeController::class, 'FUNC_SAVERESIGN']);
 
-	// Master
+	// Master Data
 	Route::prefix('master')->group(function () {
 
 		// Pangkat
@@ -147,15 +147,18 @@ Route::group(['middleware' => ['admin']], function () {
 			Route::get('{id}/delete', [MasterController::class, 'deleteFunction']);
 		});
 
-	});
+		// Divisi
+		Route::prefix('division')->group(function () {
+			Route::get('/new', [MasterController::class, 'formDivision']);
+			Route::post('/', [MasterController::class, 'createDivision']);
+			Route::get('/', [MasterController::class, 'listDivision']);
+			Route::get('/data', [MasterController::class, 'dataDivision']);
+			Route::get('{id}/edit', [MasterController::class, 'formDivision']);
+			Route::post('{id}/update', [MasterController::class, 'updateDivision']);
+			Route::get('{id}/delete', [MasterController::class, 'deleteDivision']);
+		});
 
-	//DATA DIVISI//
-	Route::get('/divisilist', [MasterController::class, 'FUNC_MASTERDIVISI']);
-	Route::get('/adddivisi', [MasterController::class, 'FUNC_ADDDIVISI']);
-	Route::post('/savedivisi', [MasterController::class, 'FUNC_SAVEDIVISI']);
-	Route::get('/editdivisi/{id}', [MasterController::class, 'FUNC_EDITDIVISI']);
-	Route::post('/updatedivisi/{id}', [MasterController::class, 'FUNC_UPDATEDIVISI']);
-	Route::get('/deletedivisi/{id}', [MasterController::class, 'FUNC_DELETEDIVISI']);
+	});
 
 	//DATA SUBDIVISI//
 	Route::get('/subdivisilist', [MasterController::class, 'FUNC_MASTERSUBDIVISI']);
