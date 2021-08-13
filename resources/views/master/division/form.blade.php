@@ -2,11 +2,11 @@
 @section('content')
 <div class="content-wrapper">
   <section class="content-header">
-    <h1> Form Jabatan </h1>
+    <h1> Form Divisi </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
       <li><a href="#">Master</a></li>
-      <li><a href="#">Jabatan</a></li>
+      <li><a href="#">Divisi</a></li>
       <li class="active">Form</li>
     </ol>
   </section>
@@ -19,15 +19,15 @@
             {!! csrf_field() !!}
             <div class="box-body">
               <div class="form-group">
-                <label>Nama Jabatan</label>
-                <input type="text" class="form-control" name="jabatan" placeholder="Nama Jabatan" required value="{{ $function?->jabatan }}">
+                <label>Nama Divisi</label>
+                <input type="text" class="form-control" name="divisi" placeholder="Nama Divisi" required value="{{ $division?->nama_div_ext }}">
               </div>
               <div class="form-group">
-                <label>Status Jabatan</label>
+                <label>Status Divisi</label>
                 <select name="disabled" class="form-control">
-                  <option value="" @if($function?->disabled != '') hidden @endif>--Pilih Status Jabatan--</option>
-                  <option value="1" @if($function?->disabled == "1") selected @endif>Enabled</option>
-                  <option value="0" @if($function?->disabled == "0") selected @endif>Disabled</option>
+                  <option value="" @if($division?->disabled != '') hidden @endif>--Pilih Status Divisi--</option>
+                  <option value="1" @if($division?->disabled == "1") selected @endif>Enabled</option>
+                  <option value="0" @if($division?->disabled == "0") selected @endif>Disabled</option>
                 </select>
               </div>
             </div>
