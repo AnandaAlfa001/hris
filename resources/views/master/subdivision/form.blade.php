@@ -2,11 +2,11 @@
 @section('content')
 <div class="content-wrapper">
   <section class="content-header">
-    <h1> Form Divisi </h1>
+    <h1> Form Subdivisi </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i>Dashboard</a></li>
       <li><a href="#">Master</a></li>
-      <li><a href="#">Divisi</a></li>
+      <li><a href="#">Subdivisi</a></li>
       <li class="active">Form</li>
     </ol>
   </section>
@@ -19,15 +19,24 @@
             {!! csrf_field() !!}
             <div class="box-body">
               <div class="form-group">
+                <label>Nama Subdivisi</label>
+                <input type="text" class="form-control" name="subdivisi" placeholder="Nama Subdivisi" required value="{{ $subdivision?->subdivisi }}">
+              </div>
+              <div class="form-group">
                 <label>Nama Divisi</label>
-                <input type="text" class="form-control" name="divisi" placeholder="Nama Divisi" required value="{{ $division?->nama_div_ext }}">
+                <select name="iddivisi" class="form-control select2" style="width: 100%;">
+                  <option value="" @if($subdivision?->divisiID != '') disabled @endif>--Pilih Divisi--</option>
+                  @foreach($division as $v)
+                  <option value="{{$v->id}}" @if($subdivision?->divisiID == $v->id) selected @endif>{{$v->nama_div_ext}}</option>
+                  @endforeach
+                </select>
               </div>
               <div class="form-group">
                 <label>Status Divisi</label>
                 <select name="disabled" class="form-control">
-                  <option value="" @if($division?->disabled != '') hidden @endif>--Pilih Status Divisi--</option>
-                  <option value="1" @if($division?->disabled == "1") selected @endif>Enabled</option>
-                  <option value="0" @if($division?->disabled == "0") selected @endif>Disabled</option>
+                  <option value="" @if($subdivision?->disabled != '') hidden @endif>--Pilih Status Subdivisi--</option>
+                  <option value="1" @if($subdivision?->disabled == "1") selected @endif>Enabled</option>
+                  <option value="0" @if($subdivision?->disabled == "0") selected @endif>Disabled</option>
                 </select>
               </div>
             </div>

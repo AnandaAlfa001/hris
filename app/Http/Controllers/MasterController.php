@@ -240,7 +240,7 @@ class MasterController extends Controller
         if ($id == NULL) {
             $data['formAction']     = 'master/subdivision';
             $data['subdivision']    = NULL;
-            $data['division']       = NULL;
+            $data['division']       = DivisiModel::All();
         } else {
             $data['formAction']     = "master/subdivision/$id/update";
             $data['subdivision']    = DB::table('tb_subdivisi AS A')
@@ -248,7 +248,7 @@ class MasterController extends Controller
                 ->leftJoin('tbldivmaster AS B', 'B.id', '=', 'A.iddivisi')
                 ->where('A.id', $id)
                 ->orderBy('subdivisi', 'ASC')
-                ->get();
+                ->first();
             $data['division']       = DivisiModel::All();
         }
 
@@ -263,7 +263,7 @@ class MasterController extends Controller
         ]);
 
         $subdivision            = new SubDivisiModel();
-        $subdivision->subdivisi = $request->divisi;
+        $subdivision->subdivisi = $request->subdivisi;
         $subdivision->disabled  = $request->disabled;
         $subdivision->iddivisi  = $request->iddivisi;
         $subdivision->save();
@@ -274,7 +274,7 @@ class MasterController extends Controller
     public function updateSubdivision(Request $request, $id)
     {
         $subdivision            = SubDivisiModel::where('id', $id)->first();
-        $subdivision->subdivisi = $request->divisi;
+        $subdivision->subdivisi = $request->subdivisi;
         $subdivision->disabled  = $request->disabled;
         $subdivision->iddivisi  = $request->iddivisi;
         $subdivision->save();
