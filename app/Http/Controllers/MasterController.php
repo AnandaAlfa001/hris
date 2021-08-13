@@ -101,56 +101,53 @@ class MasterController extends Controller
         return response()->json($data);
     }
 
-    public function FUNC_ADDJABATAN()
+    public function formFunction($id = NULL)
     {
+        if ($id == NULL) {
+            $data['formAction'] = 'master/function';
+            $data['function']   = NULL;
+        } else {
+            $data['formAction'] = "master/function/$id/update";
+            $data['function']   = JabatanModel::where('id', $id)->first();
+        }
 
-        return view('master/jabatan/addjabatan');
+        return view('master/function/form', $data);
     }
 
-    public function FUNC_SAVEJABATAN(Request $request)
+    public function createFunction(Request $request)
     {
-
         $this->validate($request, [
-            'jabatan' => 'required',
-            'disabled' => 'required'
-
+            'jabatan'   => 'required',
+            'disabled'  => 'required'
         ]);
 
-        $tambah = new JabatanModel();
-        $tambah->jabatan = $request['jabatan'];
-        $tambah->disabled = $request['disabled'];
+        $function            = new JabatanModel();
+        $function->jabatan   = $request->jabatan;
+        $function->disabled  = $request->disabled;
+        $function->save();
 
-        $tambah->save();
-
-        return redirect('jabatanlist')->with('success', 'Data Berhasil Disimpan');
+        return redirect('master/function');
     }
 
-    public function FUNC_EDITJABATAN($id)
-    {
-        $tampiledit = JabatanModel::where('id', $id)->first();
-        return view('master/jabatan/editjabatan')->with('tampiledit', $tampiledit);
-    }
-
-    public function FUNC_UPDATEJABATAN(Request $request, $id)
+    public function updateFunction(Request $request, $id)
     {
 
-        $update = JabatanModel::where('id', $id)->first();
-        $update->jabatan = $request['jabatan'];
-        $update->disabled = $request['disabled'];
+        $function            = JabatanModel::where('id', $id)->first();
+        $function->jabatan   = $request->jabatan;
+        $function->disabled  = $request->disabled;
+        $function->update();
 
-        $update->update();
-
-        return redirect('jabatanlist')->with('success', 'Data Berhasil Diupdate');
+        return redirect('master/function');
     }
 
-    public function FUNC_DELETEJABATAN(Request $request, $id)
+    public function deleteFunction($id)
     {
-        $hapus = JabatanModel::find($id);
-        $hapus->delete();
+        $function = JabatanModel::find($id);
+        $function->delete();
 
-        return redirect('jabatanlist')->with('success', 'Data Berhasil Dihapus');
+        return redirect('master/function');
     }
-
+    
     // ---------- End Function ----------
 
     
