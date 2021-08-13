@@ -84,16 +84,21 @@ class MasterController extends Controller
 
 
     // ---------- Start Function ----------
-    
-    public function FUNC_MASTERJABATAN()
-    {
 
-        $jabatanlist = JabatanModel::select('id', 'jabatan', 'disabled')
+    public function listFunction()
+    {
+        return view('master/function/list');
+    }
+
+    public function dataFunction()
+    {
+        $data = DB::table('tb_jabatan AS A')
+            ->select('A.id', 'A.jabatan')
             ->where('type', null)
-            ->orderBy('id', 'ASC')
+            ->orderBy('jabatan', 'ASC')
             ->get();
 
-        return view('master/jabatan/jabatanlist')->with('jabatanlist', $jabatanlist);
+        return response()->json($data);
     }
 
     public function FUNC_ADDJABATAN()
