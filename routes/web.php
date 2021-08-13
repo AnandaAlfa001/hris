@@ -158,15 +158,18 @@ Route::group(['middleware' => ['admin']], function () {
 			Route::get('{id}/delete', [MasterController::class, 'deleteDivision']);
 		});
 
-	});
+		// Subdivisi
+		Route::prefix('subdivision')->group(function () {
+			Route::get('/new', [MasterController::class, 'formSubdivision']);
+			Route::post('/', [MasterController::class, 'createSubdivision']);
+			Route::get('/', [MasterController::class, 'listSubdivision']);
+			Route::get('/data', [MasterController::class, 'dataSubdivision']);
+			Route::get('{id}/edit', [MasterController::class, 'formSubdivision']);
+			Route::post('{id}/update', [MasterController::class, 'updateSubdivision']);
+			Route::get('{id}/delete', [MasterController::class, 'deleteSubdivision']);
+		});
 
-	//DATA SUBDIVISI//
-	Route::get('/subdivisilist', [MasterController::class, 'FUNC_MASTERSUBDIVISI']);
-	Route::get('/addsubdivisi', [MasterController::class, 'FUNC_ADDSUBDIVISI']);
-	Route::post('/savesubdivisi', [MasterController::class, 'FUNC_SAVESUBDIVISI']);
-	Route::get('/editsubdivisi/{id}', [MasterController::class, 'FUNC_EDITSUBDIVISI']);
-	Route::post('/updatesubdivisi/{id}', [MasterController::class, 'FUNC_UPDATESUBDIVISI']);
-	Route::get('/deletesubdivisi/{id}', [MasterController::class, 'FUNC_DELETESUBDIVISI']);
+	});
 
 	//DATA GOLONGAN//
 	Route::get('/golonganlist', [MasterController::class, 'FUNC_MASTERGOLONGAN']);
