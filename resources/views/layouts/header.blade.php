@@ -37,13 +37,11 @@
               @else
               <img src="{{ asset('image/Photo/'.Session::get('photo')) }}" class="img-circle" alt="User Image">
               @endif
-
-
-              <p>
-                {{ Session::get('nama') }} <br>
-                {{ Session::get('jabatan') }}
-                <small>{{ Session::get('divisi') }} - {{ Session::get('subdivisi') }}</small>
-              </p>
+              <br>
+              <span style="color: white;">{{ Session::get('nama') }}</span>
+              <br>
+              <br>
+              <span style="color: white; font-size:small">{{ Session::get('jabatan') }} | {{ Session::get('divisi') }} > {{ Session::get('subdivisi') }}</span>
             </li>
             <!-- Menu Footer-->
             <?php $nik = Session::get('nik'); ?>
