@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\EmployeeExport;
+use App\Exports\OffWorkExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Session;
@@ -171,119 +172,9 @@ class ReportController extends Controller
 
   public function exportOffWork(Request $request)
   {
+    $data = $this->dataOffWork($request)->getData();
 
-    $tahuninput = $request['tahuninput'];
-    $bulaninput = $request['bulaninput'];
-
-    // dd($bulaninput);
-
-    if (($tahuninput != NULL or $tahuninput != "") and ($bulaninput != NULL or $bulaninput != "")) {
-      $Result = CutiModel::select(
-        'tb_cuti.NIK as nik',
-        'tb_datapribadi.Nama as nama',
-        'tb_cuti.TanggalMulaiCuti as tgl_mulai',
-        'tb_cuti.rencanacuti as hari',
-        'tb_cuti.TanggalSelesaiCuti as tgl_selesai',
-        'tb_cuti.AlamatSelamaCuti as alamatcuti',
-        DB::raw('CASE
-                    WHEN `approve_1` = "Y" THEN CONCAT("Approved by ", (SELECT nama FROM tb_datapribadi WHERE nik = tb_cuti.act_by))
-                    WHEN `approve_1` = "R" THEN CONCAT("Rejected by ", (SELECT nama FROM tb_datapribadi WHERE nik = tb_cuti.act_by))
-                    WHEN `approve_1` = "N" THEN "Dalam Proses Persetujuan"
-                    ELSE ""
-                END as status')
-      )
-        ->leftjoin('tb_datapribadi', 'tb_cuti.nik', '=', 'tb_datapribadi.NIK')
-        ->whereRaw(DB::raw('YEAR(TanggalMulaiCuti) = "' . $tahuninput . '" AND MONTH(TanggalMulaiCuti) = "' . $bulaninput . '"'))
-        // ->groupBy('tb_cuti.nik')
-        ->orderBy('tb_cuti.TanggalMulaiCuti', 'DESC')
-        ->get();
-    } elseif (($tahuninput != NULL or $tahuninput != "") and ($bulaninput == NULL or $bulaninput == "")) {
-
-      $Result = CutiModel::select(
-        'tb_cuti.NIK as nik',
-        'tb_datapribadi.Nama as nama',
-        'tb_cuti.TanggalMulaiCuti as tgl_mulai',
-        'tb_cuti.rencanacuti as hari',
-        'tb_cuti.TanggalSelesaiCuti as tgl_selesai',
-        'tb_cuti.AlamatSelamaCuti as alamatcuti',
-        DB::raw('CASE
-                    WHEN `approve_1` = "Y" THEN CONCAT("Approved by ", (SELECT nama FROM tb_datapribadi WHERE nik = tb_cuti.act_by))
-                    WHEN `approve_1` = "R" THEN CONCAT("Rejected by ", (SELECT nama FROM tb_datapribadi WHERE nik = tb_cuti.act_by))
-                    WHEN `approve_1` = "N" THEN "Dalam Proses Persetujuan"
-                    ELSE ""
-                END as status')
-      )
-        ->leftjoin('tb_datapribadi', 'tb_cuti.nik', '=', 'tb_datapribadi.NIK')
-        ->whereRaw(DB::raw('YEAR(TanggalMulaiCuti) = "' . $tahuninput . '"'))
-        // ->groupBy('tb_cuti.nik')
-        ->orderBy('tb_cuti.TanggalMulaiCuti', 'DESC')
-        ->get();
-    } elseif (($tahuninput == NULL or $tahuninput == "") and ($bulaninput != NULL or $bulaninput != "")) {
-
-      $Result = CutiModel::select(
-        'tb_cuti.NIK as nik',
-        'tb_datapribadi.Nama as nama',
-        'tb_cuti.TanggalMulaiCuti as tgl_mulai',
-        'tb_cuti.rencanacuti as hari',
-        'tb_cuti.TanggalSelesaiCuti as tgl_selesai',
-        'tb_cuti.AlamatSelamaCuti as alamatcuti',
-        DB::raw('CASE
-                    WHEN `approve_1` = "Y" THEN CONCAT("Approved by ", (SELECT nama FROM tb_datapribadi WHERE nik = tb_cuti.act_by))
-                    WHEN `approve_1` = "R" THEN CONCAT("Rejected by ", (SELECT nama FROM tb_datapribadi WHERE nik = tb_cuti.act_by))
-                    WHEN `approve_1` = "N" THEN "Dalam Proses Persetujuan"
-                    ELSE ""
-                END as status')
-      )
-        ->leftjoin('tb_datapribadi', 'tb_cuti.nik', '=', 'tb_datapribadi.NIK')
-        ->whereRaw(DB::raw('MONTH(TanggalMulaiCuti) = "' . $bulaninput . '"'))
-        // ->groupBy('tb_cuti.nik')
-        ->orderBy('tb_cuti.TanggalMulaiCuti', 'DESC')
-        ->get();
-    } elseif (($tahuninput == NULL or $tahuninput == "") and ($bulaninput == NULL or $bulaninput == "")) {
-
-      $Result = CutiModel::select(
-        'tb_cuti.NIK as nik',
-        'tb_datapribadi.Nama as nama',
-        'tb_cuti.TanggalMulaiCuti as tgl_mulai',
-        'tb_cuti.rencanacuti as hari',
-        'tb_cuti.TanggalSelesaiCuti as tgl_selesai',
-        'tb_cuti.AlamatSelamaCuti as alamatcuti',
-        DB::raw('CASE
-                    WHEN `approve_1` = "Y" THEN CONCAT("Approved by ", (SELECT nama FROM tb_datapribadi WHERE nik = tb_cuti.act_by))
-                    WHEN `approve_1` = "R" THEN CONCAT("Rejected by ", (SELECT nama FROM tb_datapribadi WHERE nik = tb_cuti.act_by))
-                    WHEN `approve_1` = "N" THEN "Dalam Proses Persetujuan"
-                    ELSE ""
-                END as status')
-      )
-        ->leftjoin('tb_datapribadi', 'tb_cuti.nik', '=', 'tb_datapribadi.NIK')
-        // ->groupBy('tb_cuti.nik')
-        ->orderBy('tb_cuti.TanggalMulaiCuti', 'DESC')
-        ->get();
-    }
-
-
-
-    // dd($Result);
-    $tahun = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0 order by TglKontrak";
-    $tahuns = DB::select($tahun);
-
-    Excel::create('Export Data Cuti', function ($excel) use ($Result, $tahuns, $tahuninput, $bulaninput) {
-      $excel->sheet('Sheet 1', function ($sheet) use ($Result, $tahuns, $tahuninput, $bulaninput) {
-        $sheet->loadView('report/resultcutiexcel')
-          ->with("Result", $Result)
-          ->with("tahuns", $tahuns)
-          ->with("tahuninput", $tahuninput)
-          ->with("bulaninput", $bulaninput);
-      });
-    })->export('xls');
-
-    // }
-    // return view('report/resultcutiexcel')
-    // ->with("Result",$Result)
-    // ->with("tahuns",$tahuns)
-    // ->with("tahuninput",$tahuninput)
-    // ->with("bulaninput",$bulaninput);
-
+    return Excel::download(new OffWorkExport($data), 'Report-OffWork.xlsx');
   }
 
   // ---------- End Cuti ----------
