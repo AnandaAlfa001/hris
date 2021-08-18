@@ -137,16 +137,6 @@ class ReportController extends Controller
     $filterYear   = $request->query('filterYear');
     $filterMonth  = $request->query('filterMonth');
 
-    $arrCondition = array();
-
-    // !!! Unkown column 'YEAR', solusi penggunaan raw where ketika dari array ??
-    if (!empty($filterYear)) {
-      array_push($arrCondition, array('YEAR(A.TanggalMulaiCuti)', '=', $filterYear));
-    }
-    if (!empty($filterMonth)) {
-      array_push($arrCondition, array('MONTH(A.TanggalMulaiCuti)', '=', $filterMonth));
-    }
-
     $offWork      = DB::table('tb_cuti AS A')
       ->select(
         'A.NIK',
@@ -167,11 +157,16 @@ class ReportController extends Controller
           END AS STATUS"),
       )
       ->leftJoin('tb_datapribadi AS B', 'A.NIK', '=', 'B.NIK')
-      ->where($arrCondition)
+      ->when($filterYear, function ($query, $filterYear) {
+        return $query->whereYear('A.TanggalMulaiCuti', '=', $filterYear);
+      })
+      ->when($filterMonth, function ($query, $filterMonth) {
+        return $query->whereMonth('A.TanggalMulaiCuti', '=', $filterMonth);
+      })
       ->orderByDesc('A.TanggalMulaiCuti')
       ->get();
 
-      return response()->json($offWork);
+    return response()->json($offWork);
   }
 
   public function exportOffWork(Request $request)
