@@ -89,9 +89,9 @@
         <ul class="treeview-menu">
           <li><a href="{{ url('report/employee') }}"><i class="fa fa-circle-o"></i> Pegawai</a></li>
           <li><a href="{{ url('report/offwork') }}"><i class="fa fa-circle-o"></i> Cuti</a></li>
-          <li><a href="{{ url('reportkesehatan') }}"><i class="fa fa-circle-o"></i> Kesahatan</a></li>
+          <!-- <li><a href="{{ url('reportkesehatan') }}"><i class="fa fa-circle-o"></i> Kesahatan</a></li>
           <li><a href="{{ url('reporttraining') }}"><i class="fa fa-circle-o"></i> Training</a></li>
-          <li><a href="{{ url('reportlembur') }}"><i class="fa fa-circle-o"></i> Lembur Pegawai</a></li>
+          <li><a href="{{ url('reportlembur') }}"><i class="fa fa-circle-o"></i> Lembur Pegawai</a></li> -->
         </ul>
       </li>
       @endif
