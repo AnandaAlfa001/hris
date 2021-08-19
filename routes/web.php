@@ -71,6 +71,13 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::prefix('employee')->group(function () {
 		Route::get('/', [EmployeeController::class, 'listEmployee']);
 		Route::get('data', [EmployeeController::class, 'dataEmployee']);
+		Route::get('{nik}', [EmployeeController::class, 'formFunction']);
+		Route::get('{nik}/edit', [EmployeeController::class, 'formFunction']);
+		Route::get('{nik}/resign', [EmployeeController::class, 'formFunction']);
+		Route::get('{nik}/mutation', [EmployeeController::class, 'formFunction']);
+		Route::get('{nik}/history', [EmployeeController::class, 'formFunction']);
+		Route::get('{nik}/project-experience', [EmployeeController::class, 'formFunction']);
+		Route::get('{nik}/extend-contract', [EmployeeController::class, 'formFunction']);
 	});
 
 	Route::get('/outemployeelist', [EmployeeController::class, 'OUTEMPLOYEE']);
