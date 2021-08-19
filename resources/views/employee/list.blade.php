@@ -135,21 +135,53 @@
         id: 'actions',
         name: html(`<div class="text-center">Aksi &nbsp;<i class="fa fa-cogs text-info"></i></div>`),
         formatter: (cell, row) => {
-          return h('div', {
-              className: 'text-center'
-            },
-            h('a', {
-                className: 'btn btn-default',
-                style: 'margin-right: 5px',
-                role: 'button',
-                title: 'Ubah',
-                onClick: () => window.open(`{{ url('master/division') }}/${cell}/edit`, '_self')
-              },
-              h('i', {
-                className: 'fa fa-edit'
-              })
-            ),
-          );
+          return html(`
+            <div class="text-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Pilih Aksi <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li>
+                    <a href="{{ url('employee') }}/${cell}">
+                      <i class="fa fa-fw fa-info-circle text-info"></i>&nbsp;<b>Lihat Detail</b>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{ url('employee') }}/${cell}/edit">
+                      <i class="fa fa-fw fa-pencil-square text-info"></i>&nbsp;<b>Ubah</b>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{ url('employee') }}/${cell}/resign">
+                      <i class="fa fa-fw fa-user-times text-info"></i>&nbsp;<b>Resign</b>
+                    </a>
+                  </li>
+                  <li role="separator" class="divider"></li>
+                  <li>
+                    <a href="{{ url('employee') }}/${cell}/mutation">
+                      <i class="fa fa-fw fa-random text-info"></i>&nbsp;<b>Mutasi</b>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{ url('employee') }}/${cell}/history">
+                      <i class="fa fa-fw fa-hourglass-start text-info"></i>&nbsp;<b>Riwayat</b>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{ url('employee') }}/${cell}/project-experience">
+                      <i class="fa fa-fw fa-file text-info"></i>&nbsp;<b>Pengalaman Proyek</b>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{ url('employee') }}/${cell}/extend-contract">
+                      <i class="fa fa-fw fa-calendar-plus-o text-info"></i>&nbsp;<b>Perpanjang Kontrak (Outsource)</b>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          `);
         },
         sort: false,
         width: '15%'
@@ -162,7 +194,8 @@
         employee.NAMA,
         employee.ALAMAT,
         employee.UNIT_KERJA,
-        employee.JABATAN
+        employee.JABATAN,
+        employee.NIK,
       ])
     },
     pagination: {
