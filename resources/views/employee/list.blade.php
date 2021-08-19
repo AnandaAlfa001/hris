@@ -143,41 +143,45 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
                   <li>
-                    <a href="{{ url('employee') }}/${cell}">
+                    <a href="{{ url('employee') }}/${cell.NIK}">
                       <i class="fa fa-fw fa-info-circle text-info"></i>&nbsp;<b>Lihat Detail</b>
                     </a>
                   </li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell}/edit">
+                    <a href="{{ url('employee') }}/${cell.NIK}/edit">
                       <i class="fa fa-fw fa-pencil-square text-info"></i>&nbsp;<b>Ubah</b>
                     </a>
                   </li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell}/resign">
+                    <a href="{{ url('employee') }}/${cell.NIK}/resign">
                       <i class="fa fa-fw fa-user-times text-info"></i>&nbsp;<b>Resign</b>
                     </a>
                   </li>
                   <li role="separator" class="divider"></li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell}/mutation">
+                    <a href="{{ url('employee') }}/${cell.NIK}/mutation">
                       <i class="fa fa-fw fa-random text-info"></i>&nbsp;<b>Mutasi</b>
                     </a>
                   </li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell}/history">
+                    <a href="{{ url('employee') }}/${cell.NIK}/history">
                       <i class="fa fa-fw fa-hourglass-start text-info"></i>&nbsp;<b>Riwayat</b>
                     </a>
                   </li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell}/project-experience">
+                    <a href="{{ url('employee') }}/${cell.NIK}/project-experience">
                       <i class="fa fa-fw fa-file text-info"></i>&nbsp;<b>Pengalaman Proyek</b>
                     </a>
                   </li>
-                  <li>
-                    <a href="{{ url('employee') }}/${cell}/extend-contract">
-                      <i class="fa fa-fw fa-calendar-plus-o text-info"></i>&nbsp;<b>Perpanjang Kontrak (Outsource)</b>
-                    </a>
-                  </li>
+                  ${
+                    (cell.STATUS == 5 || cell.STATUS == 6) ? 
+                    `<li>
+                      <a href="{{ url('employee') }}/${cell.NIK}/extend-contract">
+                        <i class="fa fa-fw fa-calendar-plus-o text-info"></i>&nbsp;<b>Perpanjang Kontrak (Outsource)</b>
+                      </a>
+                    </li>` 
+                    : ''
+                  }
                 </ul>
               </div>
             </div>
@@ -195,7 +199,10 @@
         employee.ALAMAT,
         employee.UNIT_KERJA,
         employee.JABATAN,
-        employee.NIK,
+        {
+          NIK: employee.NIK,
+          STATUS: employee.STATUS
+        }
       ])
     },
     pagination: {

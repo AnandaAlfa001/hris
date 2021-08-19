@@ -114,6 +114,7 @@ class EmployeeController extends Controller
         'A.Alamat AS ALAMAT',
         'A.NoHP as NOMOR_HP',
         'A.email AS EMAIL',
+        'A.statuskar AS STATUS',
         DB::raw("CONCAT(B.nama_div_ext, ' - ', C.subdivisi) AS UNIT_KERJA"),
         DB::raw("CONCAT(D.pangkat, ' - ', E.jabatan) AS JABATAN"),
         DB::raw('(SELECT Nama FROM tb_datapribadi dp WHERE dp.NIK = dp.atasan1) as ATASAN_1'),
