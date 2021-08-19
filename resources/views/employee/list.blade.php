@@ -122,7 +122,7 @@
                 'showing': 'Menampilkan',
                 of: 'dari',
                 to: 'sampai',
-                'results': () => 'Pegawai'
+                'results': () => 'Hasil'
             }
         },
         fixedHeader: true,
