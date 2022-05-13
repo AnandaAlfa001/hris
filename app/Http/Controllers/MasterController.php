@@ -9,286 +9,311 @@ use App\Models\DivisiModel;
 use App\Models\SubDivisiModel;
 use App\Models\GolonganModel;
 use App\Models\GolonganOutModel;
+use Illuminate\Support\Facades\DB;
 
 
 class MasterController extends Controller
 {
 
-// MASTER JABATAN //
+    // ---------- Start Pangkat ----------
 
-    public function FUNC_MASTERJABATAN() {
-
-        $jabatanlist = JabatanModel::select('id','jabatan','disabled')
-                                    ->where('type',null)
-                                    ->orderBy('id','ASC')
-                                    ->get();
-
-        return view('master/jabatan/jabatanlist')->with('jabatanlist',$jabatanlist);
-
+    public function listGrade()
+    {
+        return view('master/grade/list');
     }
 
-     public function FUNC_ADDJABATAN() {
+    public function dataGrade()
+    {
+        $data = DB::table('tb_pangkat AS A')
+            ->select('A.id', 'A.pangkat')
+            ->where('type', null)
+            ->orderBy('pangkat', 'ASC')
+            ->get();
 
-        return view('master/jabatan/addjabatan');
+        return response()->json($data);
     }
 
-    public function FUNC_SAVEJABATAN(Request $request) {
+    public function formGrade($id = NULL)
+    {
+        if ($id == NULL) {
+            $data['formAction'] = 'master/grade';
+            $data['grade']      = NULL;
+        } else {
+            $data['formAction'] = "master/grade/$id/update";
+            $data['grade']      = PangkatModel::where('id', $id)->first();
+        }
 
+        return view('master/grade/form', $data);
+    }
+
+    public function createGrade(Request $request)
+    {
         $this->validate($request, [
-            'jabatan' => 'required',
-            'disabled' => 'required'
-
+            'pangkat'   => 'required',
+            'disabled'  => 'required'
         ]);
 
-        $tambah = new JabatanModel();
-        $tambah->jabatan = $request['jabatan'];
-        $tambah->disabled = $request['disabled'];
+        $grade             = new PangkatModel();
+        $grade->pangkat    = $request->pangkat;
+        $grade->disabled   = $request->disabled;
+        $grade->save();
 
-        $tambah->save();
-
-        return redirect('jabatanlist')->with('success','Data Berhasil Disimpan');
+        return redirect('master/grade');
     }
 
-    public function FUNC_EDITJABATAN($id) {
-        $tampiledit = JabatanModel::where('id',$id)->first();
-        return view('master/jabatan/editjabatan')->with('tampiledit',$tampiledit);
+    public function updateGrade(Request $request, $id)
+    {
+        $grade              = PangkatModel::where('id', $id)->first();
+        $grade->pangkat     = $request->pangkat;
+        $grade->disabled    = $request->disabled;
+        $grade->update();
+
+        return redirect('master/grade');
     }
 
-    public function FUNC_UPDATEJABATAN(Request $request, $id) {
+    public function deleteGrade($id)
+    {
+        $grade = PangkatModel::find($id);
+        $grade->delete();
 
-        $update = JabatanModel::where('id',$id)->first();
-        $update->jabatan = $request['jabatan'];
-        $update->disabled = $request['disabled'];
-
-        $update->update();
-
-        return redirect('jabatanlist')->with('success','Data Berhasil Diupdate');
-
+        return redirect('master/grade');
     }
 
-    public function FUNC_DELETEJABATAN(Request $request, $id) {
-        $hapus = JabatanModel::find($id);
-        $hapus->delete();
+    // ---------- End Pangkat ----------
 
-       return redirect('jabatanlist')->with('success','Data Berhasil Dihapus');
+
+    // ---------- Start Function ----------
+
+    public function listFunction()
+    {
+        return view('master/function/list');
     }
 
-// MASTER PANGKAT //
+    public function dataFunction()
+    {
+        $data = DB::table('tb_jabatan AS A')
+            ->select('A.id', 'A.jabatan')
+            ->where('type', null)
+            ->orderBy('jabatan', 'ASC')
+            ->get();
 
-    public function FUNC_MASTERPANGKAT() {
-
-        $pangkatlist = PangkatModel::select('id','pangkat','disabled')
-                                    ->where('type',null)
-                                    ->orderBy('id','ASC')
-                                    ->get();
-
-        return view('master/pangkat/pangkatlist')->with('pangkatlist',$pangkatlist);
-
+        return response()->json($data);
     }
 
-    public function FUNC_ADDPANGKAT() {
+    public function formFunction($id = NULL)
+    {
+        if ($id == NULL) {
+            $data['formAction'] = 'master/function';
+            $data['function']   = NULL;
+        } else {
+            $data['formAction'] = "master/function/$id/update";
+            $data['function']   = JabatanModel::where('id', $id)->first();
+        }
 
-        return view('master/pangkat/addpangkat');
+        return view('master/function/form', $data);
     }
 
-    public function FUNC_SAVEPANGKAT(Request $request) {
-
+    public function createFunction(Request $request)
+    {
         $this->validate($request, [
-            'pangkat' => 'required',
-            'disabled' => 'required'
-
+            'jabatan'   => 'required',
+            'disabled'  => 'required'
         ]);
 
-        $tambah = new PangkatModel();
-        $tambah->pangkat = $request['pangkat'];
-        $tambah->disabled = $request['disabled'];
+        $function            = new JabatanModel();
+        $function->jabatan   = $request->jabatan;
+        $function->disabled  = $request->disabled;
+        $function->save();
 
-        $tambah->save();
-
-        return redirect('pangkatlist')->with('success','Data Berhasil Disimpan');
+        return redirect('master/function');
     }
 
-    public function FUNC_EDITPANGKAT($id) {
-        $tampiledit = PangkatModel::where('id',$id)->first();
-        return view('master/pangkat/editpangkat')->with('tampiledit',$tampiledit);
+    public function updateFunction(Request $request, $id)
+    {
+        $function            = JabatanModel::where('id', $id)->first();
+        $function->jabatan   = $request->jabatan;
+        $function->disabled  = $request->disabled;
+        $function->update();
+
+        return redirect('master/function');
     }
 
-    public function FUNC_UPDATEPANGKAT(Request $request, $id) {
+    public function deleteFunction($id)
+    {
+        $function = JabatanModel::find($id);
+        $function->delete();
 
-        $update = PangkatModel::where('id',$id)->first();
-        $update->pangkat = $request['pangkat'];
-        $update->disabled = $request['disabled'];
-
-        $update->update();
-
-        return redirect('pangkatlist')->with('success','Data Berhasil Diupdate');
-
+        return redirect('master/function');
     }
 
-    public function FUNC_DELETEPANGKAT(Request $request, $id) {
-        $hapus = PangkatModel::find($id);
-        $hapus->delete();
+    // ---------- End Function ----------
 
-       return redirect('pangkatlist')->with('success','Data Berhasil Dihapus');
+
+    // ---------- Start Division ----------
+
+    public function listDivision()
+    {
+        return view('master/division/list');
     }
 
-// MASTER DIVISI //
+    public function dataDivision()
+    {
+        $data = DB::table('tbldivmaster AS A')
+            ->select('A.id', 'A.nama_div_ext AS divisi')
+            ->where('type', null)
+            ->orderBy('divisi', 'ASC')
+            ->get();
 
-    public function FUNC_MASTERDIVISI() {
-
-        $divisilist = DivisiModel::select('id','nama_div_ext','disabled')
-                                ->where('type',null)
-                                ->orderBy('id','ASC')
-                                ->get();
-
-        return view('master/divisi/divisilist')->with('divisilist',$divisilist);
-
+        return response()->json($data);
     }
 
-    public function FUNC_ADDDIVISI() {
+    public function formDivision($id = NULL)
+    {
+        if ($id == NULL) {
+            $data['formAction'] = 'master/division';
+            $data['division']   = NULL;
+        } else {
+            $data['formAction'] = "master/division/$id/update";
+            $data['division']   = DivisiModel::where('id', $id)->first();
+        }
 
-        return view('master/divisi/adddivisi');
+        return view('master/division/form', $data);
     }
 
-    public function FUNC_SAVEDIVISI(Request $request) {
-
+    public function createDivision(Request $request)
+    {
         $this->validate($request, [
-            'nama_div_ext' => 'required',
-            'disabled' => 'required'
-
+            'divisi'    => 'required',
+            'disabled'  => 'required'
         ]);
 
-        $tambah = new DivisiModel();
-        $tambah->nama_div_ext = $request['nama_div_ext'];
-        $tambah->disabled = $request['disabled'];
+        $division               = new DivisiModel();
+        $division->nama_div_ext = $request->divisi;
+        $division->disabled     = $request->disabled;
+        $division->save();
 
-        $tambah->save();
-
-        return redirect('divisilist')->with('success','Data Berhasil Disimpan');
+        return redirect('master/division');
     }
 
-    public function FUNC_EDITDIVISI($id) {
-        $tampiledit = DivisiModel::where('id',$id)->first();
-        return view('master/divisi/editdivisi')->with('tampiledit',$tampiledit);
+    public function updateDivision(Request $request, $id)
+    {
+        $division               = DivisiModel::where('id', $id)->first();
+        $division->nama_div_ext = $request->divisi;
+        $division->disabled     = $request->disabled;
+        $division->update();
+
+        return redirect('master/division');
     }
 
-    public function FUNC_UPDATEDIVISI(Request $request, $id) {
+    public function deleteDivision($id)
+    {
+        $division = DivisiModel::find($id);
+        $division->delete();
 
-        $update = DivisiModel::where('id',$id)->first();
-        $update->nama_div_ext = $request['nama_div_ext'];
-        $update->disabled = $request['disabled'];
-
-        $update->update();
-
-        return redirect('divisilist')->with('success','Data Berhasil Diupdate');
-
+        return redirect('master/division');
     }
 
-    public function FUNC_DELETEDIVISI(Request $request, $id) {
-        $hapus = DivisiModel::find($id);
-        $hapus->delete();
+    // ---------- End Division ----------
 
-       return redirect('divisilist')->with('success','Data Berhasil Dihapus');
+
+    // ---------- Start Subdivision ----------
+
+    public function listSubdivision()
+    {
+        return view('master/subdivision/list');
     }
 
-    // MASTER SUBDIVISI //
+    public function dataSubdivision()
+    {
+        $data = DB::table('tb_subdivisi AS A')
+            ->select('A.id', 'A.subdivisi', 'B.nama_div_ext AS divisi')
+            ->leftJoin('tbldivmaster AS B', 'B.id', '=', 'A.iddivisi')
+            ->where('A.type', null)
+            ->orderBy('subdivisi', 'ASC')
+            ->get();
 
-    public function FUNC_MASTERSUBDIVISI() {
-
-        $subdivisilist = SubDivisiModel::select('tb_subdivisi.id','tb_subdivisi.subdivisi',
-                                        'tbldivmaster.nama_div_ext as nama_divisi','tb_subdivisi.disabled')
-                                        ->leftjoin('tbldivmaster','tb_subdivisi.iddivisi','=','tbldivmaster.id')
-                                        ->where('tb_subdivisi.type',null)
-                                        ->orderBy('id','ASC')
-                                        ->get();
-
-        // $subdivisilist = DB::table('tb_subdivisi')
-        //                 ->join('tbldivmaster', 'tb_subdivisi.iddivisi','=','tbldivmaster.id')
-        //                 ->select('tb_subdivisi.id','tb_subdivisi.subdivisi','tb_subdivisi.type','tbldivmaster.nama_div_ext as nama_divisi')
-        //                 ->get();
-
-        return view('master/subdivisi/subdivisilist')->with('subdivisilist',$subdivisilist);
-
+        return response()->json($data);
     }
 
-    public function FUNC_ADDSUBDIVISI() {
+    public function formSubdivision($id = NULL)
+    {
+        if ($id == NULL) {
+            $data['formAction']     = 'master/subdivision';
+            $data['subdivision']    = NULL;
+            $data['division']       = DivisiModel::All();
+        } else {
+            $data['formAction']     = "master/subdivision/$id/update";
+            $data['subdivision']    = DB::table('tb_subdivisi AS A')
+                ->select('A.id', 'A.subdivisi', 'A.type', 'A.disabled', 'B.nama_div_ext AS divisi', 'B.id AS divisiID')
+                ->leftJoin('tbldivmaster AS B', 'B.id', '=', 'A.iddivisi')
+                ->where('A.id', $id)
+                ->orderBy('subdivisi', 'ASC')
+                ->first();
+            $data['division']       = DivisiModel::All();
+        }
 
-        $divisi = DivisiModel::where('type',null)->orderBy('id','ASC')->paginate(100000000000);
-
-        return view('master/subdivisi/addsubdivisi')->with('divisi',$divisi);
+        return view('master/subdivision/form', $data);
     }
 
-    public function FUNC_SAVESUBDIVISI(Request $request) {
-
+    public function createSubdivision(Request $request)
+    {
         $this->validate($request, [
             'subdivisi' => 'required',
-            'disabled' => 'required'
-
+            'disabled'  => 'required'
         ]);
 
-        $tambah = new SubDivisiModel();
-        $tambah->subdivisi = $request['subdivisi'];
-        $tambah->disabled = $request['disabled'];
-        $tambah->iddivisi = $request['iddivisi'];
+        $subdivision            = new SubDivisiModel();
+        $subdivision->subdivisi = $request->subdivisi;
+        $subdivision->disabled  = $request->disabled;
+        $subdivision->iddivisi  = $request->iddivisi;
+        $subdivision->save();
 
-        $tambah->save();
-
-        return redirect('subdivisilist')->with('success','Data Berhasil Disimpan');
+        return redirect('master/subdivision');
     }
 
-    public function FUNC_EDITSUBDIVISI($id) {
-        // $tampiledit = SubDivisiModel::where('id',$id)->first();
+    public function updateSubdivision(Request $request, $id)
+    {
+        $subdivision            = SubDivisiModel::where('id', $id)->first();
+        $subdivision->subdivisi = $request->subdivisi;
+        $subdivision->disabled  = $request->disabled;
+        $subdivision->iddivisi  = $request->iddivisi;
+        $subdivision->save();
 
-        $tampiledit = SubDivisiModel::select('tb_subdivisi.id','tb_subdivisi.subdivisi','tb_subdivisi.type','tb_subdivisi.disabled',
-                                        'tbldivmaster.nama_div_ext as nama_divisi','tbldivmaster.id as divisiid')
-                                        ->orderBy('id','ASC')
-                                        ->leftjoin('tbldivmaster','tb_subdivisi.iddivisi','=','tbldivmaster.id')
-                                        ->where('tb_subdivisi.id',$id)
-                                        ->first();
-
-        $divisi = DivisiModel::All();
-        return view('master/subdivisi/editsubdivisi')->with('tampiledit',$tampiledit)->with('divisi',$divisi);
+        return redirect('master/subdivision');
     }
 
-    public function FUNC_UPDATESUBDIVISI(Request $request, $id) {
+    public function deleteSubdivision($id)
+    {
+        $subdivision = SubDivisiModel::find($id);
+        $subdivision->delete();
 
-        $update = SubDivisiModel::where('id',$id)->first();
-        $update->subdivisi = $request['subdivisi'];
-        $update->disabled = $request['disabled'];
-        $update->iddivisi = $request['iddivisi'];
-
-        $update->update();
-
-        return redirect('subdivisilist')->with('success','Data Berhasil Diupdate');
-
+        return redirect('master/subdivision');
     }
 
-    public function FUNC_DELETESUBDIVISI(Request $request, $id) {
-        $hapus = SubDivisiModel::find($id);
-        $hapus->delete();
+    // ---------- End Division ----------
 
-       return redirect('subdivisilist')->with('success','Data Berhasil Dihapus');
-    }
-
+    
     // MASTER GOLONGAN //
 
-    public function FUNC_MASTERGOLONGAN() {
+    public function FUNC_MASTERGOLONGAN()
+    {
 
-        $golonganlist = GolonganModel::select('id','gol','disabled')
-                                    ->where('type',null)
-                                    ->orderBy('id','ASC')
-                                    ->get();
+        $golonganlist = GolonganModel::select('id', 'gol', 'disabled')
+            ->where('type', null)
+            ->orderBy('id', 'ASC')
+            ->get();
 
-        return view('master/golongan/golonganlist')->with('golonganlist',$golonganlist);
-
+        return view('master/golongan/golonganlist')->with('golonganlist', $golonganlist);
     }
 
-    public function FUNC_ADDGOLONGAN() {
+    public function FUNC_ADDGOLONGAN()
+    {
 
         return view('master/golongan/addgolongan');
     }
 
-    public function FUNC_SAVEGOLONGAN(Request $request) {
+    public function FUNC_SAVEGOLONGAN(Request $request)
+    {
 
         $this->validate($request, [
             'gol' => 'required',
@@ -302,52 +327,56 @@ class MasterController extends Controller
 
         $tambah->save();
 
-        return redirect('golonganlist')->with('success','Data Berhasil Disimpan');
+        return redirect('golonganlist')->with('success', 'Data Berhasil Disimpan');
     }
 
-    public function FUNC_EDITGOLONGAN($id) {
-        $tampiledit = GolonganModel::where('id',$id)->first();
-        return view('master/golongan/editgolongan')->with('tampiledit',$tampiledit);
+    public function FUNC_EDITGOLONGAN($id)
+    {
+        $tampiledit = GolonganModel::where('id', $id)->first();
+        return view('master/golongan/editgolongan')->with('tampiledit', $tampiledit);
     }
 
-    public function FUNC_UPDATEGOLONGAN(Request $request, $id) {
+    public function FUNC_UPDATEGOLONGAN(Request $request, $id)
+    {
 
-        $update = GolonganModel::where('id',$id)->first();
+        $update = GolonganModel::where('id', $id)->first();
         $update->gol = $request['gol'];
         $update->disabled = $request['disabled'];
 
         $update->update();
 
-        return redirect('golonganlist')->with('success','Data Berhasil Diupdate');
-
+        return redirect('golonganlist')->with('success', 'Data Berhasil Diupdate');
     }
 
-    public function FUNC_DELETEGOLONGAN(Request $request, $id) {
+    public function FUNC_DELETEGOLONGAN(Request $request, $id)
+    {
         $hapus = GolonganModel::find($id);
         $hapus->delete();
 
-       return redirect('golonganlist')->with('success','Data Berhasil Dihapus');
+        return redirect('golonganlist')->with('success', 'Data Berhasil Dihapus');
     }
 
     // MASTER GOLONGAN OUT //
 
-    public function FUNC_MASTERGOLONGANOUT() {
+    public function FUNC_MASTERGOLONGANOUT()
+    {
 
-        $golonganoutlist = GolonganOutModel::select('id','gol','disabled')
-                                            ->where('type',null)
-                                            ->orderBy('id','ASC')
-                                            ->get();
+        $golonganoutlist = GolonganOutModel::select('id', 'gol', 'disabled')
+            ->where('type', null)
+            ->orderBy('id', 'ASC')
+            ->get();
 
-        return view('master/golonganout/golonganoutlist')->with('golonganoutlist',$golonganoutlist);
-
+        return view('master/golonganout/golonganoutlist')->with('golonganoutlist', $golonganoutlist);
     }
 
-    public function FUNC_ADDGOLONGANOUT() {
+    public function FUNC_ADDGOLONGANOUT()
+    {
 
         return view('master/golonganout/addgolonganout');
     }
 
-    public function FUNC_SAVEGOLONGANOUT(Request $request) {
+    public function FUNC_SAVEGOLONGANOUT(Request $request)
+    {
 
         $this->validate($request, [
             'gol' => 'required',
@@ -361,30 +390,32 @@ class MasterController extends Controller
 
         $tambah->save();
 
-        return redirect('golonganoutlist')->with('success','Data Berhasil Disimpan');
+        return redirect('golonganoutlist')->with('success', 'Data Berhasil Disimpan');
     }
 
-    public function FUNC_EDITGOLONGANOUT($id) {
-        $tampiledit = GolonganOutModel::where('id',$id)->first();
-        return view('master/golonganout/editgolonganout')->with('tampiledit',$tampiledit);
+    public function FUNC_EDITGOLONGANOUT($id)
+    {
+        $tampiledit = GolonganOutModel::where('id', $id)->first();
+        return view('master/golonganout/editgolonganout')->with('tampiledit', $tampiledit);
     }
 
-    public function FUNC_UPDATEGOLONGANOUT(Request $request, $id) {
+    public function FUNC_UPDATEGOLONGANOUT(Request $request, $id)
+    {
 
-        $update = GolonganOutModel::where('id',$id)->first();
+        $update = GolonganOutModel::where('id', $id)->first();
         $update->gol = $request['gol'];
         $update->disabled = $request['disabled'];
 
         $update->update();
 
-        return redirect('golonganoutlist')->with('success','Data Berhasil Diupdate');
-
+        return redirect('golonganoutlist')->with('success', 'Data Berhasil Diupdate');
     }
 
-    public function FUNC_DELETEGOLONGANOUT(Request $request, $id) {
+    public function FUNC_DELETEGOLONGANOUT(Request $request, $id)
+    {
         $hapus = GolonganOutModel::find($id);
         $hapus->delete();
 
-       return redirect('golonganoutlist')->with('success','Data Berhasil Dihapus');
+        return redirect('golonganoutlist')->with('success', 'Data Berhasil Dihapus');
     }
 }

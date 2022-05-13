@@ -2,8 +2,8 @@
 @section('content')
 <?php
 
-use App\EmployeeModel; 
-use App\KesehatanModel;
+use App\Models\EmployeeModel; 
+use App\Models\KesehatanModel;
 
 $nik = Session::get('nik');
 $hakakses = EmployeeModel::select('userpriv as akses')->where('NIK',$nik)->first();

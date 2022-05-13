@@ -16,8 +16,7 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Session::get('admin')==1)
-        {
+        if ($request->session()->get('admin') == 1) {
             return $next($request);
         }
         return redirect('/');
