@@ -46,7 +46,7 @@
             <!-- Menu Footer-->
             <?php
               use Illuminate\Support\Facades\Session;
-              
+
               $nik = Session::get('nik');
             ?>
             <li class="user-footer">
@@ -54,7 +54,7 @@
                 <a href="{{ url('profilemployee',$nik) }}" class="btn btn-default btn-flat">Profile</a>
               </div>
               <div class="pull-right">
-                <a href="{{ url('logout') }}" class="btn btn-default btn-flat">Sign out</a>
+                <a href="{{ url('auth/logout') }}" class="btn btn-default btn-flat">Sign out</a>
               </div>
             </li>
           </ul>

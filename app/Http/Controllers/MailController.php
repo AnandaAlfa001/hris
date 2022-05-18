@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\KesehatanModel;
 use App\Models\CutiModel;
 use App\Models\AbsenIjinModel;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {

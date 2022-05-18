@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-use Storage;
-use Session;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 use App\Models\TrainingModel;
 use App\Models\KaryawanModel;
 use App\Models\EmployeeModel;
-use Response;
+use Illuminate\Http\Response;
 
 class TrainingController extends Controller
 {

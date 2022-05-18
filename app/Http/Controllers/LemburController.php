@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-use Session;
 use App\Models\EmployeeModel;
 use App\Models\LemburModel;
 use App\Models\LembursModel;
+use Illuminate\Support\Facades\Session;
 
 class LemburController extends Controller
 {

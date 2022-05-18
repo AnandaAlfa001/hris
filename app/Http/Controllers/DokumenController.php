@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Session;
-use Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Response;
 use App\Models\DokumenModel;
 use App\Models\JenisDokumenModel;
 

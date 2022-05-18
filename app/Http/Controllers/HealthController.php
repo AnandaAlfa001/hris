@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-use Session;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Session\Session;
 use App\Http\Requests;
 use App\Models\KesehatanModel;
 use App\Models\HakKesehatanModel;
 use App\Models\HealthModel;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class HealthController extends Controller
 {
@@ -618,7 +618,7 @@ class HealthController extends Controller
 				               		$data3->update();
 				               		$akhir3 = $akhir2 - $sisa3;
 
-				               		$data4 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+4])
+				               		$data4 = HakKesehatanModel::Where('NIK',$nik)->where('status',$stat[$i+4])
 			                                    ->first();
 					                $sisa4 = $data4->sisa_rawat_jalan;
 					                if($sisa4<$akhir3)
@@ -930,190 +930,190 @@ class HealthController extends Controller
 
     }
 
-    public function FUNC_SAVERAWATKM(Request $request) {
+    public function FUNC_SAVERAWATKM(Request $request)
+    {
+        if($request['sisak']>=$request['jsetuju'])
+        {
+            $nik = $request['nik'];
+            $status = $request['status'];
+            $setuju = $request['jsetuju'];
 
-    	if($request['sisak']>=$request['jsetuju'])
-    	{
-    		$nik = $request['nik'];
-	        $status = $request['status'];
-	        $setuju = $request['jsetuju'];
+            if($request['id'])
+            {
+                if($request['rejet']=='hm')
+                {
+                    $this->validate($request, [
+                        'nik' => 'required',
+                        'status' => 'required',
+                        'alasan' => 'required',
+                        'nama' => 'required',
+                        'diagnosa' => 'required',
+                        'obat' => 'required',
+                        'klaim' => 'required',
+                        'jklaim' => 'required',
 
-    		if($request['id'])
-    		{
-    			if($request['rejet']=='hm')
-    			{
-    				$this->validate($request, [
-			            'nik' => 'required',
-			            'status' => 'required',
-			            'alasan' => 'required',
-			            'nama' => 'required',
-			            'diagnosa' => 'required',
-			            'obat' => 'required',
-			            'klaim' => 'required',
-			            'jklaim' => 'required',
+                        ]);
 
-			        	]);
+                    $up = HealthModel::where('ID',$request['id'])->first();
+                    $up->approve = 'R';
+                    $up->approve_vp = 'R';
+                    $up->approve_svp = 'R';
+                    $up->alasan_reject = $request['alasan'];
+                    $up->update();
+                    $msg='Klaim Berhasil Direject.';
+                } else {
+                    $this->validate($request, [
+                        'nik' => 'required',
+                        'status' => 'required',
+                        'jsetuju' => 'required',
+                        'nama' => 'required',
+                        'diagnosa' => 'required',
+                        'obat' => 'required',
+                        'klaim' => 'required',
+                        'jklaim' => 'required',
 
-    				$up = HealthModel::where('ID',$request['id'])->first();
-	    			$up->approve = 'R';
-	    			$up->approve_vp = 'R';
-	    			$up->approve_svp = 'R';
-	    			$up->alasan_reject = $request['alasan'];
-	    			$up->update();
-	    			$msg='Klaim Berhasil Direject.';
-    			} else {
-    				$this->validate($request, [
-			            'nik' => 'required',
-			            'status' => 'required',
-			            'jsetuju' => 'required',
-			            'nama' => 'required',
-			            'diagnosa' => 'required',
-			            'obat' => 'required',
-			            'klaim' => 'required',
-			            'jklaim' => 'required',
+                        ]);
+                    $up = HealthModel::where('ID',$request['id'])->first();
+                    $up->total_apprv = $request['jsetuju'];
+                    $up->approve = 'Y';
+                    $up->approve_vp = 'Y';
+                    $up->approve_svp = 'Y';
+                    $up->update();
+                    $msg='Klaim Berhasil Diapprove.';
+                }
 
-			        	]);
-    				$up = HealthModel::where('ID',$request['id'])->first();
-	    			$up->total_apprv = $request['jsetuju'];
-	    			$up->approve = 'Y';
-	    			$up->approve_vp = 'Y';
-	    			$up->approve_svp = 'Y';
-	    			$up->update();
-	    			$msg='Klaim Berhasil Diapprove.';
-    			}
+            } else
+            {
+                $tambah = new KesehatanModel();
+                $tambah->NIK = $request['nik'];
+                $tambah->status = $request['status'];
+                $tambah->jn_remb = 3;
+                $tambah->tglklaim = $request['klaim'];
+                $tambah->nama_apotek = $request['nama'];
+                $tambah->tglberobat = $request['obat'];
+                $tambah->diagnosa = $request['diagnosa'];
+                $tambah->total_klaim = $request['jklaim'];
+                $tambah->total_apprv = $request['jsetuju'];
+                $tambah->approve = 'Y';
+                $tambah->approve_vp = 'Y';
+                $tambah->approve_svp = 'Y';
 
-    		} else
-    		{
-    			$tambah = new KesehatanModel();
-		        $tambah->NIK = $request['nik'];
-		        $tambah->status = $request['status'];
-		        $tambah->jn_remb = 3;
-		        $tambah->tglklaim = $request['klaim'];
-		        $tambah->nama_apotek = $request['nama'];
-		        $tambah->tglberobat = $request['obat'];
-		        $tambah->diagnosa = $request['diagnosa'];
-		        $tambah->total_klaim = $request['jklaim'];
-		        $tambah->total_apprv = $request['jsetuju'];
-		        $tambah->approve = 'Y';
-		        $tambah->approve_vp = 'Y';
-		        $tambah->approve_svp = 'Y';
+               $tes = KesehatanModel::orderBy('ID','DESC')->first();
+                $id =(int) $tes->ID;
+                $id +=1;
+                $N=null;
+                $file = $request->file('gambar');
+                foreach ($file as $key => $files) {
+                    if($files != null) {
+                        $fileName = $files->getClientOriginalExtension();
+                        $fileName = $id.'_'.$key.'.'.$fileName;
+                        $N[$key]=$fileName;
+                        $files->move("image/Kesehatan",$fileName);
+                        }
+                    }
+                    if($N) {
+                        $nm = implode("|", $N);
+                        $tambah->kwitansi = $nm;
+                    }
 
-		       $tes = KesehatanModel::orderBy('ID','DESC')->first();
-		        $id =(int) $tes->ID;
-		        $id +=1;
-				$N=null;
-		        $file = $request->file('gambar');
-		        foreach ($file as $key => $files) {
-		        	if($files != null) {
-		        		$fileName = $files->getClientOriginalExtension();
-		            	$fileName = $id.'_'.$key.'.'.$fileName;
-		            	$N[$key]=$fileName;
-		            	$files->move("image/Kesehatan",$fileName);
-		        		}
-		        	}
-		        	if($N) {
-		        		$nm = implode("|", $N);
-	            		$tambah->kwitansi = $nm;
-		        	}
+                $tambah->save();
+                $msg='Data Berhasil Ditambah.';
+            }
 
-		        $tambah->save();
-		        $msg='Data Berhasil Ditambah.';
-    		}
+            $data = HakKesehatanModel::where('NIK',$nik)->where('status',$status)
+                                        ->first();
+            $sisa = $data->sisa_kacamata;
+            $hasil = $sisa - $request['jsetuju'];
+            $akhir=0;
+            $stat = array('P','I','A1','A2','A3','P','I','A1','A2','A3');
+            if($hasil<0) {
+                for ($i=0; $i < 5; $i++) {
+                    $a=$i+1; $b=$i+2; $c=$i+3;
+                    $data->sisa_kacamata = 0;
+                    $akhir = $setuju - $sisa;
 
-	        $data = HakKesehatanModel::where('NIK',$nik)->where('status',$status)
-	                                    ->first();
-	        $sisa = $data->sisa_kacamata;
-	        $hasil = $sisa - $request['jsetuju'];
-	        $akhir=0;
-	        $stat = array('P','I','A1','A2','A3','P','I','A1','A2','A3');
-	        if($hasil<0) {
-	        	for ($i=0; $i < 5; $i++) {
-	        		$a=$i+1; $b=$i+2; $c=$i+3;
-	        		$data->sisa_kacamata = 0;
-		        	$akhir = $setuju - $sisa;
+                    if($status==$stat[$i])
+                    {
+                        $data1 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+1])
+                                            ->first();
+                        $sisa1 = $data1->sisa_kacamata;
+                        if($sisa1<$akhir)
+                        {
+                            $data1->sisa_kacamata = 0;
+                            $data1->update();
+                            $akhir1 = $akhir - $sisa1;
 
-		        	if($status==$stat[$i])
-		        	{
-		        		$data1 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+1])
-		                                    ->first();
-		                $sisa1 = $data1->sisa_kacamata;
-		                if($sisa1<$akhir)
-		               	{
-		               		$data1->sisa_kacamata = 0;
-		               		$data1->update();
-		               		$akhir1 = $akhir - $sisa1;
+                            $data2 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+2])
+                                            ->first();
+                            $sisa2 = $data2->sisa_kacamata;
+                            if($sisa2<$akhir1)
+                            {
+                                $data2->sisa_kacamata = 0;
+                                $data2->update();
+                                $akhir2 = $akhir1 - $sisa2;
 
-		               		$data2 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+2])
-		                                    ->first();
-			                $sisa2 = $data2->sisa_kacamata;
-			                if($sisa2<$akhir1)
-			               	{
-			               		$data2->sisa_kacamata = 0;
-			               		$data2->update();
-			               		$akhir2 = $akhir1 - $sisa2;
+                                $data3 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+3])
+                                                ->first();
+                                $sisa3 = $data3->sisa_kacamata;
+                                if($sisa3<$akhir2)
+                                {
+                                    $data3->sisa_kacamata = 0;
+                                    $data3->update();
+                                    $akhir3 = $akhir2 - $sisa3;
 
-			               		$data3 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+3])
-			                                    ->first();
-				                $sisa3 = $data3->sisa_kacamata;
-				                if($sisa3<$akhir2)
-				               	{
-				               		$data3->sisa_kacamata = 0;
-				               		$data3->update();
-				               		$akhir3 = $akhir2 - $sisa3;
-
-				               		$data4 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+4])
-			                                    ->first();
-					                $sisa4 = $data4->sisa_kacamata;
-					                if($sisa4<$akhir3)
-					               	{
-					               		$data4->sisa_kacamata = 0;
-					               		$data4->update();
-					               		$akhir4 = $akhir3 - $sisa4;
+                                    $data4 = HakKesehatanModel::where('NIK',$nik)->where('status',$stat[$i+4])
+                                                ->first();
+                                    $sisa4 = $data4->sisa_kacamata;
+                                    if($sisa4<$akhir3)
+                                    {
+                                        $data4->sisa_kacamata = 0;
+                                        $data4->update();
+                                        $akhir4 = $akhir3 - $sisa4;
 
 
 
-					               	} else
-					               	{
-					               		$data4->sisa_kacamata = $sisa4 - $akhir3;
-					               		$data4->update();
-					               	}
+                                    } else
+                                    {
+                                        $data4->sisa_kacamata = $sisa4 - $akhir3;
+                                        $data4->update();
+                                    }
 
-				               	} else
-				               	{
-				               		$data3->sisa_kacamata = $sisa3 - $akhir2;
-				               		$data3->update();
-				               	}
+                                } else
+                                {
+                                    $data3->sisa_kacamata = $sisa3 - $akhir2;
+                                    $data3->update();
+                                }
 
-			               	} else
-			               	{
-			               		$data2->sisa_kacamata = $sisa2 - $akhir1;
-			               		$data2->update();
-			               	}
+                            } else
+                            {
+                                $data2->sisa_kacamata = $sisa2 - $akhir1;
+                                $data2->update();
+                            }
 
-		               	}
-		               	else
-		               	{
-		               		$data1->sisa_kacamata = $sisa1 - $akhir;
-		               		$data1->update();
-		               	}
+                        }
+                        else
+                        {
+                            $data1->sisa_kacamata = $sisa1 - $akhir;
+                            $data1->update();
+                        }
 
-		        	}
-		        	else {
-		        		//return redirect()->back()->with('error','Error');
-		        		continue;
-		        	}
-	        	}
+                    }
+                    else {
+                        //return redirect()->back()->with('error','Error');
+                        continue;
+                    }
+                }
 
-	        } else {
-	        	$data->sisa_kacamata = $hasil;
-	        }
-	        $data->update();
+            } else {
+                $data->sisa_kacamata = $hasil;
+            }
+            $data->update();
 
-	        return redirect('historykesehatan')->with('success','Data Berhasil Ditambah.');
-    	} else
-    	{
-    		return redirect()->back()->with('error','Sisa Benefit/Benefit Keluarga Tidak Mencukupi');
-    	}
+            return redirect('historykesehatan')->with('success','Data Berhasil Ditambah.');
+        } else
+        {
+            return redirect()->back()->with('error','Sisa Benefit/Benefit Keluarga Tidak Mencukupi');
+        }
     }
 
     public function FUNC_CEKRAWATLAHIR(Request $request) {
