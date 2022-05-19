@@ -71,13 +71,13 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::prefix('employee')->group(function () {
 		Route::get('/', [EmployeeController::class, 'listEmployee']);
 		Route::get('data', [EmployeeController::class, 'dataEmployee']);
-		Route::get('{nik}', [EmployeeController::class, 'formFunction']);
-		Route::get('{nik}/edit', [EmployeeController::class, 'formFunction']);
-		Route::get('{nik}/resign', [EmployeeController::class, 'formFunction']);
-		Route::get('{nik}/mutation', [EmployeeController::class, 'formFunction']);
-		Route::get('{nik}/history', [EmployeeController::class, 'formFunction']);
-		Route::get('{nik}/project-experience', [EmployeeController::class, 'formFunction']);
-		Route::get('{nik}/extend-contract', [EmployeeController::class, 'formFunction']);
+		Route::get('{nik}', [EmployeeController::class, 'FUNC_DETAILEMPLOYEE']);
+		Route::get('edit/{nik}', [EmployeeController::class, 'FUNC_EDITEMPLOYEE']);
+		Route::get('resign/{nik}', [EmployeeController::class, 'FUNC_RESIGNEMPLOYEE']);
+		Route::get('mutation/{nik}', [EmployeeController::class, 'FUNC_MUTASI']);
+		Route::get('history/{nik}', [EmployeeController::class, 'FUNC_HISTORYJABATAN']);
+		Route::get('project-experience/{nik}', [EmployeeController::class, 'FUNC_HEADERPE']);
+		Route::get('extend-contract/{nik}', [EmployeeController::class, 'FUNC_MUTASI']);
 	});
 
 	Route::get('/outemployeelist', [EmployeeController::class, 'OUTEMPLOYEE']);
@@ -294,7 +294,6 @@ Route::prefix('auth')->group(function () {
 
 // Perusahaan
 Route::get('company/{id}', [CompanyController::class, 'showProfile']);
-Route::post('company/update', [CompanyController::class, 'update']);
 
 
 Route::get('/addemployee', [EmployeeController::class, 'FUNC_ADDEMPLOYEE']);
