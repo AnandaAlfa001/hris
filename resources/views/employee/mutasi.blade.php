@@ -1,9 +1,9 @@
 @extends('layouts.index')
 @section('content')
 <script>
-  
+
   function ceknik() {
-  
+
   var nik = $('#nikinput').val();
   var token = '{{Session::token()}}';
   var ceknik = '{{ url('ceknik') }}';
@@ -26,28 +26,28 @@
 }
 
   function modal(idlempar) {
-    
+
     $('#id_nik').val(idlempar);
     $('#bukti').modal();
 
   }
 
   function modal_num(idlempar) {
-    
+
     $('#id_nik_num').val(idlempar);
     $('#gen_num').modal();
 
   }
 
   function modal_alih(idlempar) {
-    
+
     $('#id_nik_alih').val(idlempar);
     $('#gen_alih').modal();
 
   }
 
   function checktglsk(value){
-    var tglsklama = $('#tgl_sk_lama').val(); 
+    var tglsklama = $('#tgl_sk_lama').val();
     var tglskbaru = value;
     var token = '{{Session::token()}}';
     var cektglsk = '{{ url('cektglsk') }}';
@@ -72,7 +72,7 @@
     <section class="content-header">
       <h1>
         Mutation Employee
-       
+
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -201,7 +201,7 @@
                       Demosi (OutSource)
                     </label>
                   </div>
-                  
+
 
                 </div>
                 <!-- /.input group -->
@@ -213,7 +213,7 @@
                 <div class="input-group">
                   <div class="input-group-addon">
                     <i class="fa fa-book"></i>
-                  </div>                  
+                  </div>
                   <input type="text" class="form-control" name="no_sk" placeholder="Nomor SK" required>
                 </div>
                 <!-- /.input group -->
@@ -224,7 +224,7 @@
           </div>
           <!-- /.box -->
 
-          
+
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -253,15 +253,15 @@
 
               <div id="tak">
               <small>Tanggal Akhir Kontrak</small>
-              <div class="input-group">            
-                <span class="input-group-addon"><i class="fa fa-calendar-times-o"></i></span>            
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar-times-o"></i></span>
                   <input type="date" class="form-control" id="TglKontrakEnd" name="TglKontrakEnd" value="{{ $mutasiquery->tgl_akhir_kontrak }}" placeholder="YYYY-MMM-DDD">
               </div><br>
               </div>
 
               <small>Tanggal SK</small>
               <div class="input-group">
-                
+
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                   <input type="hidden" id="tgl_sk_lama" value="{{ $mutasiquery->tanggal1 }}">
                   <input type="date" class="form-control" onblur="checktglsk(this.value)" id="tgl_sk" name="tgl_sk_jab" value="{{ $mutasiquery->tanggal1 }}" placeholder="YYYY-MMM-DDD" required>
@@ -269,14 +269,14 @@
 
               <small>Tanggal TMT</small>
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>            
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                   <input type="date" class="form-control" id="tgl_sk_gol"  name="tgl_sk_gol" value="{{ $mutasiquery->tanggal2 }}" placeholder="YYYY-MMM-DDD" required>
               </div><br>
 
               <small>Status Kepegawaian</small>
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-check-circle"></i></span>  
-                <input type="hidden" class="form-control" name="statuskep7" value="{{$mutasiquery->statuskar}}">          
+                <span class="input-group-addon"><i class="fa fa-check-circle"></i></span>
+                <input type="hidden" class="form-control" name="statuskep7" value="{{$mutasiquery->statuskar}}">
                    <select id="statuskep" class="form-control select2" style="width: 100%;" name="statuskar">
                    <option value="">--Pilih Status Karyawan--</option>
                     @foreach($statuskar as $statuskars)
@@ -287,8 +287,8 @@
 
               <small>Pangkat</small>
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>   
-                <input type="hidden" class="form-control" name="pangkat7" value="{{$mutasiquery->pangkat}}">                   
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="hidden" class="form-control" name="pangkat7" value="{{$mutasiquery->pangkat}}">
                   <select id="pangkat" class="form-control select2" style="width: 100%;" name="idpangkat">
                   <option value="">--Pilih pangkat--</option>
                     @foreach($pangkat as $pangkats)
@@ -299,8 +299,8 @@
 
               <small>Jabatan</small>
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>            
-                  <input type="hidden" class="form-control" name="jabatan7" value="{{$mutasiquery->jabatanid}}">                   
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                  <input type="hidden" class="form-control" name="jabatan7" value="{{$mutasiquery->jabatanid}}">
                   <select id="jabatan" class="form-control select2" style="width: 100%;" name="idjabatan">
                     <option value="">--Pilih Jabatan--</option>
                     @foreach($jabatan as $jabatans)
@@ -308,26 +308,26 @@
                     @endforeach
                   </select>
               </div><br>
-                
+
               <div id="golongan4">
                 <small>Golongan</small>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-suitcase"></i></span>  
-                  <input type="hidden" class="form-control" name="golongan7" value="{{$mutasiquery->golonganmen}}">                             
+                  <span class="input-group-addon"><i class="fa fa-suitcase"></i></span>
+                  <input type="hidden" class="form-control" name="golongan7" value="{{$mutasiquery->golonganmen}}">
                   <select class="form-control select2" id="golongan" style="width: 100%;" name="Golongan">
                     <option value="">--Pilih Golongan--</option>
                     @foreach($golongan as $golongans )
                     <option value="{{$golongans->id}}" @if($mutasiquery->golonganmen == $golongans->id) selected @endif>{{$golongans->gol}}</option>
                     @endforeach
                   </select>
-                </div><br>   
+                </div><br>
               </div>
 
               <div id="golongan1">
                 <small>Golongan Outsource</small>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-suitcase"></i></span>   
-                  <input type="hidden" class="form-control" name="golonganout7" value="{{$mutasiquery->golonganout}}">                            
+                  <span class="input-group-addon"><i class="fa fa-suitcase"></i></span>
+                  <input type="hidden" class="form-control" name="golonganout7" value="{{$mutasiquery->golonganout}}">
                   <select class="form-control select2" id="golongan_out" style="width: 100%;" name="Golongan_out">
                     <option value="">--Pilih Golongan Outsource--</option>
                     @foreach($golonganout as $golonganouts)
@@ -335,19 +335,19 @@
                     @endforeach
                   </select>
                 </div><br>
-              </div>        
-              
+              </div>
+
                 <small>Divisi</small>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-group"></i></span>            
+                  <span class="input-group-addon"><i class="fa fa-group"></i></span>
                   <select id="divisi" class="form-control select2" style="width: 100%;" name="Divisi">
                   <option value="">--Pilih Divisi--</option>
                     @foreach($divisi as $divisis)
                     <option value="{{$divisis->id}}" @if($mutasiquery->divisi == $divisis->id) selected @endif>{{$divisis->nama_div_ext}}</option>
                     @endforeach
                   </select>
-                </div><br>          
-              
+                </div><br>
+
               <small>Sub Divisi</small>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -357,7 +357,7 @@
                     <option value="{{$subdivisis->id}}" @if($mutasiquery->subdivisi == $subdivisis->id) selected @endif>{{$subdivisis->subdivisi}}</option>
                     @endforeach
                   </select>
-              </div><br>          
+              </div><br>
 
               <small>Atasan 1 (Langsung)</small>
               <div class="input-group">
@@ -383,42 +383,42 @@
               <small>Lokasi Kerja</small>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-institution "></i></span>
-               
+
                   <select id="lokasiker" class="form-control select2" style="width: 100%;" name="LokasiKer">
                   <option value="">--Pilih Lokasi Kerja--</option>
                     @foreach($lokasikerja as $lokasikerjas)
                     <option value="{{$lokasikerjas->id}}" @if($mutasiquery->lokasi == $lokasikerjas->id) selected @endif>{{$lokasikerjas->lokasi}}</option>
                     @endforeach
                   </select>
-              </div><br>  
+              </div><br>
 
-              <div id="gaji">              
+              <div id="gaji">
               <small>Gaji</small>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-money "></i></span>
-                <input type="number" class="form-control" name="gaji" value="{{$gaji}}"> 
-              </div><br>  
-              </div>  
+                <input type="number" class="form-control" name="gaji" value="{{$gaji}}">
+              </div><br>
+              </div>
 
-              <div id="tunj_tmr">              
+              <div id="tunj_tmr">
               <small>Tunjangan Pokok MMR</small>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-money "></i></span>
-                <input type="number" class="form-control" name="tunj_tmr" value="{{$tunj_tmr}}"> 
-              </div><br>  
-              </div>   
+                <input type="number" class="form-control" name="tunj_tmr" value="{{$tunj_tmr}}">
+              </div><br>
+              </div>
 
-              <div id="tunj_jab">              
+              <div id="tunj_jab">
               <small>Tunjangan Jabatan</small>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-money "></i></span>
-                <input type="number" class="form-control" name="tunj_jab" value="{{$tunj_jab}}"> 
-              </div><br>  
-              </div>            
+                <input type="number" class="form-control" name="tunj_jab" value="{{$tunj_jab}}">
+              </div><br>
+              </div>
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Simpan & Lanjut</button>
-                
+
               </div>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
@@ -452,15 +452,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php 
-                $no=0; 
+                <?php
+                $no=0;
                 $array = 0;
                 ?>
 
                 @foreach($tablehistory as $tablehistorys)
 
-                <?php 
-                $no++; 
+                <?php
+                $no++;
                 ?>
                 <tr>
                   <td>{{ $no }}</td>
@@ -512,16 +512,16 @@
                       </button>
                       </a>
                       @endif
-                      
+
 
                     </div>
                   </td>
 
                 </tr>
-                <?php 
-                $array++; 
+                <?php
+                $array++;
                 ?>
-                @endforeach  
+                @endforeach
                 </tbody>
               </table>
             </div>
@@ -539,19 +539,19 @@
               </div>
               <div class="modal-body" align="center">
                 <form action="{{ url('GenerateSkExcel') }}">
-                  <div class="input-group">                    
+                  <div class="input-group">
                       <input type="hidden" class="form-control" id="id_nik" name="id_nik" value="" placeholder="id_nik" required >
                   </div>
-                  <div class="input-group">                    
+                  <div class="input-group">
                       <label>No SK LAMPIRAN</label>
                       <input type="text" class="form-control" id="No_SK" name="No_SK" value="" placeholder="No. SK Lampiran" required >
                   </div><br>
-                  <!-- <div class="input-group">                    
+                  <!-- <div class="input-group">
                       <label>Tanggal SK</label>
                       <input type="date" class="form-control" id="tanggalsk" name="tanggalSK" value="" placeholder="YYYY-MMM-DDD">
                   </div> -->
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Generate</button>                    
+                    <button type="submit" class="btn btn-primary">Generate</button>
                   </div>
                 </form>
               </div>
@@ -572,15 +572,15 @@
               </div>
               <div class="modal-body" align="center">
                 <form action="{{ url('GenerateSkPdf_Num') }}">
-                  <div class="input-group">                    
+                  <div class="input-group">
                       <input type="hidden" class="form-control" id="id_nik_num" name="id_nik_num" value="" placeholder="id_nik" required >
                   </div>
-                  <div class="input-group">                    
+                  <div class="input-group">
                       <label>No SK LAMPIRAN PROMOSI & NUMERISASI KARYAWAN</label>
                       <input type="text" class="form-control" id="No_SK_num" name="No_SK_num" value="" placeholder="No. SK Lampiran" required >
                   </div><br>
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Generate</button>                    
+                    <button type="submit" class="btn btn-primary">Generate</button>
                   </div>
                 </form>
               </div>
@@ -601,15 +601,15 @@
               </div>
               <div class="modal-body" align="center">
                 <form action="{{ url('GenerateSkPdf_Alih') }}">
-                  <div class="input-group">                    
+                  <div class="input-group">
                       <input type="hidden" class="form-control" id="id_nik_alih" name="id_nik_alih" value="" placeholder="id_nik" required >
                   </div>
-                  <div class="input-group">                    
+                  <div class="input-group">
                       <label>No SK LAMPIRAN PROMOSI & ALIH TUGAS KARYAWAN</label>
                       <input type="text" class="form-control" id="No_SK_alih" name="No_SK_alih" value="" placeholder="No. SK Lampiran" required >
                   </div><br>
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Generate</button>                    
+                    <button type="submit" class="btn btn-primary">Generate</button>
                   </div>
                 </form>
               </div>
@@ -631,7 +631,6 @@ $(document).ready(function () {
   // Outsource -> Kontrak (EDII)
   $('.type1').click(function() {
       var value_type = document.querySelector('input[name="typemutasi"]:checked').value;
-      alert(value_type);
       $('#niklo').show();
       $('#nikinput').prop('required',true);
       $('#statuskep').prop('disabled',false);
@@ -828,7 +827,7 @@ $(document).ready(function () {
   //     });
   //     // $("#YourInputId").prop('disabled', 'false');
   // });
-  
+
 
 });
 </script>

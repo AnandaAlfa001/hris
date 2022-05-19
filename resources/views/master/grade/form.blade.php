@@ -20,14 +20,14 @@
             <div class="box-body">
               <div class="form-group">
                 <label>Nama Pangkat</label>
-                <input type="text" class="form-control" name="pangkat" placeholder="Nama Pangkat" required value="{{ $grade?->pangkat }}">
+                <input type="text" class="form-control" name="pangkat" placeholder="Nama Pangkat" required value="{{ $grade->pangkat }}">
               </div>
               <div class="form-group">
                 <label>Status Pangkat</label>
                 <select name="disabled" class="form-control">
-                  <option value="" @if($grade?->disabled != '') hidden @endif>--Pilih Status Pangkat--</option>
-                  <option value="1" @if($grade?->disabled == "1") selected @endif>Enabled</option>
-                  <option value="0" @if($grade?->disabled == "0") selected @endif>Disabled</option>
+                  <option value="" @if($grade->disabled != '') hidden @endif>--Pilih Status Pangkat--</option>
+                  <option value="1" @if($grade->disabled == "1") selected @endif>Enabled</option>
+                  <option value="0" @if($grade->disabled == "0") selected @endif>Disabled</option>
                 </select>
               </div>
             </div>
