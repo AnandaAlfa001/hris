@@ -10,9 +10,11 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\LemburController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\IjinController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
 /*
