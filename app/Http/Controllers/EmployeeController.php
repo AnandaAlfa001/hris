@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\EmployeeModel;
@@ -5106,7 +5106,7 @@ class EmployeeController extends Controller
   {
 
     $showdata = EmployeeModel::select('Nama', 'NIK', 'TempatLahir', 'TanggalLahir')->where('NIK', $nik)->first();
-    $tahundropdown = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0 order by TglKontrak";
+    $tahundropdown = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0 order by year(TglKontrak)";
     $tahundropdowns = DB::select($tahundropdown);
 
     $historyprex = HeaderPEModel::select('id as id_head', 'nik', 'posisi', 'didikan', 'didikannf', 'bhs')->where('tb_headproj.nik', $nik)

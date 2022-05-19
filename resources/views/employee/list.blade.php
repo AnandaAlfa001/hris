@@ -148,38 +148,38 @@
                     </a>
                   </li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell.NIK}/edit">
+                    <a href="{{ url('employee') }}/edit/${cell.NIK}-employeelist">
                       <i class="fa fa-fw fa-pencil-square text-info"></i>&nbsp;<b>Ubah</b>
                     </a>
                   </li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell.NIK}/resign">
+                    <a href="{{ url('employee') }}/resign/${cell.NIK}">
                       <i class="fa fa-fw fa-user-times text-info"></i>&nbsp;<b>Resign</b>
                     </a>
                   </li>
                   <li role="separator" class="divider"></li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell.NIK}/mutation">
+                    <a href="{{ url('employee') }}/mutation/${cell.NIK}">
                       <i class="fa fa-fw fa-random text-info"></i>&nbsp;<b>Mutasi</b>
                     </a>
                   </li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell.NIK}/history">
+                    <a href="{{ url('employee') }}/history/${cell.NIK}">
                       <i class="fa fa-fw fa-hourglass-start text-info"></i>&nbsp;<b>Riwayat</b>
                     </a>
                   </li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell.NIK}/project-experience">
+                    <a href="{{ url('employee') }}/project-experience/${cell.NIK}">
                       <i class="fa fa-fw fa-file text-info"></i>&nbsp;<b>Pengalaman Proyek</b>
                     </a>
                   </li>
                   ${
-                    (cell.STATUS == 5 || cell.STATUS == 6) ? 
+                    (cell.STATUS == 5 || cell.STATUS == 6) ?
                     `<li>
-                      <a href="{{ url('employee') }}/${cell.NIK}/extend-contract">
+                      <a href="{{ url('employee') }}/extend-contract/${cell.NIK}">
                         <i class="fa fa-fw fa-calendar-plus-o text-info"></i>&nbsp;<b>Perpanjang Kontrak (Outsource)</b>
                       </a>
-                    </li>` 
+                    </li>`
                     : ''
                   }
                 </ul>
