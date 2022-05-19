@@ -5071,7 +5071,7 @@ class EmployeeController extends Controller
   {
 
     $showdata = EmployeeModel::select('Nama', 'NIK', 'TempatLahir', 'TanggalLahir')->where('NIK', $nik)->first();
-    $tahundropdown = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0 order by TglKontrak";
+    $tahundropdown = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0 order by year(TglKontrak)";
     $tahundropdowns = DB::select($tahundropdown);
 
     $historyprex = HeaderPEModel::select('id as id_head', 'nik', 'posisi', 'didikan', 'didikannf', 'bhs')->where('tb_headproj.nik', $nik)
@@ -6716,8 +6716,8 @@ class EmployeeController extends Controller
   {
     $data = PTHModel::select(
       'tb_pth.*',
-      DB::raw('(SELECT Nama From tb_datapribadi WHERE NIK = tb_pth.nik OR old_nik = tb_pth.nik) as nama_pegawai'),
-      DB::raw('(SELECT Nama From tb_datapribadi WHERE NIK = tb_pth.nik_pengganti OR old_nik = tb_pth.nik_pengganti) as nama_pengganti'),
+      DB::raw('(SELECT Nama From tb_datapribadi WHERE NIK = tb_pth.nik OR old_nik = tb_pth.nik limit 1) as nama_pegawai'),
+      DB::raw('(SELECT Nama From tb_datapribadi WHERE NIK = tb_pth.nik_pengganti OR old_nik = tb_pth.nik_pengganti limit 1) as nama_pengganti'),
       DB::raw('(CASE
                             WHEN tb_pth.id_cuti IS NOT NULL THEN "Cuti"
                             WHEN tb_pth.id_pd IS NOT NULL THEN "Perjalanan Dinas"
@@ -6903,7 +6903,7 @@ class EmployeeController extends Controller
         'tb_perjalanandinas.id_edit'
       )
         ->orderby('tb_perjalanandinas.id', 'DESC')
-        ->groupby('tb_perjalanandinas.id_edit')
+        // ->groupby('tb_perjalanandinas.id_edit')
         ->get();
     } else {
       $daftarpd = PerjalananDinasModel::select(

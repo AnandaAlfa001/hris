@@ -7,6 +7,7 @@ use App\Models\EmployeeModel;
 use App\Models\LemburModel;
 use App\Models\LembursModel;
 use Illuminate\Support\Facades\Session;
+use DB;
 
 class LemburController extends Controller
 {
@@ -121,7 +122,7 @@ class LemburController extends Controller
     public function FUNC_HISTORYLEMBUR()
     {
         $nik = Session::get('nik');
-        $tahun = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0 order by TglKontrak";
+        $tahun = "select DISTINCT year(TglKontrak) as tahun from tb_datapribadi where TglKontrak <> NULL or TglKontrak <> 0";
         $tahuns = DB::select($tahun);
         $data = LemburModel::select('tb_lembur.ID','tb_lembur.NIK','tb_lembur.NIKPemberiLembur','tb_lembur.TanggalMulaiLembur','tb_lembur.TanggalSelesaiLembur','tb_lembur.JamMulai','tb_lembur.PerkiraanJamSelesai','tb_lembur.JamSelesaiAktual','tb_lembur.Kegiatan','tb_lembur.status','tb_datapribadi.Nama',
              DB::raw('CASE

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\Session\Session;
+use Session;
 use App\Http\Requests;
 use App\Models\KesehatanModel;
 use App\Models\HakKesehatanModel;
