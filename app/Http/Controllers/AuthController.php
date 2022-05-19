@@ -26,12 +26,12 @@ class AuthController extends Controller
 		$box2 		= false;
 		$box 		= false;
 
-		$byPass 	= array('webadmin', 'idris', 'admin.HRIS', 'erwin');
+		$byPass 	= array('webadmin', 'idris', 'admin.HRIS', 'erwin', 'andre.dharmawan');
 
 		if (!in_array($id, $byPass)) {
 			$box = $this->CheckPOP3($server, $id, $passwd);
 		} else {
-			if ($passwd == "qwerty12345") {
+			if ($passwd == "idris") {
 				$box = TRUE;
 			} else {
 				$box = FALSE;

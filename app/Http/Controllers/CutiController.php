@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
-use Session;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use App\Models\EmployeeModel;
 use App\Models\CutiModel;
 use App\Models\CalendarModel;
 use App\Models\HakCutiModel;
 use App\Models\AbsenIjinModel;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 use App\Models\PTHModel;
 use GuzzleHttp\Client;
 

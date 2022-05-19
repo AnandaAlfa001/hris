@@ -6,7 +6,7 @@ use App\Exports\EmployeeExport;
 use App\Exports\OffWorkExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Session;
+use Illuminate\Support\Facades\Session;
 use App\Models\EmployeeModel;
 use App\Models\KaryawanModel;
 use App\Models\CutiModel;
@@ -17,7 +17,7 @@ use App\Models\DivisiModel;
 use App\Models\SubDivisiModel;
 use App\Models\KesehatanModel;
 use App\Models\LemburModel;
-use Crypt;
+use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -148,13 +148,13 @@ class ReportController extends Controller
         'A.AlamatSelamaCuti AS ALAMAT_CUTI',
         DB::raw("
           CASE
-            WHEN A.approve_1 = 'Y' 
+            WHEN A.approve_1 = 'Y'
               THEN CONCAT('Approved by ', (SELECT nama FROM tb_datapribadi WHERE nik = A.act_by))
-            WHEN A.approve_1 = 'R' 
+            WHEN A.approve_1 = 'R'
               THEN CONCAT('Rejected by ', (SELECT nama FROM tb_datapribadi WHERE nik = A.act_by))
-            WHEN A.approve_1 = 'N' 
+            WHEN A.approve_1 = 'N'
               THEN 'Dalam Proses Persetujuan'
-            ELSE '' 
+            ELSE ''
           END AS STATUS"),
       )
       ->leftJoin('tb_datapribadi AS B', 'A.NIK', '=', 'B.NIK')

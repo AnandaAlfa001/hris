@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests;
 use App\Models\EmployeeModel;
 use App\Models\KaryawanModel;
 use App\Models\AgamaModel;
@@ -38,7 +37,7 @@ use App\Models\PerjalananDinasModel;
 use App\Models\RiwayatPenyakitModel;
 use App\Models\DokumenModel;
 use Illuminate\Support\Facades\Crypt;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Storage;
 use DatePeriod;
@@ -2309,7 +2308,7 @@ class EmployeeController extends Controller
         if ($id[$i]) {
           $update = RiwayatPenyakitModel::where('id', $id[$i])->first();
           $update->tahun = $jju[$i];
-          $update->nama_penyakit = $nama_penyakitu[$i];
+          $update->updateate->nama_penyakit = $nama_penyakitu[$i];
           $update->dirawat = $dirawatu[$i];
           $update->lama_rawat = $lama_rawatu[$i];
           $update->cacat = $cacatu[$i];

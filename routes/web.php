@@ -294,6 +294,7 @@ Route::prefix('auth')->group(function () {
 
 // Perusahaan
 Route::get('company/{id}', [CompanyController::class, 'showProfile']);
+Route::post('company/update', [CompanyController::class, 'update']);
 
 
 Route::get('/addemployee', [EmployeeController::class, 'FUNC_ADDEMPLOYEE']);

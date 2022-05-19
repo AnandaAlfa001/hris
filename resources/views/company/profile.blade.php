@@ -3,7 +3,7 @@
 @include('layouts.function')
 <div class="content-wrapper">
   <section class="content-header">
-    <h1>{{ $company?->COMPANY_COMPANY_NAME }}</h1>
+    <h1>{{ $company->COMPANY_COMPANY_NAME }}</h1>
     <ol class="breadcrumb">
       <li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
       <li class="active">Perusahaan</li>
@@ -24,39 +24,39 @@
                   <tbody>
                     <tr>
                       <td>Nama</td>
-                      <td>{{ $company?->COMPANY_COMPANY_NAME }}</td>
+                      <td>{{ $company->COMPANY_COMPANY_NAME }}</td>
                     </tr>
                     <tr>
                       <td>Email</td>
-                      <td>{{ $company?->COMPANY_EMAIL }}</td>
+                      <td>{{ $company->COMPANY_EMAIL }}</td>
                     </tr>
                     <tr>
                       <td>Website</td>
-                      <td>{{ $company?->COMPANY_WEBSITE }}</td>
+                      <td>{{ $company->COMPANY_WEBSITE }}</td>
                     </tr>
                     <tr>
                       <td>Telepon</td>
-                      <td>{{ $company?->COMPANY_PHONE }}</td>
+                      <td>{{ $company->COMPANY_PHONE }}</td>
                     </tr>
                     <tr>
                       <td>Fax</td>
-                      <td>{{ $company?->COMPANY_FAX }}</td>
+                      <td>{{ $company->COMPANY_FAX }}</td>
                     </tr>
                     <tr>
                       <td>PIC</td>
-                      <td>{{ $company?->COMPANY_PIC }}</td>
+                      <td>{{ $company->COMPANY_PIC }}</td>
                     </tr>
                     <tr>
                       <td>PIC Email</td>
-                      <td>{{ $company?->COMPANY_PIC_EMAIL }}</td>
+                      <td>{{ $company->COMPANY_PIC_EMAIL }}</td>
                     </tr>
                     <tr>
                       <td>PIC Phone</td>
-                      <td>{{ $company?->COMPANY_PIC_PHONE }}</td>
+                      <td>{{ $company->COMPANY_PIC_PHONE }}</td>
                     </tr>
                     <tr>
                       <td>Status</td>
-                      <td>{{ $company?->COMPANY_STATUS }}</td>
+                      <td>{{ $company->COMPANY_STATUS }}</td>
                     </tr>
                   </tbody>
                 </table>
