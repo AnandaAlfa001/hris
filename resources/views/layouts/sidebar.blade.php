@@ -13,7 +13,7 @@
         @if(Session::get('photo') == 'notfound.png')
         <img src="{{ asset('image/aw.svg') }}" class="img-circle" alt="User Image">
         @else
-        <img src="{{ asset('image/Photo/'.Session::get('photo')) }}" class="img-circle" alt="User Image">
+        <img src="https://ui-avatars.com/api/?name={{ Session::get('nama') }}" class="img-circle" alt="User Image">
 
         @endif
 
@@ -74,13 +74,13 @@
           <li><a href="{{ url('master/function') }}"><i class="fa fa-circle-o"></i>Jabatan</a></li>
           <li><a href="{{ url('master/division') }}"><i class="fa fa-circle-o"></i>Divisi</a></li>
           <li><a href="{{ url('master/subdivision') }}"><i class="fa fa-circle-o"></i>Subdivisi</a></li>
-          <!-- 
+          <!--
             <li><a href="{{ url('master/group') }}"><i class="fa fa-circle-o"></i>Golongan</a></li>
             <li><a href="{{ url('master/outsource-group') }}"><i class="fa fa-circle-o"></i>Golongan Outsource</a></li>
           -->
         </ul>
       </li>
-      
+
       <li class="treeview">
         <a href="#">
           <i class="fa fa-file-excel-o"></i>
@@ -257,11 +257,11 @@
           <a href="#">
             <i class="fa fa-book"></i>
             <span>Dokumen </span><i class="fa fa-angle-left pull-right"></i>
-            
+
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ url('tambahdok') }}"><i class="fa fa-circle-o"></i> Tambah Dokumen</a></li>
-            <li><a href="{{ url('listdok') }}"><i class="fa fa-circle-o"></i> List Dokumen</a></li>            
+            <li><a href="{{ url('listdok') }}"><i class="fa fa-circle-o"></i> List Dokumen</a></li>
           </ul>
         </li> -->
 
