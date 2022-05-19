@@ -25,7 +25,7 @@
             @if(Session::get('photo') == 'notfound.png')
             <img src="{{ asset('image/aw.svg') }}" class="user-image" alt="User Image">
             @else
-            <img src="{{ asset('image/Photo/'.Session::get('photo')) }}" class="user-image" alt="User Image">
+            <img src="https://ui-avatars.com/api/?name={{ Session::get('nama') }}" class="user-image" alt="User Image">
             @endif
             <span class="hidden-xs">{{ Session::get('nama') }}</span>
           </a>
@@ -46,7 +46,7 @@
             <!-- Menu Footer-->
             <?php
               use Illuminate\Support\Facades\Session;
-              
+
               $nik = Session::get('nik');
             ?>
             <li class="user-footer">
