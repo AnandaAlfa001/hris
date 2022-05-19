@@ -2872,7 +2872,7 @@ class EmployeeController extends Controller
       ->with('divisi', $divisi)
       ->with('subdivisi', $subdivisi)
       ->with('lokasikerja', $lokasikerja)
-      ->with('mutasiquery', $mutasiquery) //->with('mutasiquerys',$mutasiquerys)
+      ->with('mutasiquery', $mutasiquery)
       ->with('tablehistory', $tablehistory)
       ->with('golongan', $golongan)
       ->with('golonganout', $golonganout)
