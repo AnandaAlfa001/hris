@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\EmployeeModel;
@@ -65,6 +65,7 @@ class EmployeeController extends Controller
       ->whereRaw('A.idpangkat IN (' . $this->managerGradeID . ')')
       ->orderBy('A.Nama')
       ->get();
+
     $employeeStatus = DB::table('tb_statuskar')->select('id', 'status_kar')->get();
     $workLocation   = DB::table('tb_lokasikerja')->select('id', 'lokasi')->get();
 
@@ -2714,6 +2715,7 @@ class EmployeeController extends Controller
   }
 
 
+  //FUNCION SHOW MUTASI PEGAWAI
   public function FUNC_MUTASI($NIK)
   {
 
@@ -2883,52 +2885,34 @@ class EmployeeController extends Controller
       ->with('decgaji', $coba);
   }
 
+  //FUNCION SAVE MUTASI PEGAWAI
   public function FUNC_SAVEMUTASI(Request $request)
   {
-
-    //dd($request->all());
-
-    if ($request['typemutasi'] == '1' or $request['typemutasi'] == '10' or $request['typemutasi'] == '11') {
-      # code...
+    if ($request['typemutasi'] == '1' || $request['typemutasi'] == '10' || $request['typemutasi'] == '11') {
       $this->validate($request, [
         'NIK' => 'required'
       ]);
     }
-
     $this->validate($request, [
-      //'NIK' => 'required',
-      //'TglKontrak' => 'required',
-      //'TglKontrakEnd' => 'required',
-      //'tgl_sk_jab' => 'required',
-      //'tgl_sk_gol' => 'required',
-      // 'statuskar' => 'required',
-      // 'idpangkat' => 'required',
-      // 'idjabatan' => 'required',
-      //'Golongan' => 'required',
-      //'Golongan_out' => 'required',
-      //'Divisi' => 'required',
-      //'SubDivisi' => 'required',
-      // 'typemutasi' => 'required',
       'no_sk' => 'required',
       'atasan1' => 'required',
       'atasan2' => 'required',
-      'LokasiKer' => 'required',
-
+      'LokasiKer' => 'required'
     ]);
 
-    if ($request['gaji'] == null or $request['gaji'] == 0) {
+    if ($request['gaji'] == null || $request['gaji'] == 0) {
       $gaji = null;
     } else {
       $gaji = Crypt::encrypt($request['gaji']);
     }
 
-    if ($request['tunj_tmr'] == null or $request['tunj_tmr'] == 0) {
+    if ($request['tunj_tmr'] == null || $request['tunj_tmr'] == 0) {
       $tunj_tmr = null;
     } else {
       $tunj_tmr = Crypt::encrypt($request['tunj_tmr']);
     }
 
-    if ($request['tunj_jab'] == null or $request['tunj_jab'] == 0) {
+    if ($request['tunj_jab'] == null || $request['tunj_jab'] == 0) {
       $tunj_jab = null;
     } else {
       $tunj_jab = Crypt::encrypt($request['tunj_jab']);
@@ -2936,25 +2920,20 @@ class EmployeeController extends Controller
 
     $tambah = new HistoryJabModel();
 
-    if ($request['typemutasi'] == '1' or $request['typemutasi'] == '10' or $request['typemutasi'] == '11') {
-
-      if ($request['idpangkat'] == '2' or $request['idpangkat'] == '3' or $request['idpangkat'] == '1948') {
-
+    if ($request['typemutasi'] == '1' || $request['typemutasi'] == '10' || $request['typemutasi'] == '11') {
+      if ($request['idpangkat'] == '2' || $request['idpangkat'] == '3' || $request['idpangkat'] == '1948') {
         $tambah->idjabatan = '1';
         $tambah->Divisi = null;
         $tambah->SubDivisi = '1';
-      } elseif ($request['idpangkat'] == '6' or $request['idpangkat'] == '7' or $request['idpangkat'] == '1952' or $request['idpangkat'] == '1954') {
-
+      } elseif ($request['idpangkat'] == '6' || $request['idpangkat'] == '7' || $request['idpangkat'] == '1952' or $request['idpangkat'] == '1954') {
         $tambah->idjabatan = '1';
         $tambah->Divisi = $request['Divisi'];
         $tambah->SubDivisi = $request['SubDivisi'];
-      } elseif ($request['idpangkat'] == '5' or $request['idpangkat'] == '1951') {
-
+      } elseif ($request['idpangkat'] == '5' || $request['idpangkat'] == '1951') {
         $tambah->idjabatan = '1';
         $tambah->Divisi = $request['Divisi'];
         $tambah->SubDivisi = '1';
       } else {
-
         $tambah->idjabatan = $request['idjabatan'];
         $tambah->Divisi = $request['Divisi'];
         $tambah->SubDivisi = $request['SubDivisi'];
@@ -2993,13 +2972,6 @@ class EmployeeController extends Controller
         DB::table('absen_log')
           ->where('nik', $request['old_nik'])
           ->update(['nik' => $request['NIK']]);
-
-        // DB::table('absen_izin')
-        //   ->where('nik', $request['old_nik'])
-        //   ->update([
-        //       'id'  => DB::raw('REPLACE(id, nik, "'.$request['NIK'].'")'),
-        //       'nik' => $request['NIK'],
-        //     ]);
       }
 
       /** End Add By Dandy Firmansyah 09 Oktober 2018 **/
@@ -3429,7 +3401,7 @@ class EmployeeController extends Controller
             $updateEmp->update();
           }
         }
-        // }elseif ($request['idpangkat'] == 6 or $request['idpangkat'] == 7 or $request['idpangkat'] == 1952 or $request['idpangkat'] == 1954) {
+   // }elseif ($request['idpangkat'] == 6 or $request['idpangkat'] == 7 or $request['idpangkat'] == 1952 or $request['idpangkat'] == 1954) {
       } elseif ($request['idpangkat'] == 6 or $request['idpangkat'] == 1952) {
         $showkarbiasa = EmployeeModel::select('tb_datapribadi.*', DB::raw('CONCAT(Nama,"#",NIK) as namaformat'))
           ->where('Divisi', $request['Divisi'])
@@ -3455,43 +3427,36 @@ class EmployeeController extends Controller
         }
       }
     }
-
-
     $tambah->save();
     $update->update();
-
     // UPDATE DATABASE PRODEV
     if ($request['typemutasi'] == 1 or $request['typemutasi'] == '10' or $request['typemutasi'] == '11') {
-      $nik_prodev = $request['NIK'];
+    $nik_prodev = $request['NIK'];
     } else {
-      $nik_prodev = $request['old_nik'];
+    $nik_prodev = $request['old_nik'];
     }
-
     //untuk if user role
-
     if ($request['idpangkat'] == '2' || $request['idpangkat'] == '3' || $request['idpangkat'] == '4' || $request['idpangkat'] == '5' || $request['idpangkat'] == '1948' || $request['idpangkat'] == '1951') {
-      $user_role = '2';
+    $user_role = '2';
     } elseif ($request['idpangkat'] == '6' || $request['idpangkat'] == '7' || $request['idpangkat'] == '1952' || $request['idpangkat'] == '1954') {
-      $user_role = '3';
+    $user_role = '3';
     } else {
-      if ($request['Divisi'] == '1937') {
+    if ($request['Divisi'] == '1937') {
         $user_role = '5';
-      } else {
+    } else {
         $user_role = '4';
-      }
+    }
     }
 
     $update_prodev = DB::connection('prodev')->table('user_app')
-      ->where('nik', $request['old_nik'])
-      ->update([
+    ->where('nik', $request['old_nik'])
+    ->update([
         'nik' => $nik_prodev,
         'id_pangkat' => $request['idjabatan'],
         'user_role' => $user_role,
         'status_kar' => $request['statuskar']
-      ]);
-
+    ]);
     // END UPDATE DATABASE PRODEV
-
     return redirect('employeelist')->with('success', 'Data Berhasil Disimpan');
   }
 

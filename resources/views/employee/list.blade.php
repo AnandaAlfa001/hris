@@ -159,7 +159,7 @@
                   </li>
                   <li role="separator" class="divider"></li>
                   <li>
-                    <a href="{{ url('employee') }}/${cell.NIK}/mutation">
+                    <a href="{{ url('mutasi') }}/${cell.NIK}">
                       <i class="fa fa-fw fa-random text-info"></i>&nbsp;<b>Mutasi</b>
                     </a>
                   </li>
@@ -174,12 +174,12 @@
                     </a>
                   </li>
                   ${
-                    (cell.STATUS == 5 || cell.STATUS == 6) ? 
+                    (cell.STATUS == 5 || cell.STATUS == 6) ?
                     `<li>
                       <a href="{{ url('employee') }}/${cell.NIK}/extend-contract">
                         <i class="fa fa-fw fa-calendar-plus-o text-info"></i>&nbsp;<b>Perpanjang Kontrak (Outsource)</b>
                       </a>
-                    </li>` 
+                    </li>`
                     : ''
                   }
                 </ul>
