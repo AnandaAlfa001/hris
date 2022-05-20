@@ -307,15 +307,7 @@
             <li><a href="{{ url('listdok') }}"><i class="fa fa-circle-o"></i> List Dokumen</a></li>
           </ul>
         </li> -->
-<<<<<<< HEAD
         </ul>
     </section>
     <!-- /.sidebar -->
-=======
-
-
-    </ul>
-  </section>
-  <!-- /.sidebar -->
->>>>>>> fb5d65f8bfe4399c97fd898c58fff5d7eaa6c8a0
 </aside>
