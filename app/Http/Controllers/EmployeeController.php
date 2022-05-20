@@ -2919,18 +2919,17 @@ class EmployeeController extends Controller
     }
 
     $tambah = new HistoryJabModel();
-
     if ($request['typemutasi'] == '1' || $request['typemutasi'] == '10' || $request['typemutasi'] == '11') {
       if ($request['idpangkat'] == '2' || $request['idpangkat'] == '3' || $request['idpangkat'] == '1948') {
-        $tambah->idjabatan = '1';
+        $tambah->idjabatan = $request['idjabatan'];
         $tambah->Divisi = null;
         $tambah->SubDivisi = '1';
       } elseif ($request['idpangkat'] == '6' || $request['idpangkat'] == '7' || $request['idpangkat'] == '1952' or $request['idpangkat'] == '1954') {
-        $tambah->idjabatan = '1';
+        $tambah->idjabatan = $request['idjabatan'];
         $tambah->Divisi = $request['Divisi'];
         $tambah->SubDivisi = $request['SubDivisi'];
       } elseif ($request['idpangkat'] == '5' || $request['idpangkat'] == '1951') {
-        $tambah->idjabatan = '1';
+        $tambah->idjabatan = $request['idjabatan'];
         $tambah->Divisi = $request['Divisi'];
         $tambah->SubDivisi = '1';
       } else {
@@ -3015,17 +3014,17 @@ class EmployeeController extends Controller
     } else if ($request['typemutasi'] == '7' or $request['typemutasi'] == '6') {
       if ($request['pangkat7'] == '2' or $request['pangkat7'] == '3' or $request['pangkat7'] == '1948') {
 
-        $tambah->idjabatan = '1';
+        $tambah->idjabatan = $request['idjabatan'];
         $tambah->Divisi = null;
         $tambah->SubDivisi = '1';
       } elseif ($request['pangkat7'] == '6' or $request['pangkat7'] == '7' or $request['pangkat7'] == '1952' or $request['pangkat7'] == '1954') {
 
-        $tambah->idjabatan = '1';
+        $tambah->idjabatan = $request['idjabatan'];
         $tambah->Divisi = $request['Divisi'];
         $tambah->SubDivisi = $request['SubDivisi'];
       } elseif ($request['pangkat7'] == '5' or $request['pangkat7'] == '1951') {
 
-        $tambah->idjabatan = '1';
+        $tambah->idjabatan = $request['idjabatan'];
         $tambah->Divisi = $request['Divisi'];
         $tambah->SubDivisi = '1';
       } else {
