@@ -58,19 +58,76 @@ class EmployeeController extends Controller
 
   public function listEmployee()
   {
-    $manager        = DB::table('tb_datapribadi AS A')
-      ->select('A.NIK AS NIK', 'A.Nama AS NAMA', 'B.pangkat AS PANGKAT')
-      ->leftJoin('tb_pangkat AS B', 'B.id', '=', 'A.idpangkat')
-      ->whereRaw('A.statuskar IN (1, 2, 4)')
-      ->whereRaw('A.idpangkat IN (' . $this->managerGradeID . ')')
-      ->orderBy('A.Nama')
-      ->get();
 
-    $employeeStatus = DB::table('tb_statuskar')->select('id', 'status_kar')->get();
-    $workLocation   = DB::table('tb_lokasikerja')->select('id', 'lokasi')->get();
+    $CallEmp = KaryawanModel::select(
+        'sqc_nik',
+        'NIK',
+        'Nama',
+        'Alamat',
+        'NoHp',
+        'email',
+        'statuskar',
+        DB::raw('CONCAT(SUBSTR(NIK,1,LENGTH(NIK) - 3),"-", RIGHT(NIK,3)) as nikFormat'),
+        DB::raw('CASE
+                                                  WHEN tb_datapribadi.idpangkat IS NULL or tb_datapribadi.idpangkat = 0 or tb_datapribadi.idpangkat = ""
+                                                      THEN CONCAT(" - ", " - " , (SELECT jabatan FROM tb_jabatan WHERE tb_datapribadi.idjabatan = tb_jabatan.id))
+                                                  WHEN tb_datapribadi.idjabatan IS NULL or tb_datapribadi.idjabatan = 0 or tb_datapribadi.idjabatan = 75 or tb_datapribadi.idjabatan = ""
+                                                      THEN CONCAT((SELECT pangkat FROM tb_pangkat WHERE tb_datapribadi.idpangkat = tb_pangkat.id), " - " , " - ")
+                                                  WHEN (tb_datapribadi.idpangkat IS NULL or tb_datapribadi.idpangkat = 0 or tb_datapribadi.idpangkat = "") and (tb_datapribadi.idjabatan IS NULL or tb_datapribadi.idjabatan = 0 or tb_datapribadi.idjabatan = 75 or tb_datapribadi.idjabatan = "")
+                                                      THEN CONCAT("-"," - ","-")
+                                                  ELSE
+                                                      CONCAT((SELECT pangkat FROM tb_pangkat WHERE tb_datapribadi.idpangkat = tb_pangkat.id), " - " , (SELECT jabatan FROM tb_jabatan WHERE tb_datapribadi.idjabatan = tb_jabatan.id))
+                                              END as Jabatan'),
+        DB::raw('CASE
+                                                  WHEN tb_datapribadi.Divisi IS NULL or tb_datapribadi.Divisi = 0 or tb_datapribadi.Divisi = 1 or tb_datapribadi.Divisi = ""
+                                                      THEN CONCAT("-"," - ",(SELECT subdivisi FROM tb_subdivisi WHERE tb_datapribadi.SubDivisi = tb_subdivisi.id))
+                                                  WHEN tb_datapribadi.SubDivisi IS NULL or tb_datapribadi.SubDivisi = 0 or tb_datapribadi.SubDivisi = ""
+                                                      THEN CONCAT((SELECT nama_div_ext FROM tbldivmaster WHERE tbldivmaster.id = tb_datapribadi.Divisi)," - ","-")
+                                                  WHEN (tb_datapribadi.Divisi IS NULL or tb_datapribadi.Divisi = 0 or tb_datapribadi.Divisi = 1 or tb_datapribadi.Divisi = "") and (tb_datapribadi.SubDivisi IS NULL or tb_datapribadi.SubDivisi = 0 or tb_datapribadi.SubDivisi = "")
+                                                      THEN CONCAT("-"," - ","-")
+                                                  ELSE
+                                                      CONCAT((SELECT nama_div_ext FROM tbldivmaster WHERE tbldivmaster.id = tb_datapribadi.Divisi)," - ",(SELECT subdivisi FROM tb_subdivisi WHERE tb_datapribadi.SubDivisi = tb_subdivisi.id))
+                                              END as Divisi'),
+        DB::raw('CASE WHEN statuskar = "5" or statuskar = "6"
+                                                      THEN
+                                                          CASE WHEN tb_datapribadi.Golongan_out IS NULL OR tb_datapribadi.Golongan_out = 0 OR tb_datapribadi.Golongan_out = "" THEN "-"
+                                                               ELSE (SELECT gol FROM tb_golongan_outsource WHERE id = tb_datapribadi.Golongan_out)
+                                                          END
+                                                    ELSE
+                                                        CASE WHEN tb_datapribadi.Golongan IS NULL or tb_datapribadi.Golongan = 0 or tb_datapribadi.Golongan = ""
+                                                            THEN "="
+                                                            ELSE (SELECT gol FROM tb_golongan WHERE id = tb_datapribadi.golongan)
+                                                        END
+                                                    END as Gol'))
+        ->where('resign', '=', "N")
+        ->whereRaw(DB::raw('NIK NOT IN ("admin")'))
+        ->orderby('statuskar')
+        ->orderby('sqc_nik', 'ASC')
+        ->get();
 
-    $data           = compact('manager', 'employeeStatus', 'workLocation');
-    return view('employee/list', $data);
+      $atasan1 = EmployeeModel::select(
+        'nik',
+        'nama',
+        DB::raw('CONCAT(tb_datapribadi.nik,"-", tb_datapribadi.nama ,"(", tb_pangkat.pangkat, ")") as atasan')
+      )
+        ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
+        ->whereRaw(DB::raw('tb_datapribadi.statuskar IN (1,2,4,3) AND tb_datapribadi.resign ="N" AND tb_datapribadi.idpangkat IN (2,3,4,5,6,7,1948,1951,1952,1954)'))
+        ->orderby('tb_datapribadi.idpangkat', 'ASC')
+        ->get();
+
+      $atasan2 = EmployeeModel::select(
+        'nik',
+        'nama',
+        DB::raw('CONCAT(tb_datapribadi.nik,"-",tb_datapribadi.nama,"(", tb_pangkat.pangkat, ")") as atasan')
+      )
+        ->leftjoin('tb_pangkat', 'tb_datapribadi.idpangkat', '=', 'tb_pangkat.id')
+        ->whereRaw(DB::raw('tb_datapribadi.statuskar IN (1,2,4,3) AND tb_datapribadi.resign ="N" AND tb_datapribadi.idpangkat IN (2,3,4,5,1948,1951)'))
+        ->orderby('tb_datapribadi.idpangkat', 'ASC')
+        ->get();
+
+      $statuskar = StatusKarModel::all();
+      $lokasikerja = LokkerModel::all();
+      return view('employee/employeelist')->with('CallEmp', $CallEmp)->with('atasan1', $atasan1)->with('atasan2', $atasan2)->with('statuskar', $statuskar)->with('lokasikerja', $lokasikerja);
   }
 
   public function dataEmployee(Request $request)
